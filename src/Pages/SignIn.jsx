@@ -37,7 +37,7 @@ const SignIn = () => {
                   id="email"
                   type="email"
                   placeholder="Enter Your email"
-                  className="outline-none w-full h-[48px] px-[15px] py-[16px] border border-transparent rounded-tl-[3px] bg-[#F9F9F9]"
+                  className=" outline-none w-[370.66px] h-[48px] p-[16px] pr-[15px] pb-[16px] pl-[15px] gap-0 rounded-tl-[3px] rounded-tr-none rounded-br-none rounded-bl-none border-t border-[1px] bg-[#F9F9F9]  "
                 />
               </div>
               <div className="flex flex-col mt-[21px] relative">
@@ -45,7 +45,7 @@ const SignIn = () => {
                   <label htmlFor="password" className="text-sm font-semibold">
                     Password*
                   </label>
-                  <Link to="/" className="text-[#ed7e7e]">
+                  <Link to="/" className="transition-all duration-400 ease text-[#ed7e7e] hover:underline ">
                     Forget Password?
                   </Link>
                 </div>
@@ -54,8 +54,9 @@ const SignIn = () => {
                     container
                     alignItems="center"
                     justifyContent="space-between"
+                    className='w-[370.66px] h-[48px]  rounded-tl-[3px] rounded-tr-none rounded-br-none rounded-bl-none border-t border-[1px] bg-[#F9F9F9]' 
                   >
-                    <Grid item xs>
+                    <Grid item xs >
                       <input
                         id="password"
                         type={showPassword ? 'text' : 'password'}
