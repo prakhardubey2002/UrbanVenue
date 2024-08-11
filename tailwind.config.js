@@ -3,6 +3,7 @@ export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
     extend: {},
+    
     screens: {
       '2xl': { max: '1535px' },
       //=>@media (max-width:1535px){...}

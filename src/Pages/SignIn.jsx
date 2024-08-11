@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Logo from '../assets/Logo.png'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Visibility from '@mui/icons-material/Visibility'
 import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import IconButton from '@mui/material/IconButton'
@@ -13,6 +13,11 @@ const SignIn = () => {
   const togglePasswordVisibility = () => {
     setShowPassword((prevState) => !prevState)
   }
+  const navigate =useNavigate()
+  const redirectx =()=>{
+    console.log("redirect")
+    navigate("/dashboard");
+  }
 
   return (
     <>
@@ -24,7 +29,7 @@ const SignIn = () => {
           </h2>
         </div>
         <div className="right flex justify-center items-center w-[65.28%] lg:w-full lg:h-[85%] ">
-          <div className="main flex flex-col justify-between h-[67.11%] w-[39.36%]  lg:w-[60%] sm:w-[80%] ">
+          <div className="main flex flex-col justify-between h-[67.11%] w-[39.36%]   lg:w-[60%] lg:h-[80%] sm:w-[80%] ">
             <div className="form flex flex-col">
               <h2 className="font-roboto text-[24px] font-semibold leading-[28.8px] text-left mt-[35px] mb-[41.8px] ">
                 Sign in to Urban Venue
@@ -80,7 +85,7 @@ const SignIn = () => {
                   </Grid>
                 </div>
               </div>
-              <button className="w-full mt-5 bg-[#ed7e7e] text-white h-[50px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-6 py-[1px]">
+              <button onClick={()=>redirectx()} className="w-full mt-5 bg-[#ed7e7e] text-white h-[50px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-6 py-[1px]">
                 <p>Sign In</p>
                 <ExitToAppIcon className="ml-1" />
               </button>
