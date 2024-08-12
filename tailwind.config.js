@@ -2,8 +2,14 @@
 export default {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx}'],
   theme: {
-    extend: {},
-    
+    extend: {
+      colors: {
+        Bordgrey: '#eeeeee',
+        startgradient: '#d2f6ec',
+        endgradient: '#d1ebf9',
+      },
+    },
+
     screens: {
       '2xl': { max: '1535px' },
       //=>@media (max-width:1535px){...}
