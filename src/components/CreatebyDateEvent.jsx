@@ -1,6 +1,6 @@
 import React from 'react'
 import Calender from './Calender'
-import { events } from '../data/CalenderDateDemoDate.js'
+import { events } from '../data/CalenderDateDemoData.js';
 import { Link } from 'react-router-dom'
 
 const CreatebyDateEvent = () => {
