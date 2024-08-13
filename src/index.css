@@ -1,3 +1,8 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.button {
+    @apply w-fit bg-Primary text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
+  }
+  
