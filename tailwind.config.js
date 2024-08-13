@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {
       colors: {
+        Primary:"#ed7e7e",
         Bordgrey: '#eeeeee',
-        startgradient: '#d2f6ec',
-        endgradient: '#d1ebf9',
+        
       },
     },
 

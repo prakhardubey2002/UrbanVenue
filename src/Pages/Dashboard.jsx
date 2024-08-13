@@ -117,7 +117,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div>
-                    <button className="max-w-[122px]  bg-[#ed7e7e] text-white h-[40px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-[112px] py-[10px]">
+                    <button className="max-w-[122px]  bg-Primary text-white h-[40px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-[112px] py-[10px]">
                       <p>Find</p>
                     </button>
                   </div>
