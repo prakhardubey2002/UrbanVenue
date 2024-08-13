@@ -1,6 +1,6 @@
 import React from 'react'
 import Calender from './Calender'
-import {events} from "../data/CalenderDemoData"
+import { events } from '../data/CalenderDemoData';
 const CreatebyPropertyEvent = () => {
   return (
     <div className="h-full w-[100%] justify-center items-center">
