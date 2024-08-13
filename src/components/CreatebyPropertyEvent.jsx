@@ -1,8 +1,9 @@
 import React from 'react'
-
+import Calender from './Calender'
+import {events} from "../data/CalenderDemoData(byproperty)"
 const CreatebyPropertyEvent = () => {
   return (
-    <div className="h-full w-[100%] ">
+    <div className="h-full w-[100%] justify-center items-center">
       <div className="flex justify-between items-end">
         <div className="flex flex-col flex-1 mx-4">
           <label className="font-semibold mb-2  ">
@@ -57,6 +58,9 @@ const CreatebyPropertyEvent = () => {
           />
         </div>
         <button className="button">Done</button>
+      </div>
+      <div className='w-full flex justify-center items-center ' >
+      <Calender events={events}/>
       </div>
     </div>
   )
