@@ -6,13 +6,15 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 // Assuming you have a localizer imported or defined somewhere
 const localizer = momentLocalizer(moment)
 
-const CalendarComponent = ({ events, venue }) => {
+const CalendarComponent = ({ events, venue,setSelectedDate }) => {
   const [myEvents, setEvents] = useState(events)
   const [date, setDate] = useState('')
 
   const handleSelectSlot = useCallback(
     ({ start, end, ...rest }) => {
-      setDate(JSON.stringify(rest?.slots[0]))
+      setDate(JSON.stringify(rest?.slots[0]));
+      setSelectedDate(JSON.stringify(rest?.slots[0].toISOString()));
+      
     },
     [setEvents]
   )
