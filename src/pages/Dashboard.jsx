@@ -5,7 +5,7 @@ import SearchIcon from '@mui/icons-material/Search'
 import HouseIcon from '@mui/icons-material/House'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import data from '../Data/Demodata.json'
+import data from '../data/Demodata.json'
 import DataTable from '../components/DataTable'
 const Dashboard = () => {
   return (
