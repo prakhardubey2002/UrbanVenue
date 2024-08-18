@@ -62,4 +62,21 @@ export const events = {
       end: new Date(2012, 6, 22, 18, 0), // July 22, 2012, 6:00 PM
     },
   ],
+  'Vel farm': [
+    {
+      title: 'Val Exbition',
+      start: new Date(2012, 6, 5, 11, 0), // July 5, 2012, 11:00 AM
+      end: new Date(2012, 6, 5, 16, 0), // July 5, 2012, 4:00 PM
+    },
+    {
+      title: 'Music Festival',
+      start: new Date(2012, 6, 20, 13, 0), // July 20, 2012, 1:00 PM
+      end: new Date(2012, 6, 20, 22, 0), // July 20, 2012, 10:00 PM
+    },
+    {
+      title: 'Dance Workshop',
+      start: new Date(2012, 6, 22, 15, 0), // July 22, 2012, 3:00 PM
+      end: new Date(2012, 6, 22, 18, 0), // July 22, 2012, 6:00 PM
+    },
+  ],
 }
