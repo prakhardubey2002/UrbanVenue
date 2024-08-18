@@ -6,15 +6,14 @@ import 'react-big-calendar/lib/css/react-big-calendar.css'
 // Assuming you have a localizer imported or defined somewhere
 const localizer = momentLocalizer(moment)
 
-const CalendarComponent = ({ events, venue,setSelectedDate }) => {
+const CalendarComponent = ({ events, venue, setSelectedDate,selectedProperty }) => {
   const [myEvents, setEvents] = useState(events)
   const [date, setDate] = useState('')
 
   const handleSelectSlot = useCallback(
     ({ start, end, ...rest }) => {
-      setDate(JSON.stringify(rest?.slots[0]));
-      setSelectedDate(JSON.stringify(rest?.slots[0].toISOString()));
-      
+      setDate(JSON.stringify(rest?.slots[0]))
+      setSelectedDate(JSON.stringify(rest?.slots[0].toISOString()))
     },
     [setEvents]
   )
@@ -25,14 +24,14 @@ const CalendarComponent = ({ events, venue,setSelectedDate }) => {
   )
 
   return (
-    <Fragment>
-      {venue && (
-        <h2 className="px-1 py-1 font-bold w-full bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
-          {venue}
-        </h2>
-      )}
-      <h1>{date === '' ? 'empty' : date}</h1>
+    <div className="">
+      {/* <h1>{date === '' ? 'empty' : date}</h1> */}
       <div className="w-fit mx-6 my-6 px-1 py-1">
+        {venue && (
+          <h2 className="px-1 py-1 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
+            {venue}
+          </h2>
+        )}
         <Calendar
           localizer={localizer}
           events={events}
@@ -45,7 +44,7 @@ const CalendarComponent = ({ events, venue,setSelectedDate }) => {
           style={{ height: 350 }}
         />
       </div>
-    </Fragment>
+    </div>
   )
 }
 

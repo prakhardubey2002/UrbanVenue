@@ -1,12 +1,20 @@
-export const events = [
-  {
-    title: 'Hipster Hackathon',
-    start: new Date(2012, 6, 4, 7, 0), // July 4, 2012, 7:00 AM
-    end: new Date(2012, 6, 6, 19, 30),  // July 6, 2012, 7:30 PM
-  },
-  {
-    title: 'Supertaster Festival',
-    start: new Date(2012, 6, 12, 9, 0), // July 12, 2012, 9:00 AM
-    end: new Date(2012, 6, 15, 20, 50), // July 15, 2012, 8:50 PM
-  },
-];
+export const events = {
+  'Venue_Farm': [
+    {
+      title: 'Tech Conference',
+      start: new Date(2012, 6, 7, 10, 0), // July 7, 2012, 10:00 AM
+      end: new Date(2012, 6, 7, 17, 0), // July 7, 2012, 5:00 PM
+    },
+    {
+      title: 'AI Workshop',
+      start: new Date(2012, 6, 10, 9, 0), // July 10, 2012, 9:00 AM
+      end: new Date(2012, 6, 10, 12, 0), // July 10, 2012, 12:00 PM
+    },
+    {
+      title: 'Networking Event',
+      start: new Date(2012, 6, 14, 18, 0), // July 14, 2012, 6:00 PM
+      end: new Date(2012, 6, 14, 21, 0), // July 14, 2012, 9:00 PM
+    },
+  ],
+  // Add more venues and events as needed
+}
