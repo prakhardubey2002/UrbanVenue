@@ -5,4 +5,7 @@
 .button {
     @apply w-fit bg-Primary text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
   }
+.button2 {
+    @apply w-fit bg-Textgray text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
+  }
   

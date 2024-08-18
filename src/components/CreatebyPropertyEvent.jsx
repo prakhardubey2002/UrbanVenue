@@ -1,54 +1,82 @@
-import React, { useState } from 'react'
-import Calender from './Calender'
-import { events } from '../data/CalenderDateDemoData'
-import { CREATE_FORM } from '../routes/Routes'
-import { useNavigate } from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import Calender from './Calender';
+import { events } from '../data/CalenderDateDemoData';
+import { CREATE_FORM } from '../routes/Routes';
+import { useNavigate } from 'react-router-dom';
 
 const CreatebyPropertyEvent = () => {
-  const [selectedProperty, setSelectedProperty] = useState('Xyz farm')
-  const [selectedDate, setSelectedDate] = useState('')
-  const propertyOptions = Object.keys(events)
-  const navigate = useNavigate() // Initialize navigate outside formcreate function
+  const [selectedProperty, setSelectedProperty] = useState('Xyz farm');
+  const [selectedDate, setSelectedDate] = useState('');
+  const propertyOptions = Object.keys(events);
+  const navigate = useNavigate();
+
+ 
+  useEffect(() => {
+    if (selectedDate) {
+      try {
+        const cleanedDate = selectedDate.replace(/['"]/g, '').trim();
+        const date = new Date(cleanedDate);
+
+        if (isNaN(date.getTime())) {
+          throw new Error('Invalid date');
+        }
+
+        // Format the current date without adding a day
+        const currentFormattedDate = date.toISOString().split('T')[0];
+
+        // Add one day to the date
+        date.setDate(date.getDate() + 1);
+
+        // Format the date after adding a day
+        const newFormattedDate = date.toISOString().split('T')[0];
+
+        if (currentFormattedDate !== selectedDate) {
+          // Only update if the date has not already been adjusted
+          setSelectedDate(newFormattedDate);
+        }
+      } catch (error) {
+        console.error('Error processing date:', error);
+      }
+    }
+  }, [selectedDate]);
 
   const formcreate = () => {
     if (!selectedDate) {
-      alert('Please select a date')
-      return
+      alert('Please select a date');
+      return;
     }
 
-    // Remove any extra quotes or whitespace
-    const cleanedDate = selectedDate.replace(/['"]/g, '').trim()
+    // Clean the date again before formatting
+    const cleanedDate = selectedDate.replace(/['"]/g, '').trim();
 
-    console.log('Cleaned Date:', cleanedDate)
-
-    let formattedDate
-    let formattedTime
+    let formattedDate;
+    let formattedTime;
 
     try {
-      const date = new Date(cleanedDate)
+      const date = new Date(cleanedDate);
 
       if (isNaN(date.getTime())) {
-        throw new Error('Invalid date')
+        throw new Error('Invalid date');
       }
 
-      date.setDate(date.getDate() + 1) // Add one day
-      formattedDate = date.toISOString().split('T')[0]
-      formattedTime = date.toISOString().split('T')[1].split('.')[0] // Extract time without milliseconds
+      formattedDate = date.toISOString().split('T')[0];
+      formattedTime = date.toISOString().split('T')[1].split('.')[0]; // Extract time without milliseconds
 
-      alert(`Date: ${formattedDate} Time: ${formattedTime}`)
+      alert(`Date: ${formattedDate} Time: ${formattedTime}`);
     } catch (error) {
-      console.error('Error parsing date:', error)
-      alert(`Invalid date format: ${cleanedDate}`)
-      return // Exit function on error
+      console.error('Error parsing date:', error);
+      alert(`Invalid date format: ${cleanedDate}`);
+      return; // Exit function on error
     }
 
     // Construct the path with formatted values
-    const path = CREATE_FORM.replace(':venue', selectedProperty)
-      .replace(':date', formattedDate)
-      
+    const path = CREATE_FORM.replace(':venue', selectedProperty).replace(
+      ':date',
+      formattedDate
+    );
 
-    navigate(path) // Navigate to the constructed path
-  }
+    navigate(path); // Navigate to the constructed path
+  };
 
   return (
     <div className="h-full w-[100%] justify-center items-center">
@@ -122,7 +150,7 @@ const CreatebyPropertyEvent = () => {
         />
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreatebyPropertyEvent
+export default CreatebyPropertyEvent;
