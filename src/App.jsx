@@ -1,7 +1,7 @@
 import { Routes, Route } from 'react-router-dom'
-import SignIn from './Pages/SignIn'
-import Dashboard from './Pages/Dashboard'
-import CreateEvent from './Pages/CreateEvent'
+import SignIn from './pages/SignIn'
+import Dashboard from './pages/Dashboard'
+import CreateEvent from './pages/CreateEvent'
 import {
   CREATE_FORM,
   CREATE_ROUTE,
