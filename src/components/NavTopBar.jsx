@@ -17,7 +17,7 @@ const NavTopBar = () => {
         <button className="w-full  bg-Primary text-white h-[40px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-6 py-[1px]">
           <Link className=" flex justify-center items-center" to={CREATE_ROUTE}>
             <CalendarMonthIcon className="mr-1" />
-            <p>Create Property</p>
+            <p>Create Event</p>
           </Link>
         </button>
         <div className="flex w-fit items-center justify-center ml-[24px] cursor-pointer ">
