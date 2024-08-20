@@ -62,7 +62,7 @@ export const events = {
       end: new Date(2012, 6, 22, 18, 0), // July 22, 2012, 6:00 PM
     },
   ],
-  'Vel farm': [
+  'Vert farm': [
     {
       title: 'Val Exbition',
       start: new Date(2012, 6, 5, 11, 0), // July 5, 2012, 11:00 AM
