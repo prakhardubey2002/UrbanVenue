@@ -553,12 +553,7 @@ const CreateVenueEvent = () => {
                 </td>
                 <td className="p-2">{formData.securityAmount}</td>
               </tr>
-              {/* <tr className="border-b border-gray-300">
-                <td className="font-bold p-2 border-r border-gray-300">
-                  Terms and Conditions:
-                </td>
-                <td className="p-2">{formData.termsConditions}</td>
-              </tr> */}
+              
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
                   Venue:
