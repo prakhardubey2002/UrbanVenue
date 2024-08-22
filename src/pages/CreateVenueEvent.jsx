@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import NavTopBar from '../components/NavTopBar'
 import BreadCrumbBar from '../components/BreadCrumbBar'
 import InfoIcon from '@mui/icons-material/Info'
@@ -10,8 +10,10 @@ import {
   DialogTitle,
   Button,
 } from '@mui/material'
+import { INVOICE_ROUTE } from '../routes/Routes'
 const CreateVenueEvent = () => {
   const { venue, date } = useParams()
+  const navigate = useNavigate()
   // const history = useHistory();
 
   // State to manage form values
@@ -69,6 +71,8 @@ const CreateVenueEvent = () => {
   const handleSubmit = () => {
     // Redirect to invoice page or perform any action
     // history.push('/invoice-page');
+    // navigate();
+    navigate(INVOICE_ROUTE, { state: formData });
   }
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">

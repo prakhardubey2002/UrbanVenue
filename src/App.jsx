@@ -6,9 +6,11 @@ import {
   CREATE_FORM,
   CREATE_ROUTE,
   DASHBOARD_ROUTE,
+  INVOICE_ROUTE,
   SIGNIN_ROUTE,
 } from './routes/Routes'
 import CreateVenueEvent from './pages/CreateVenueEvent'
+import Invoice from './pages/Invoice'
 const App = () => {
   return (
     <div>
@@ -17,6 +19,7 @@ const App = () => {
         <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
         <Route path={CREATE_ROUTE} element={<CreateEvent />} />
         <Route path={CREATE_FORM} element={<CreateVenueEvent />} />
+        <Route path={INVOICE_ROUTE} element={<Invoice />} />
       </Routes>
     </div>
   )
