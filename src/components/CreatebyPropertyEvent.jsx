@@ -83,7 +83,7 @@ const CreatebyPropertyEvent = () => {
 
   return (
     <div className="h-full w-[100%] justify-center items-center">
-      <div className="flex justify-between items-end">
+      <div className="flex flex-wrap justify-between items-end">
         <div className="flex flex-col flex-1 mx-4">
           <label className="font-semibold mb-2">
             Select State <span className="text-Primary">*</span>
@@ -146,7 +146,7 @@ const CreatebyPropertyEvent = () => {
         </div>
         <button
           onClick={formcreate}
-          className={`button ${
+          className={`button md:m-5 ${
             !isFormValid ? 'opacity-50 cursor-not-allowed' : ''
           }`}
           disabled={!isFormValid}

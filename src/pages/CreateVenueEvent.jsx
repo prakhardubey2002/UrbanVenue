@@ -21,7 +21,7 @@ const CreateVenueEvent = () => {
     bookingId: '',
     guestName: '',
     phoneNumber: '',
-    checkInDate: '',
+    checkInDate: date,
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
@@ -39,7 +39,7 @@ const CreateVenueEvent = () => {
     balancePayment: '',
     securityAmount: '',
     // termsConditions: '',
-    venue: '',
+    venue: venue,
     addressLine1: '',
     addressLine2: '',
     country: '',
@@ -126,7 +126,7 @@ const CreateVenueEvent = () => {
               to attend.
             </p>
           </div>
-          <div className="my-4 flex justify-between">
+          <div className="my-4 flex flex-wrap justify-between">
             <div className="flex-1 flex flex-col">
               <label className="font-semibold">Check-In Date</label>
               <input
@@ -148,7 +148,7 @@ const CreateVenueEvent = () => {
               />
             </div>
           </div>
-          <div className="my-4 flex justify-between">
+          <div className="my-4 flex flex-wrap justify-between">
             <div className="flex-1 flex flex-col">
               <label className="font-semibold">Check-Out Date</label>
               <input
@@ -351,7 +351,7 @@ const CreateVenueEvent = () => {
               placeholder="Enter Venue Name"
             />
           </div>
-          <div className=" my-4 flex justify-between ">
+          <div className=" my-4 flex flex-wrap justify-between ">
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Address Line 1</label>
               <input
@@ -375,7 +375,7 @@ const CreateVenueEvent = () => {
               />
             </div>
           </div>
-          <div className=" my-4 flex justify-between ">
+          <div className=" my-4 flex flex-wrap justify-between ">
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Country</label>
               <input
@@ -399,7 +399,7 @@ const CreateVenueEvent = () => {
               />
             </div>
           </div>
-          <div className=" my-4 flex justify-between ">
+          <div className=" my-4 flex flex-wrap justify-between ">
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">City/Suburb</label>
               <input
