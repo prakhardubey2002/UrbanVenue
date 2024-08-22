@@ -2,16 +2,18 @@ import React, { useEffect, useState } from 'react'
 import Calender from './Calender'
 import { events } from '../data/CalenderDateDemoData'
 import { Link } from 'react-router-dom'
-import { CREATE_FORM } from '../routes/Routes';
-import { useNavigate } from 'react-router-dom';
+import { CREATE_FORM } from '../routes/Routes'
+import { useNavigate } from 'react-router-dom'
+
 const CreatebyDateEvent = () => {
   // Initialize state variables
   const [selectedState, setSelectedState] = useState('')
   const [selectedPlace, setSelectedPlace] = useState('')
   const [selectedProperty, setSelectedProperty] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
-  const propertyOptions = Object.keys(events);
-  const navigate = useNavigate();
+  const propertyOptions = Object.keys(events)
+  const navigate = useNavigate()
+
   useEffect(() => {
     if (selectedDate) {
       try {
@@ -40,43 +42,49 @@ const CreatebyDateEvent = () => {
       }
     }
   }, [selectedDate])
+
   const formcreate = () => {
     if (!selectedDate) {
-      alert('Please select a date');
-      return;
+      alert('Please select a date')
+      return
     }
 
     // Clean the date again before formatting
-    const cleanedDate = selectedDate.replace(/['"]/g, '').trim();
+    const cleanedDate = selectedDate.replace(/['"]/g, '').trim()
 
-    let formattedDate;
-    let formattedTime;
+    let formattedDate
+    let formattedTime
 
     try {
-      const date = new Date(cleanedDate);
+      const date = new Date(cleanedDate)
 
       if (isNaN(date.getTime())) {
-        throw new Error('Invalid date');
+        throw new Error('Invalid date')
       }
 
-      formattedDate = date.toISOString().split('T')[0];
-      formattedTime = date.toISOString().split('T')[1].split('.')[0]; // Extract time without milliseconds
+      formattedDate = date.toISOString().split('T')[0]
+      formattedTime = date.toISOString().split('T')[1].split('.')[0] // Extract time without milliseconds
 
-      alert(`Date: ${formattedDate} Time: ${formattedTime}`);
+      alert(`Date: ${formattedDate} Time: ${formattedTime}`)
     } catch (error) {
-      console.error('Error parsing date:', error);
-      alert(`Invalid date format: ${cleanedDate}`);
-      return; // Exit function on error
+      console.error('Error parsing date:', error)
+      alert(`Invalid date format: ${cleanedDate}`)
+      return // Exit function on error
     }
 
     // Construct the path with formatted values
     const path = CREATE_FORM.replace(':venue', selectedProperty).replace(
       ':date',
       formattedDate
-    );
+    )
 
-    navigate(path); // Navigate to the constructed path
-  };
+    navigate(path) // Navigate to the constructed path
+  }
+
+  // Determine if the form is fully filled out
+  const isFormValid =
+    selectedState && selectedPlace && selectedProperty && selectedDate
+
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex justify-between items-end">
@@ -122,7 +130,7 @@ const CreatebyDateEvent = () => {
             <label className="font-semibold mb-2">
               Date<span className="text-Primary">*</span>
             </label>
-            <Link className="text-Primary">Find Property  </Link>
+            <Link className="text-Primary">Find Property</Link>
           </div>
           <input
             type="date"
@@ -152,7 +160,15 @@ const CreatebyDateEvent = () => {
         </div>
 
         {/* Button */}
-        <button onClick={()=>formcreate()} className="button">Done</button>
+        <button
+          onClick={formcreate}
+          className={`button ${
+            isFormValid ? '' : 'opacity-50 cursor-not-allowed'
+          }`}
+          disabled={!isFormValid}
+        >
+          Done
+        </button>
       </div>
       <div className="w-full flex flex-wrap justify-center items-center">
         {Object.keys(events).map((venue, index) => (
