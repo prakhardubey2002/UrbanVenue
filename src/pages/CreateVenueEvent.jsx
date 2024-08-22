@@ -72,7 +72,7 @@ const CreateVenueEvent = () => {
     // Redirect to invoice page or perform any action
     // history.push('/invoice-page');
     // navigate();
-    navigate(INVOICE_ROUTE, { state: formData });
+    navigate(INVOICE_ROUTE, { state: formData })
   }
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
@@ -429,43 +429,190 @@ const CreateVenueEvent = () => {
         Next
       </button>
       <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle className='font-semibold' >Review Your Details</DialogTitle>
-        <DialogContent className='p-4 min-w-[28vw] ' >
-          {/* Display form data here */}
-          <p>Booking ID: {formData.bookingId}</p>
-          <p>Guest Name: {formData.guestName}</p>
-          <p>Phone Number: {formData.phoneNumber}</p>
-          <p>Check-In Date: {formData.checkInDate}</p>
-          <p>Check-In Time: {formData.checkInTime}</p>
-          <p>Check-Out Date: {formData.checkOutDate}</p>
-          <p>Check-Out Time: {formData.checkOutTime}</p>
-          <p>Maximum People: {formData.maxPeople}</p>
-          <p>Occasion: {formData.occasion}</p>
-          <p>Host Owner Name: {formData.hostOwnerName}</p>
-          <p>Host Number: {formData.hostNumber}</p>
-          <p>Total Booking: {formData.totalBooking}</p>
-          <p>Farm Tref: {formData.farmTref}</p>
-          <p>Other Services: {formData.otherServices}</p>
-          <p>Advance: {formData.advance}</p>
-          <p>Advance Collected By: {formData.advanceCollectedBy}</p>
-          <p>Show Advance Details: {formData.showAdvanceDetails}</p>
-          <p>Advance Mode: {formData.advanceMode}</p>
-          <p>Balance Payment: {formData.balancePayment}</p>
-          <p>Security Amount: {formData.securityAmount}</p>
-          <p>Terms and Conditions: {formData.termsConditions}</p>
-          <p>Venue: {formData.venue}</p>
-          <p>Address Line 1: {formData.addressLine1}</p>
-          <p>Address Line 2: {formData.addressLine2}</p>
-          <p>Country: {formData.country}</p>
-          <p>City: {formData.city}</p>
-          <p>City Suburb: {formData.citySuburb}</p>
-          <p>ZIP Code: {formData.zipCode}</p>
+        <DialogTitle className="font-semibold">Review Your Details</DialogTitle>
+        <DialogContent className="p-4 min-w-[28vw] font-semibold">
+          <table className="min-w-full border-collapse border border-gray-300">
+            <tbody>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Booking ID:
+                </td>
+                <td className="p-2">{formData.bookingId}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Guest Name:
+                </td>
+                <td className="p-2">{formData.guestName}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Phone Number:
+                </td>
+                <td className="p-2">{formData.phoneNumber}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Check-In Date:
+                </td>
+                <td className="p-2">{formData.checkInDate}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Check-In Time:
+                </td>
+                <td className="p-2">{formData.checkInTime}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Check-Out Date:
+                </td>
+                <td className="p-2">{formData.checkOutDate}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Check-Out Time:
+                </td>
+                <td className="p-2">{formData.checkOutTime}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Maximum People:
+                </td>
+                <td className="p-2">{formData.maxPeople}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Occasion:
+                </td>
+                <td className="p-2">{formData.occasion}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Host Owner Name:
+                </td>
+                <td className="p-2">{formData.hostOwnerName}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Host Number:
+                </td>
+                <td className="p-2">{formData.hostNumber}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Total Booking:
+                </td>
+                <td className="p-2">{formData.totalBooking}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Farm Tref:
+                </td>
+                <td className="p-2">{formData.farmTref}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Other Services:
+                </td>
+                <td className="p-2">{formData.otherServices}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Advance:
+                </td>
+                <td className="p-2">{formData.advance}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Advance Collected By:
+                </td>
+                <td className="p-2">{formData.advanceCollectedBy}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Show Advance Details:
+                </td>
+                <td className="p-2">{formData.showAdvanceDetails}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Advance Mode:
+                </td>
+                <td className="p-2">{formData.advanceMode}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Balance Payment:
+                </td>
+                <td className="p-2">{formData.balancePayment}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Security Amount:
+                </td>
+                <td className="p-2">{formData.securityAmount}</td>
+              </tr>
+              {/* <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Terms and Conditions:
+                </td>
+                <td className="p-2">{formData.termsConditions}</td>
+              </tr> */}
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Venue:
+                </td>
+                <td className="p-2">{formData.venue}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Address Line 1:
+                </td>
+                <td className="p-2">{formData.addressLine1}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Address Line 2:
+                </td>
+                <td className="p-2">{formData.addressLine2}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Country:
+                </td>
+                <td className="p-2">{formData.country}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  City:
+                </td>
+                <td className="p-2">{formData.city}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  City Suburb:
+                </td>
+                <td className="p-2">{formData.citySuburb}</td>
+              </tr>
+              <tr>
+                <td className="font-bold p-2 border-r border-gray-300">
+                  ZIP Code:
+                </td>
+                <td className="p-2">{formData.zipCode}</td>
+              </tr>
+            </tbody>
+          </table>
         </DialogContent>
         <DialogActions>
-          <Button className='button' onClick={handleCloseDialog} color="primary">
+          <Button
+            className="button"
+            onClick={handleCloseDialog}
+            color="primary"
+          >
             Close
           </Button>
-          <button className='button'  onClick={handleSubmit} color="primary">
+          <button className="button" onClick={handleSubmit} color="primary">
             Submit
           </button>
         </DialogActions>
