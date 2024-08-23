@@ -1,31 +1,33 @@
-import React, { Fragment, useState, useCallback } from 'react'
-import { Calendar, momentLocalizer, Views } from 'react-big-calendar'
-import moment from 'moment'
-import 'react-big-calendar/lib/css/react-big-calendar.css'
+import React, { useState, useCallback } from 'react';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
 
-// Assuming you have a localizer imported or defined somewhere
-const localizer = momentLocalizer(moment)
+const localizer = momentLocalizer(moment);
 
-const CalendarComponent = ({ events, venue, setSelectedDate,selectedProperty }) => {
-  const [myEvents, setEvents] = useState(events)
-  const [date, setDate] = useState('')
+const CalendarComponent = ({ events, venue, setSelectedDate }) => {
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [date, setDate] = useState('');
 
   const handleSelectSlot = useCallback(
     ({ start, end, ...rest }) => {
-      setDate(JSON.stringify(rest?.slots[0]))
-      setSelectedDate(JSON.stringify(rest?.slots[0].toISOString()))
+      setDate(JSON.stringify(rest?.slots[0]));
+      setSelectedDate(JSON.stringify(rest?.slots[0].toISOString()));
     },
-    [setEvents]
-  )
+    [setSelectedDate]
+  );
 
-  const handleSelectEvent = useCallback(
-    (event) => window.alert(event.title),
-    []
-  )
+  const handleSelectEvent = useCallback((event) => {
+    setSelectedEvent(event);
+  }, []);
+
+  const handleCloseDialog = () => {
+    setSelectedEvent(null);
+  };
 
   return (
     <div className="">
-      {/* <h1>{date === '' ? 'empty' : date}</h1> */}
       <div className="w-fit mx-6 my-6 px-1 py-1">
         {venue && (
           <h2 className="px-1 py-1 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
@@ -44,8 +46,25 @@ const CalendarComponent = ({ events, venue, setSelectedDate,selectedProperty }) 
           style={{ height: 350 }}
         />
       </div>
-    </div>
-  )
-}
 
-export default CalendarComponent
+      {selectedEvent && (
+        <Dialog open={Boolean(selectedEvent)} onClose={handleCloseDialog}>
+          <DialogTitle>Event Details</DialogTitle>
+          <DialogContent>
+            <p><strong>Title:</strong> {selectedEvent.title}</p>
+            <p><strong>Start:</strong> {moment(selectedEvent.start).format('MMMM Do YYYY, h:mm:ss a')}</p>
+            <p><strong>End:</strong> {moment(selectedEvent.end).format('MMMM Do YYYY, h:mm:ss a')}</p>
+            {/* Add more details if needed */}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+    </div>
+  );
+};
+
+export default CalendarComponent;

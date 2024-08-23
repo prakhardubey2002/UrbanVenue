@@ -1,16 +1,20 @@
 import React from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../assets/Logo.png'
 import { usePDF } from 'react-to-pdf'
 import invoice from '../assets/invoice.png'
 import qr from '../assets/qr.png'
+import { DASHBOARD_ROUTE } from '../routes/Routes'
 const Invoice = () => {
+  const navigate = useNavigate()
   const location = useLocation()
   const formData = location.state
   const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' })
-
+  const Home =()=>{
+    navigate(DASHBOARD_ROUTE)
+  }
   return (
-    <div className="w-[100vw] h-[100vh] flex justify-center items-start">
+    <div className="w-[100vw] h-[100vh] overflow-x-hidden flex justify-center items-start">
       <div
         ref={targetRef}
         className="flex flex-col w-[70%] border border-black"
@@ -122,7 +126,10 @@ const Invoice = () => {
                   ₹ {formData.balancePayment}
                 </td>
                 <td className="py-2 px-4 border-b text-left">
-                 ₹ {Number(formData.balancePayment) + Number(formData.advance) + Number(formData.securityAmount)}
+                  ₹{' '}
+                  {Number(formData.balancePayment) +
+                    Number(formData.advance) +
+                    Number(formData.securityAmount)}
                 </td>
               </tr>
             </tbody>
@@ -130,7 +137,10 @@ const Invoice = () => {
         </div>
         <div className="p-4 flex flex-col justify-end items-end">
           <h2 className="text-2xl font-semibold">
-            Invoice Total: ₹ {Number(formData.balancePayment) + Number(formData.advance) + Number(formData.securityAmount)}
+            Invoice Total: ₹{' '}
+            {Number(formData.balancePayment) +
+              Number(formData.advance) +
+              Number(formData.securityAmount)}
           </h2>
           <p>Paid via {formData.advanceMode}</p>
         </div>
@@ -177,6 +187,9 @@ const Invoice = () => {
               </p>
             </div>
           </div>
+        </div>
+        <div className=' my-8 flex justify-center items-center' >
+          <button onClick={()=>Home()} className="button ">Home</button>
         </div>
       </div>
     </div>
