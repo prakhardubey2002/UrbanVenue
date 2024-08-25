@@ -34,10 +34,11 @@ const CreateVenueEvent = () => {
     otherServices: '',
     advance: '',
     advanceCollectedBy: 'owner',
-    showAdvanceDetails: 'yes',
+    showAdvanceDetails: '',
     advanceMode: 'cash',
     balancePayment: '',
     securityAmount: '',
+    UrbanVenue: 5000,
     // termsConditions: '',
     venue: venue,
     addressLine1: '',
@@ -222,7 +223,7 @@ const CreateVenueEvent = () => {
             value={formData.totalBooking}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="number"
             placeholder="Enter Total Booking"
           />
         </div>
@@ -240,6 +241,9 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col  border-b ">
           <label className="font-semibold"> other Services </label>
           <input
+            name="otherServices"
+            value={formData.otherServices}
+            onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm "
             type="number"
             placeholder="50,000"
@@ -252,7 +256,7 @@ const CreateVenueEvent = () => {
             value={formData.advance}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="number"
             placeholder="Enter Advance Payment"
           />
         </div>
@@ -292,7 +296,6 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
             <option value="cash">Cash</option>
-            <option value="card">Card</option>
             <option value="online">Online</option>
           </select>
         </div>
@@ -304,7 +307,7 @@ const CreateVenueEvent = () => {
             value={formData.balancePayment}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="number"
             placeholder="Enter Balance Payment"
           />
         </div>
@@ -315,7 +318,7 @@ const CreateVenueEvent = () => {
             value={formData.securityAmount}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="number"
             placeholder="Enter Security Amount"
           />
         </div>
@@ -553,7 +556,7 @@ const CreateVenueEvent = () => {
                 </td>
                 <td className="p-2">{formData.securityAmount}</td>
               </tr>
-              
+
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
                   Venue:

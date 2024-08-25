@@ -10,7 +10,7 @@ const Invoice = () => {
   const location = useLocation()
   const formData = location.state
   const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' })
-  const Home =()=>{
+  const Home = () => {
     navigate(DASHBOARD_ROUTE)
   }
   return (
@@ -144,6 +144,48 @@ const Invoice = () => {
           </h2>
           <p>Paid via {formData.advanceMode}</p>
         </div>
+        {formData.showAdvanceDetails ==="yes" && (
+          <div className="p-4">
+            <table className="min-w-full bg-white border border-gray-300">
+              <thead>
+                <tr className="bg-Bordgrey">
+                  <th className="py-2 px-4 border-b text-left">#</th>
+                  <th className="py-2 px-4 border-b text-left">Breakup</th>
+                  <th className="py-2 px-4 border-b text-left">Farm Tref</th>
+                  <th className="py-2 px-4 border-b text-left">
+                    Other Service
+                  </th>
+                  <th className="py-2 px-4 border-b text-left">Urban Venue</th>
+                  <th className="py-2 px-4 border-b text-left">Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="py-2 px-4 border-b text-left">1</td>
+                  <td className="py-2 px-4 border-b text-left">
+                    Advance Breakup
+                  </td>
+                  <td className="py-2 px-4 border-b text-left">
+                    {formData.farmTref}
+                  </td>
+                  <td className="py-2 px-4 border-b text-left">
+                    {formData.otherServices}
+                  </td>
+                  <td className="py-2 px-4 border-b text-left">
+                    ₹ {formData.UrbanVenue}
+                  </td>
+                  <td className="py-2 px-4 border-b text-left">
+                    ₹{' '}
+                    {Number(formData.farmTref) +
+                      Number(formData.otherServices) +
+                      Number(formData.UrbanVenue)}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        )}
+
         <div>
           <div className="  flex items-center justify-between bg-white border-t border-gray-300">
             <div className="flex-1 flex items-center p-8">
@@ -188,8 +230,10 @@ const Invoice = () => {
             </div>
           </div>
         </div>
-        <div className=' my-8 flex justify-center items-center' >
-          <button onClick={()=>Home()} className="button ">Home</button>
+        <div className=" my-8 flex justify-center items-center">
+          <button onClick={() => Home()} className="button ">
+            Home
+          </button>
         </div>
       </div>
     </div>
