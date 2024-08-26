@@ -1,18 +1,24 @@
-import React, { useState } from 'react';
-import Logo from '../assets/Logo.png';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import Profile from '../assets/Profile.png';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
-import { Link } from 'react-router-dom';
-import { CREATE_ROUTE, SIGNIN_ROUTE } from '../routes/Routes';
+import React, { useContext, useState } from 'react'
+import Logo from '../assets/Logo.png'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import Profile from '../assets/Profile.png'
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
+import { Link, useNavigate } from 'react-router-dom'
+import { CREATE_ROUTE, SIGNIN_ROUTE } from '../routes/Routes'
+import AuthContext from '../context/context'
 
 const NavTopBar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const navigate =useNavigate();
+  const { logout,token } = useContext(AuthContext)
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+    setIsDropdownOpen(!isDropdownOpen)
+  }
+  const Logout=()=>{
+    logout();
+    navigate(SIGNIN_ROUTE);
+  }
 
   return (
     <div className="w-full h-[67px] flex justify-between items-center border px-[20px] md:px-[40px] lg:px-[60px] xl:px-[100px] relative">
@@ -29,7 +35,11 @@ const NavTopBar = () => {
           </Link>
         </button>
         <div className="flex w-fit items-center justify-center ml-[16px] sm:ml-[24px] cursor-pointer relative">
-          <img src={Profile} className="rounded-full w-[30px] h-[30px] sm:w-[35px] sm:h-[35px]" alt="Profile" />
+          <img
+            src={Profile}
+            className="rounded-full w-[30px] h-[30px] sm:w-[35px] sm:h-[35px]"
+            alt="Profile"
+          />
           {/* Conditionally render the arrow icon based on dropdown state */}
           {isDropdownOpen ? (
             <ArrowDropUpIcon onClick={toggleDropdown} />
@@ -46,19 +56,19 @@ const NavTopBar = () => {
               >
                 Home
               </Link>
-              <Link
-                to={SIGNIN_ROUTE}
+              <p
+              
                 className="block px-4 py-2 text-black text-xs sm:text-sm hover:bg-gray-100"
-                onClick={() => setIsDropdownOpen(false)}
+                onClick={() => Logout()}
               >
-                Log Out
-              </Link>
+                Log Out 
+              </p>
             </div>
           )}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NavTopBar;
+export default NavTopBar

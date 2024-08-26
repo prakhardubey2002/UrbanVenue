@@ -11,16 +11,19 @@ import {
 } from './routes/Routes'
 import CreateVenueEvent from './pages/CreateVenueEvent'
 import Invoice from './pages/Invoice'
+import { AuthProvider } from './context/context'
 const App = () => {
   return (
     <div>
-      <Routes>
-        <Route path={SIGNIN_ROUTE} element={<SignIn />} />
-        <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
-        <Route path={CREATE_ROUTE} element={<CreateEvent />} />
-        <Route path={CREATE_FORM} element={<CreateVenueEvent />} />
-        <Route path={INVOICE_ROUTE} element={<Invoice />} />
-      </Routes>
+      <AuthProvider>
+        <Routes>
+          <Route path={SIGNIN_ROUTE} element={<SignIn />} />
+          <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
+          <Route path={CREATE_ROUTE} element={<CreateEvent />} />
+          <Route path={CREATE_FORM} element={<CreateVenueEvent />} />
+          <Route path={INVOICE_ROUTE} element={<Invoice />} />
+        </Routes>
+      </AuthProvider>
     </div>
   )
 }
