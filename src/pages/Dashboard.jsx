@@ -1,14 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NavTopBar from '../components/NavTopBar'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import SearchIcon from '@mui/icons-material/Search'
 import HouseIcon from '@mui/icons-material/House'
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import RefreshIcon from '@mui/icons-material/Refresh'
-import data from '../data/Demodata.json'
+import datax from '../data/Demodata.json'
 import DataTable from '../components/DataTable'
 
 const Dashboard = () => {
+  const [data,setData]=useState(datax);
   return (
     <div className="w-full h-screen flex flex-col">
       <NavTopBar />
@@ -119,7 +120,7 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-              <DataTable data={data} />
+              <DataTable data={data} setData={setData} />
             </div>
           </div>
         </div>

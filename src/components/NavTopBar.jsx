@@ -1,35 +1,35 @@
-import React, { useState } from 'react'
-import Logo from '../assets/Logo.png'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import Profile from '../assets/Profile.png'
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'
-import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
-import { Link } from 'react-router-dom'
-import { CREATE_ROUTE, SIGNIN_ROUTE } from '../routes/Routes'
+import React, { useState } from 'react';
+import Logo from '../assets/Logo.png';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import Profile from '../assets/Profile.png';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
+import { Link } from 'react-router-dom';
+import { CREATE_ROUTE, SIGNIN_ROUTE } from '../routes/Routes';
 
 const NavTopBar = () => {
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
 
   const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen)
-  }
+    setIsDropdownOpen(!isDropdownOpen);
+  };
 
   return (
-    <div className="w-full h-[67px] flex justify-between items-center border px-[100px] relative">
+    <div className="w-full h-[67px] flex justify-between items-center border px-[20px] md:px-[40px] lg:px-[60px] xl:px-[100px] relative">
       <div>
         <Link to={SIGNIN_ROUTE}>
-          <img src={Logo} alt="" className="" />
+          <img src={Logo} alt="Logo" className="h-[30px] sm:h-[25px]" />
         </Link>
       </div>
-      <div className="flex w-fit">
-        <button className="w-full bg-Primary text-white h-[40px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-6 py-[1px]">
+      <div className="flex w-fit items-center">
+        <button className="bg-Primary text-white h-[40px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-4 sm:px-6 py-[1px] text-xs sm:text-sm">
           <Link className="flex justify-center items-center" to={CREATE_ROUTE}>
             <CalendarMonthIcon className="mr-1" />
             <p>Create Event</p>
           </Link>
         </button>
-        <div className="flex w-fit items-center justify-center ml-[24px] cursor-pointer relative">
-          <img src={Profile} className="rounded-full" alt="" />
+        <div className="flex w-fit items-center justify-center ml-[16px] sm:ml-[24px] cursor-pointer relative">
+          <img src={Profile} className="rounded-full w-[30px] h-[30px] sm:w-[35px] sm:h-[35px]" alt="Profile" />
           {/* Conditionally render the arrow icon based on dropdown state */}
           {isDropdownOpen ? (
             <ArrowDropUpIcon onClick={toggleDropdown} />
@@ -38,17 +38,17 @@ const NavTopBar = () => {
           )}
 
           {isDropdownOpen && (
-            <div className="absolute top-[100%] right-0 mt-2 w-[150px] bg-white border rounded shadow-lg z-10">
+            <div className="absolute top-[100%] right-0 mt-2 w-[100px] sm:w-[150px] bg-white border rounded shadow-lg z-10">
               <Link
                 to="/"
-                className="block px-4 py-2 text-black hover:bg-gray-100"
+                className="block px-4 py-2 text-black text-xs sm:text-sm hover:bg-gray-100"
                 onClick={() => setIsDropdownOpen(false)}
               >
                 Home
               </Link>
               <Link
                 to={SIGNIN_ROUTE}
-                className="block px-4 py-2 text-black hover:bg-gray-100"
+                className="block px-4 py-2 text-black text-xs sm:text-sm hover:bg-gray-100"
                 onClick={() => setIsDropdownOpen(false)}
               >
                 Log Out
@@ -58,7 +58,7 @@ const NavTopBar = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NavTopBar
+export default NavTopBar;

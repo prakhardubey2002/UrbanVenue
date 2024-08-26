@@ -38,7 +38,7 @@ const CreateVenueEvent = () => {
     advanceMode: 'cash',
     balancePayment: '',
     securityAmount: '',
-    UrbanVenue: 5000,
+  
     // termsConditions: '',
     venue: venue,
     addressLine1: '',
@@ -47,6 +47,7 @@ const CreateVenueEvent = () => {
     city: '',
     citySuburb: '',
     zipCode: '',
+    urbanvenuecommission:5000,
   })
 
   // State to manage dialog visibility
@@ -320,6 +321,17 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Security Amount"
+          />
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Urban Venue commission</label>
+          <input
+            name="urbanvenuecommission"
+            value={formData.urbanvenuecommission}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Commission"
           />
         </div>
         <div className="flex flex-col  border-b ">

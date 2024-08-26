@@ -166,19 +166,19 @@ const Invoice = () => {
                     Advance Breakup
                   </td>
                   <td className="py-2 px-4 border-b text-left">
-                    {formData.farmTref}
+                  ₹  {formData.farmTref}
                   </td>
                   <td className="py-2 px-4 border-b text-left">
-                    {formData.otherServices}
+                  ₹ {formData.otherServices}
                   </td>
                   <td className="py-2 px-4 border-b text-left">
-                    ₹ {formData.UrbanVenue}
+                    ₹ {formData.urbanvenuecommission}
                   </td>
                   <td className="py-2 px-4 border-b text-left">
                     ₹{' '}
                     {Number(formData.farmTref) +
                       Number(formData.otherServices) +
-                      Number(formData.UrbanVenue)}
+                      Number(formData.urbanvenuecommission)}
                   </td>
                 </tr>
               </tbody>
