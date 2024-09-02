@@ -1,136 +1,161 @@
-import React, { useEffect, useState } from 'react';
-import Calender from './Calender';
-import { CREATE_FORM } from '../routes/Routes';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Add axios or use any method to fetch data
-import { events } from '../data/CalenderDateDemoData';
+import React, { useEffect, useState } from 'react'
+import Calender from './Calender'
+import { CREATE_FORM } from '../routes/Routes'
+import { useFetcher, useNavigate } from 'react-router-dom'
+import axios from 'axios' // Add axios or use any method to fetch data
+import { events } from '../data/CalenderDateDemoData'
 
 const CreatebyPropertyEvent = () => {
-  const [states, setStates] = useState([]);
-  const [places, setPlaces] = useState([]);
-  const [properties, setProperties] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedPlace, setSelectedPlace] = useState('');
-  const [selectedProperty, setSelectedProperty] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [isFormValid, setIsFormValid] = useState(false);
-  const navigate = useNavigate();
+  const [states, setStates] = useState([])
+  const [places, setPlaces] = useState([])
+  const [properties, setProperties] = useState([])
+  const [events, setEvents] = useState([]);
+  const [selectedState, setSelectedState] = useState('')
+  const [selectedPlace, setSelectedPlace] = useState('')
+  const [selectedProperty, setSelectedProperty] = useState('')
+  const [selectedDate, setSelectedDate] = useState('')
+  const [isFormValid, setIsFormValid] = useState(false)
+  const navigate = useNavigate()
 
   // Fetch states and properties from API
   useEffect(() => {
     const fetchStates = async () => {
       try {
-        const stateResponse = await axios.get('http://localhost:3000/api/calender/states');
-        setStates(stateResponse.data);
+        const stateResponse = await axios.get(
+          'http://localhost:3000/api/calender/states'
+        )
+        setStates(stateResponse.data)
       } catch (error) {
-        console.error('Error fetching states:', error);
+        console.error('Error fetching states:', error)
       }
-    };
+    }
 
-    fetchStates();
-  }, []);
+    fetchStates()
+  }, [])
 
   // Fetch places based on selected state
   useEffect(() => {
     if (selectedState) {
       const fetchPlaces = async () => {
         try {
-          const placeResponse = await axios.get(`http://localhost:3000/api/calender/${selectedState}/places`);
-          setPlaces(placeResponse.data);
+          const placeResponse = await axios.get(
+            `http://localhost:3000/api/calender/${selectedState}/places`
+          )
+          setPlaces(placeResponse.data)
         } catch (error) {
-          console.error('Error fetching places:', error);
+          console.error('Error fetching places:', error)
         }
-      };
+      }
 
-      fetchPlaces();
+      fetchPlaces()
     }
-  }, [selectedState]);
+  }, [selectedState])
 
   // Fetch properties based on selected state and place
   useEffect(() => {
     if (selectedState && selectedPlace) {
       const fetchProperties = async () => {
         try {
-          const propertiesResponse = await axios.get(`http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms`);
-          setProperties(propertiesResponse.data);
+          const propertiesResponse = await axios.get(
+            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms`
+          )
+          setProperties(propertiesResponse.data)
         } catch (error) {
-          console.error('Error fetching properties:', error);
+          console.error('Error fetching properties:', error)
         }
-      };
+      }
 
-      fetchProperties();
+      fetchProperties()
     }
-  }, [selectedState, selectedPlace]);
+  }, [selectedState, selectedPlace])
 
   // Check if all required fields are filled
   useEffect(() => {
     if (selectedState && selectedPlace && selectedProperty && selectedDate) {
-      setIsFormValid(true);
+      setIsFormValid(true)
     } else {
-      setIsFormValid(false);
+      setIsFormValid(false)
     }
-  }, [selectedState, selectedPlace, selectedProperty, selectedDate]);
+  }, [selectedState, selectedPlace, selectedProperty, selectedDate])
 
   // Process date
   useEffect(() => {
     if (selectedDate) {
       try {
-        const cleanedDate = selectedDate.replace(/['"]/g, '').trim();
-        const date = new Date(cleanedDate);
+        const cleanedDate = selectedDate.replace(/['"]/g, '').trim()
+        const date = new Date(cleanedDate)
 
         if (isNaN(date.getTime())) {
-          throw new Error('Invalid date');
+          throw new Error('Invalid date')
         }
 
-        const currentFormattedDate = date.toISOString().split('T')[0];
-        date.setDate(date.getDate() + 1);
-        const newFormattedDate = date.toISOString().split('T')[0];
+        const currentFormattedDate = date.toISOString().split('T')[0]
+        date.setDate(date.getDate() + 1)
+        const newFormattedDate = date.toISOString().split('T')[0]
 
         if (currentFormattedDate !== selectedDate) {
-          setSelectedDate(newFormattedDate);
+          setSelectedDate(newFormattedDate)
         }
       } catch (error) {
-        console.error('Error processing date:', error);
+        console.error('Error processing date:', error)
       }
     }
-  }, [selectedDate]);
+  }, [selectedDate])
 
   const formcreate = () => {
     if (!selectedDate) {
-      alert('Please select a date');
-      return;
+      alert('Please select a date')
+      return
     }
 
-    const cleanedDate = selectedDate.replace(/['"]/g, '').trim();
+    const cleanedDate = selectedDate.replace(/['"]/g, '').trim()
 
-    let formattedDate;
-    let formattedTime;
+    let formattedDate
+    let formattedTime
 
     try {
-      const date = new Date(cleanedDate);
+      const date = new Date(cleanedDate)
 
       if (isNaN(date.getTime())) {
-        throw new Error('Invalid date');
+        throw new Error('Invalid date')
       }
 
-      formattedDate = date.toISOString().split('T')[0];
-      formattedTime = date.toISOString().split('T')[1].split('.')[0];
+      formattedDate = date.toISOString().split('T')[0]
+      formattedTime = date.toISOString().split('T')[1].split('.')[0]
 
-      alert(`Date: ${formattedDate} Time: ${formattedTime}`);
+      alert(`Date: ${formattedDate} Time: ${formattedTime}`)
     } catch (error) {
-      console.error('Error parsing date:', error);
-      alert(`Invalid date format: ${cleanedDate}`);
-      return;
+      console.error('Error parsing date:', error)
+      alert(`Invalid date format: ${cleanedDate}`)
+      return
     }
 
     const path = CREATE_FORM.replace(':venue', selectedProperty).replace(
       ':date',
       formattedDate
-    );
+    )
 
-    navigate(path);
-  };
-
+    navigate(path)
+  }
+  useEffect(() => {
+    if (selectedState && selectedPlace && selectedProperty) {
+      const fetchEvents = async () => {
+        try {
+          const eventsResponse = await axios.get(
+            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/events`
+          )
+          setEvents(eventsResponse.data)
+          console.log(eventsResponse.data)
+        } catch (error) {
+          console.error('Error fetching events:', error)
+        }
+      }
+      fetchEvents()
+    }
+  }, [selectedState, selectedPlace, selectedProperty])
+  useEffect(()=>{
+    console.log(events[selectedProperty]);
+  },[selectedState, selectedPlace, selectedProperty])
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex flex-wrap justify-between items-end">
@@ -212,14 +237,14 @@ const CreatebyPropertyEvent = () => {
       </div>
       <div className="w-full flex justify-center items-center">
         <Calender
-          events={events[selectedProperty] || []}
+          events={events}
           selectedDate={selectedDate}
           setSelectedDate={setSelectedDate}
           venue={selectedProperty}
         />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreatebyPropertyEvent;
+export default CreatebyPropertyEvent
