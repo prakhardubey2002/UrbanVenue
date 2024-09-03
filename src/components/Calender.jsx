@@ -1,14 +1,28 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button } from '@mui/material';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from '@mui/material';
 
 const localizer = momentLocalizer(moment);
 
 const CalendarComponent = ({ events, venue, setSelectedDate }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [date, setDate] = useState('');
+  const [defaultDate, setDefaultDate] = useState(new Date());
+
+  useEffect(() => {
+    if (events.length > 0) {
+      // setDefaultDate(events[0]?.start || new Date());
+      setDefaultDate(new Date());
+    }
+  }, [events]);
 
   const handleSelectSlot = useCallback(
     ({ start, end, ...rest }) => {
@@ -34,26 +48,36 @@ const CalendarComponent = ({ events, venue, setSelectedDate }) => {
             {venue}
           </h2>
         )}
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          defaultDate={events[0]?.start || new Date()}
-          selectable
-          onSelectEvent={handleSelectEvent}
-          onSelectSlot={handleSelectSlot}
-          style={{ height: 350 }}
-        />
+        {events[0]?.start && (
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            defaultDate={defaultDate}
+            selectable
+            onSelectEvent={handleSelectEvent}
+            onSelectSlot={handleSelectSlot}
+            style={{ height: 350 }}
+          />
+        )}
       </div>
 
       {selectedEvent && (
         <Dialog open={Boolean(selectedEvent)} onClose={handleCloseDialog}>
           <DialogTitle>Event Details</DialogTitle>
           <DialogContent>
-            <p><strong>Title:</strong> {selectedEvent.title}</p>
-            <p><strong>Start:</strong> {moment(selectedEvent.start).format('MMMM Do YYYY, h:mm:ss a')}</p>
-            <p><strong>End:</strong> {moment(selectedEvent.end).format('MMMM Do YYYY, h:mm:ss a')}</p>
+            <p>
+              <strong>Title:</strong> {selectedEvent.title}
+            </p>
+            <p>
+              <strong>Start:</strong>{' '}
+              {moment(selectedEvent.start).format('MMMM Do YYYY, h:mm:ss a')}
+            </p>
+            <p>
+              <strong>End:</strong>{' '}
+              {moment(selectedEvent.end).format('MMMM Do YYYY, h:mm:ss a')}
+            </p>
             {/* Add more details if needed */}
           </DialogContent>
           <DialogActions>

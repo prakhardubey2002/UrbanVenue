@@ -3,18 +3,19 @@ import Calender from './Calender'
 import { CREATE_FORM } from '../routes/Routes'
 import { useFetcher, useNavigate } from 'react-router-dom'
 import axios from 'axios' // Add axios or use any method to fetch data
-import { events } from '../data/CalenderDateDemoData'
+// import { events } from '../data/CalenderDateDemoData'
 
 const CreatebyPropertyEvent = () => {
   const [states, setStates] = useState([])
   const [places, setPlaces] = useState([])
   const [properties, setProperties] = useState([])
-  const [events, setEvents] = useState([]);
+  const [events, setEvents] = useState([])
   const [selectedState, setSelectedState] = useState('')
   const [selectedPlace, setSelectedPlace] = useState('')
   const [selectedProperty, setSelectedProperty] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
   const [isFormValid, setIsFormValid] = useState(false)
+  // const [defaultDate, setDefaultDate] = useState(new Date())
   const navigate = useNavigate()
 
   // Fetch states and properties from API
@@ -145,6 +146,7 @@ const CreatebyPropertyEvent = () => {
             `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/events`
           )
           setEvents(eventsResponse.data)
+          // setDefaultDate(eventsResponse?.data[0]?.start)
           console.log(eventsResponse.data)
         } catch (error) {
           console.error('Error fetching events:', error)
@@ -153,9 +155,9 @@ const CreatebyPropertyEvent = () => {
       fetchEvents()
     }
   }, [selectedState, selectedPlace, selectedProperty])
-  useEffect(()=>{
-    console.log(events[selectedProperty]);
-  },[selectedState, selectedPlace, selectedProperty])
+  useEffect(() => {
+    console.log(events[selectedProperty])
+  }, [selectedState, selectedPlace, selectedProperty])
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex flex-wrap justify-between items-end">
@@ -236,12 +238,17 @@ const CreatebyPropertyEvent = () => {
         </button>
       </div>
       <div className="w-full flex justify-center items-center">
-        <Calender
-          events={events}
-          selectedDate={selectedDate}
-          setSelectedDate={setSelectedDate}
-          venue={selectedProperty}
-        />
+        {events && (
+          
+          <Calender
+            events={events}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            venue={selectedProperty}
+            // defaultDate={defaultDate}
+            // setDefaultDate={setDefaultDate}
+          />
+        )}
       </div>
     </div>
   )
