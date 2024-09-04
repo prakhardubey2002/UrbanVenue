@@ -110,7 +110,7 @@ const CreatebyDateEvent = () => {
             id="state"
             value={selectedState}
             onChange={(e) => setSelectedState(e.target.value)}
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
           >
             <option value="">Select State</option>
             {states.map((state) => (
@@ -129,7 +129,7 @@ const CreatebyDateEvent = () => {
             id="place"
             value={selectedPlace}
             onChange={(e) => setSelectedPlace(e.target.value)}
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
           >
             <option selected disabled value="">
               Select Place
@@ -151,7 +151,7 @@ const CreatebyDateEvent = () => {
           </div>
           <input
             type="date"
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />
@@ -165,7 +165,7 @@ const CreatebyDateEvent = () => {
             id="property"
             value={selectedProperty || ''}
             onChange={(e) => setSelectedProperty(e.target.value)}
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
           >
             <option value="">Select Property</option>
             {Object.keys(calenderEvents).map((property) => (

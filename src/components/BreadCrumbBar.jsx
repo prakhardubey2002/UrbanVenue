@@ -14,7 +14,7 @@ const BreadCrumbBar = () => {
       <div className="relative z-10 text-black flex">
         <Link className="font-semibold" to="/">Home</Link>
         <p>
-        {path}
+        {path.replace(/%20/g, ' ')}
         </p>
       </div>
       {/* <div className="absolute inset-0 bg-black opacity-30"></div> */}

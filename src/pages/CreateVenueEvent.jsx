@@ -18,7 +18,7 @@ const CreateVenueEvent = () => {
 
   // State to manage form values
   const [formData, setFormData] = useState({
-    bookingId: '',
+    bookingId: generateBookingId(),
     guestName: '',
     phoneNumber: '',
     checkInDate: date,
@@ -38,7 +38,7 @@ const CreateVenueEvent = () => {
     advanceMode: 'cash',
     balancePayment: '',
     securityAmount: '',
-  
+
     // termsConditions: '',
     venue: venue,
     addressLine1: '',
@@ -47,8 +47,12 @@ const CreateVenueEvent = () => {
     city: '',
     citySuburb: '',
     zipCode: '',
-    urbanvenuecommission:5000,
+    urbanvenuecommission: 5000,
   })
+  function generateBookingId() {
+    const timestamp = new Date().getTime()
+    return `BOOK-${venue}-${date}-${timestamp}`
+  }
 
   // State to manage dialog visibility
   const [openDialog, setOpenDialog] = useState(false)
@@ -85,6 +89,8 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking ID</label>
           <input
+          disabled
+          readOnly
             name="bookingId"
             value={formData.bookingId}
             onChange={handleChange}
@@ -137,6 +143,7 @@ const CreateVenueEvent = () => {
                 onChange={handleChange}
                 className="outline-none bg-Bordgrey my-4 mr-2 p-4 border border-Bordgrey rounded-sm"
                 type="date"
+                disabled
               />
             </div>
             <div className="flex-1 flex flex-col">
