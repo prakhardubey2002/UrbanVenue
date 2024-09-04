@@ -12,7 +12,7 @@ import {
 
 const localizer = momentLocalizer(moment);
 
-const CalendarComponent = ({ events, venue, setSelectedDate }) => {
+const CalendarComponent = ({ events, venue, setSelectedDate,intializer }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [date, setDate] = useState('');
   const [defaultDate, setDefaultDate] = useState(new Date());
@@ -20,7 +20,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate }) => {
   useEffect(() => {
     if (events.length > 0) {
       // setDefaultDate(events[0]?.start || new Date());
-      setDefaultDate(new Date());
+      setDefaultDate(new Date(intializer));
     }
   }, [events]);
 
@@ -54,7 +54,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate }) => {
             events={events}
             startAccessor="start"
             endAccessor="end"
-            defaultDate={defaultDate}
+            defaultDate={new Date(intializer) || new Date() }
             selectable
             onSelectEvent={handleSelectEvent}
             onSelectSlot={handleSelectSlot}

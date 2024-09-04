@@ -245,6 +245,7 @@ const CreatebyPropertyEvent = () => {
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             venue={selectedProperty}
+            intializer={new Date()}
             // defaultDate={defaultDate}
             // setDefaultDate={setDefaultDate}
           />
