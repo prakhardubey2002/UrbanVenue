@@ -167,7 +167,7 @@ const CreatebyPropertyEvent = () => {
           </label>
           <select
             id="state"
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedState}
             onChange={(e) => setSelectedState(e.target.value)}
           >
@@ -185,7 +185,7 @@ const CreatebyPropertyEvent = () => {
           </label>
           <select
             id="place"
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedPlace}
             onChange={(e) => setSelectedPlace(e.target.value)}
           >
@@ -204,7 +204,7 @@ const CreatebyPropertyEvent = () => {
           </label>
           <select
             id="property"
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedProperty}
             onChange={(e) => setSelectedProperty(e.target.value)}
           >
@@ -222,7 +222,7 @@ const CreatebyPropertyEvent = () => {
           </label>
           <input
             type="date"
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
           />

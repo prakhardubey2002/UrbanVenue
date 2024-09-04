@@ -42,7 +42,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate }) => {
 
   return (
     <div className="">
-      <div className="w-fit mx-6 my-6 px-1 py-1">
+      <div className="w-fit m-1 px-1 py-1">
         {venue && (
           <h2 className="px-1 py-1 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
             {venue}
@@ -58,7 +58,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate }) => {
             selectable
             onSelectEvent={handleSelectEvent}
             onSelectSlot={handleSelectSlot}
-            style={{ height: 350 }}
+            style={{ height: 320 }}
           />
         )}
       </div>

@@ -4,9 +4,12 @@ import { events } from '../data/CalenderDateDemoData'
 import { Link } from 'react-router-dom'
 import { CREATE_FORM } from '../routes/Routes'
 import { useNavigate } from 'react-router-dom'
+import axios from 'axios' // Import axios for API requests
 
 const CreatebyDateEvent = () => {
   // Initialize state variables
+  const [states, setStates] = useState([])
+  const [places, setPlaces] = useState([])
   const [selectedState, setSelectedState] = useState('')
   const [selectedPlace, setSelectedPlace] = useState('')
   const [selectedProperty, setSelectedProperty] = useState('')
@@ -14,6 +17,35 @@ const CreatebyDateEvent = () => {
   const propertyOptions = Object.keys(events)
   const navigate = useNavigate()
 
+  // Fetch states on component mount
+  useEffect(() => {
+    const fetchStates = async () => {
+      try {
+        const stateResponse = await axios.get('http://localhost:3000/api/calender/states')
+        setStates(stateResponse.data)
+      } catch (error) {
+        console.error('Error fetching states:', error)
+      }
+    }
+    fetchStates()
+  }, [])
+
+  // Fetch places when a state is selected
+  useEffect(() => {
+    if (selectedState) {
+      const fetchPlaces = async () => {
+        try {
+          const placeResponse = await axios.get(`http://localhost:3000/api/calender/${selectedState}/places`)
+          setPlaces(placeResponse.data)
+        } catch (error) {
+          console.error('Error fetching places:', error)
+        }
+      }
+      fetchPlaces()
+    }
+  }, [selectedState])
+
+  // Date processing
   useEffect(() => {
     if (selectedDate) {
       try {
@@ -24,17 +56,11 @@ const CreatebyDateEvent = () => {
           throw new Error('Invalid date')
         }
 
-        // Format the current date without adding a day
         const currentFormattedDate = date.toISOString().split('T')[0]
-
-        // Add one day to the date
         date.setDate(date.getDate() + 1)
-
-        // Format the date after adding a day
         const newFormattedDate = date.toISOString().split('T')[0]
 
         if (currentFormattedDate !== selectedDate) {
-          // Only update if the date has not already been adjusted
           setSelectedDate(newFormattedDate)
         }
       } catch (error) {
@@ -49,7 +75,6 @@ const CreatebyDateEvent = () => {
       return
     }
 
-    // Clean the date again before formatting
     const cleanedDate = selectedDate.replace(/['"]/g, '').trim()
 
     let formattedDate
@@ -63,25 +88,23 @@ const CreatebyDateEvent = () => {
       }
 
       formattedDate = date.toISOString().split('T')[0]
-      formattedTime = date.toISOString().split('T')[1].split('.')[0] // Extract time without milliseconds
+      formattedTime = date.toISOString().split('T')[1].split('.')[0]
 
       alert(`Date: ${formattedDate} Time: ${formattedTime}`)
     } catch (error) {
       console.error('Error parsing date:', error)
       alert(`Invalid date format: ${cleanedDate}`)
-      return // Exit function on error
+      return
     }
 
-    // Construct the path with formatted values
     const path = CREATE_FORM.replace(':venue', selectedProperty).replace(
       ':date',
       formattedDate
     )
 
-    navigate(path) // Navigate to the constructed path
+    navigate(path)
   }
 
-  // Determine if the form is fully filled out
   const isFormValid =
     selectedState && selectedPlace && selectedProperty && selectedDate
 
@@ -100,8 +123,11 @@ const CreatebyDateEvent = () => {
             className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
           >
             <option value="">Select State</option>
-            <option value="Noida">Noida</option>
-            <option value="New Delhi">New Delhi</option>
+            {states.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -119,8 +145,11 @@ const CreatebyDateEvent = () => {
             <option selected disabled value="">
               Select Place
             </option>
-            <option value="Noida">Noida</option>
-            <option value="New Delhi">New Delhi</option>
+            {places.map((place) => (
+              <option key={place} value={place}>
+                {place}
+              </option>
+            ))}
           </select>
         </div>
 
@@ -175,8 +204,8 @@ const CreatebyDateEvent = () => {
           <Calender
             key={index}
             events={events[venue]}
-            selectedDate={selectedDate} // Pass the selectedDate state
-            setSelectedDate={setSelectedDate} // Pass the setSelectedDate function
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
             venue={venue}
           />
         ))}
