@@ -14,6 +14,7 @@ const CreatebyPropertyEvent = () => {
   const [selectedPlace, setSelectedPlace] = useState('')
   const [selectedProperty, setSelectedProperty] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
+  const [ven,setven]=useState();
   const [isFormValid, setIsFormValid] = useState(false)
   // const [defaultDate, setDefaultDate] = useState(new Date())
   const navigate = useNavigate()
@@ -246,6 +247,7 @@ const CreatebyPropertyEvent = () => {
             setSelectedDate={setSelectedDate}
             venue={selectedProperty}
             intializer={new Date()}
+            setven={setven}
             // defaultDate={defaultDate}
             // setDefaultDate={setDefaultDate}
           />

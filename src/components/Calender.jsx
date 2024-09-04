@@ -12,29 +12,29 @@ import {
 
 const localizer = momentLocalizer(moment);
 
-const CalendarComponent = ({ events, venue, setSelectedDate,intializer }) => {
+const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSelectedProperty,setven }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [date, setDate] = useState('');
   const [defaultDate, setDefaultDate] = useState(new Date());
 
   useEffect(() => {
     if (events.length > 0) {
-      // setDefaultDate(events[0]?.start || new Date());
       setDefaultDate(new Date(intializer));
     }
-  }, [events]);
+  }, [events, intializer]);
 
   const handleSelectSlot = useCallback(
     ({ start, end, ...rest }) => {
-      setDate(JSON.stringify(rest?.slots[0]));
-      setSelectedDate(JSON.stringify(rest?.slots[0].toISOString()));
+      const selectedSlot = rest?.slots[0];
+      setSelectedDate(selectedSlot.toISOString());
+      setven(venue)
     },
     [setSelectedDate]
   );
 
   const handleSelectEvent = useCallback((event) => {
     setSelectedEvent(event);
-  }, []);
+    setSelectedProperty(venue); // Update the selected property when an event is selected
+  }, [venue, setSelectedProperty]);
 
   const handleCloseDialog = () => {
     setSelectedEvent(null);
@@ -54,7 +54,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate,intializer }) => {
             events={events}
             startAccessor="start"
             endAccessor="end"
-            defaultDate={new Date(intializer) || new Date() }
+            defaultDate={defaultDate}
             selectable
             onSelectEvent={handleSelectEvent}
             onSelectSlot={handleSelectSlot}
@@ -71,19 +71,14 @@ const CalendarComponent = ({ events, venue, setSelectedDate,intializer }) => {
               <strong>Title:</strong> {selectedEvent.title}
             </p>
             <p>
-              <strong>Start:</strong>{' '}
-              {moment(selectedEvent.start).format('MMMM Do YYYY, h:mm:ss a')}
+              <strong>Start:</strong> {moment(selectedEvent.start).format('MMMM Do YYYY, h:mm:ss a')}
             </p>
             <p>
-              <strong>End:</strong>{' '}
-              {moment(selectedEvent.end).format('MMMM Do YYYY, h:mm:ss a')}
+              <strong>End:</strong> {moment(selectedEvent.end).format('MMMM Do YYYY, h:mm:ss a')}
             </p>
-            {/* Add more details if needed */}
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              Close
-            </Button>
+            <Button onClick={handleCloseDialog}>Close</Button>
           </DialogActions>
         </Dialog>
       )}

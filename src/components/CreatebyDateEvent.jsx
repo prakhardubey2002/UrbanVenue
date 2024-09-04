@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Calender from './Calender';
 import { Link, useNavigate } from 'react-router-dom';
 import { CREATE_FORM } from '../routes/Routes';
@@ -12,7 +12,9 @@ const CreatebyDateEvent = () => {
   const [selectedProperty, setSelectedProperty] = useState('');
   const [selectedDate, setSelectedDate] = useState('');
   const [calenderEvents, setCalenderEvents] = useState({});
-  const [renderKey, setRenderKey] = useState(0); // Added state to track re-renders
+  const [ven, setven] = useState('');
+  const [selectedDateString, setSelectedDateString] = useState('');
+  const [renderKey, setRenderKey] = useState(0);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -41,13 +43,18 @@ const CreatebyDateEvent = () => {
     }
   }, [selectedState]);
 
-  const handleFindProperty = async () => {
+  useEffect(() => {
+    if (ven && Object.keys(calenderEvents).includes(ven)) {
+      setSelectedProperty(ven);
+    }
+  }, [ven, calenderEvents]);
+
+  const handleFindProperty = useCallback(async () => {
     if (selectedState && selectedPlace && selectedDate) {
       try {
         const response = await axios.get(`http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`);
         const farms = response.data;
 
-        // Format the response into the structure needed by the Calender component
         const formattedEvents = farms.reduce((acc, farm) => {
           acc[farm.name] = farm.events;
           return acc;
@@ -59,9 +66,9 @@ const CreatebyDateEvent = () => {
         console.error('Error fetching events:', error);
       }
     }
-  };
+  }, [selectedState, selectedPlace, selectedDate]);
 
-  const formcreate = () => {
+  const formcreate = useCallback(() => {
     if (!selectedDate) {
       alert('Please select a date');
       return;
@@ -83,18 +90,21 @@ const CreatebyDateEvent = () => {
       return;
     }
 
-    const path = CREATE_FORM.replace(':venue', selectedProperty).replace(':date', formattedDate);
+    const path = CREATE_FORM.replace(':venue', selectedProperty || '').replace(':date', formattedDate);
     navigate(path);
-  };
+  }, [selectedDate, selectedProperty]);
 
-  const isFormValid = selectedState && selectedPlace && selectedProperty && selectedDate;
+  const isFormValid = useCallback(() => 
+    selectedState && selectedPlace && selectedProperty && selectedDate,
+    [selectedState, selectedPlace, selectedProperty, selectedDate]
+  );
 
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex flex-wrap justify-between items-end">
         <div className="flex flex-col flex-1 mx-4">
           <label className="font-semibold mb-2">
-            Select State <span className="text-Primary">*</span>
+            Select State  <span className="text-Primary">*</span>
           </label>
           <select
             id="state"
@@ -153,8 +163,9 @@ const CreatebyDateEvent = () => {
           </label>
           <select
             id="property"
-            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            value={selectedProperty || ''}
             onChange={(e) => setSelectedProperty(e.target.value)}
+            className="bg-white text-Textgray border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
           >
             <option value="">Select Property</option>
             {Object.keys(calenderEvents).map((property) => (
@@ -167,8 +178,8 @@ const CreatebyDateEvent = () => {
 
         <button
           onClick={formcreate}
-          className={`button md:m-5  ${isFormValid ? '' : 'opacity-50 cursor-not-allowed'}`}
-          disabled={!isFormValid}
+          className={`button md:m-5  ${isFormValid() ? '' : 'opacity-50 cursor-not-allowed'}`}
+          disabled={!isFormValid()}
         >
           Done
         </button>
@@ -177,12 +188,13 @@ const CreatebyDateEvent = () => {
       <div className="w-full flex flex-wrap justify-center items-center">
         {Object.keys(calenderEvents).map((venue, index) => (
           <Calender
-            key={`${venue}-${renderKey}`} // Use a dynamic key to force re-render
+            key={`${venue}-${renderKey}`} 
             events={calenderEvents[venue]}
-            selectedDate={selectedDate}
-            setSelectedDate={setSelectedDate}
+            selectedDate={selectedDateString}
+            setSelectedDate={setSelectedDateString}
             venue={venue}
             intializer={selectedDate}
+            setven={setven}
           />
         ))}
       </div>
