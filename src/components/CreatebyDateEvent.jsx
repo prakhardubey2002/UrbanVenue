@@ -1,111 +1,138 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import Calender from './Calender';
-import { Link, useNavigate } from 'react-router-dom';
-import { CREATE_FORM } from '../routes/Routes';
-import axios from 'axios';
+import React, { useEffect, useState, useCallback } from 'react'
+import Calender from './Calender'
+import { Link, useNavigate } from 'react-router-dom'
+import { CREATE_FORM } from '../routes/Routes'
+import axios from 'axios'
 
 const CreatebyDateEvent = () => {
-  const [states, setStates] = useState([]);
-  const [places, setPlaces] = useState([]);
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedPlace, setSelectedPlace] = useState('');
-  const [selectedProperty, setSelectedProperty] = useState('');
-  const [selectedDate, setSelectedDate] = useState('');
-  const [calenderEvents, setCalenderEvents] = useState({});
-  const [ven, setven] = useState('');
-  const [selectedDateString, setSelectedDateString] = useState('');
-  const [renderKey, setRenderKey] = useState(0);
-  const [address,setAddress]=useState('')
-  const navigate = useNavigate();
+  const [states, setStates] = useState([])
+  const [places, setPlaces] = useState([])
+  const [selectedState, setSelectedState] = useState('')
+  const [selectedPlace, setSelectedPlace] = useState('')
+  const [selectedProperty, setSelectedProperty] = useState('')
+  const [selectedDate, setSelectedDate] = useState('')
+  const [calenderEvents, setCalenderEvents] = useState({})
+  const [ven, setven] = useState('')
+  const [selectedDateString, setSelectedDateString] = useState('')
+  const [renderKey, setRenderKey] = useState(0)
+  const [address, setAddress] = useState('')
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchStates = async () => {
       try {
-        const stateResponse = await axios.get('http://localhost:3000/api/calender/states');
-        setStates(stateResponse.data);
+        const stateResponse = await axios.get(
+          'http://localhost:3000/api/calender/states'
+        )
+        setStates(stateResponse.data)
       } catch (error) {
-        console.error('Error fetching states:', error);
+        console.error('Error fetching states:', error)
       }
-    };
-    fetchStates();
-  }, []);
+    }
+    fetchStates()
+  }, [])
 
   useEffect(() => {
     if (selectedState) {
       const fetchPlaces = async () => {
         try {
-          const placeResponse = await axios.get(`http://localhost:3000/api/calender/${selectedState}/places`);
-          setPlaces(placeResponse.data);
+          const placeResponse = await axios.get(
+            `http://localhost:3000/api/calender/${selectedState}/places`
+          )
+          setPlaces(placeResponse.data)
         } catch (error) {
-          console.error('Error fetching places:', error);
+          console.error('Error fetching places:', error)
         }
-      };
-      fetchPlaces();
+      }
+      fetchPlaces()
     }
-  }, [selectedState]);
+  }, [selectedState])
 
   useEffect(() => {
     if (ven && Object.keys(calenderEvents).includes(ven)) {
-      setSelectedProperty(ven);
+      setSelectedProperty(ven)
     }
-  }, [ven, calenderEvents]);
+  }, [ven, calenderEvents])
 
   const handleFindProperty = useCallback(async () => {
     if (selectedState && selectedPlace && selectedDate) {
       try {
-        const response = await axios.get(`http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`);
-        const farms = response.data;
+        const response = await axios.get(
+          `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`
+        )
+        const farms = response.data
 
         const formattedEvents = farms.reduce((acc, farm) => {
-          acc[farm.name] = farm.events;
-          return acc;
-        }, {});
+          acc[farm.name] = farm.events
+          return acc
+        }, {})
 
-        setCalenderEvents(formattedEvents);
-        setRenderKey(prevKey => prevKey + 1); // Update the key to force re-render
+        setCalenderEvents(formattedEvents)
+        setRenderKey((prevKey) => prevKey + 1) // Update the key to force re-render
       } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching events:', error)
       }
     }
-  }, [selectedState, selectedPlace, selectedDate]);
+  }, [selectedState, selectedPlace, selectedDate])
 
-  const formcreate = useCallback(() => {
+  const formcreate = useCallback(async () => {
     if (!selectedDate) {
-      alert('Please select a date');
-      return;
+      alert('Please select a date')
+      return
     }
 
-    let formattedDate;
+    let formattedDate
 
     try {
-      const date = new Date(selectedDate);
+      const date = new Date(selectedDate)
       if (isNaN(date.getTime())) {
-        throw new Error('Invalid date');
+        throw new Error('Invalid date')
       }
 
-      formattedDate = date.toISOString().split('T')[0];
-      alert(`Date: ${formattedDate}`);
+      formattedDate = date.toISOString().split('T')[0]
+      alert(`Date: ${formattedDate}`)
     } catch (error) {
-      console.error('Error parsing date:', error);
-      alert(`Invalid date format: ${selectedDate}`);
-      return;
+      console.error('Error parsing date:', error)
+      alert(`Invalid date format: ${selectedDate}`)
+      return
     }
 
-    const path = CREATE_FORM.replace(':venue', selectedProperty || '').replace(':date', formattedDate);
-    navigate(path);
-  }, [selectedDate, selectedProperty]);
+    try {
+      // Fetch the address
+      const addressResponse = await axios.get(
+        `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/address`
+      )
 
-  const isFormValid = useCallback(() => 
-    selectedState && selectedPlace && selectedProperty && selectedDate,
+      // Set the address state
+      const address = addressResponse.data
+      setAddress(address)
+      console.log(address)
+      console.log(`${selectedState}/${selectedPlace}/${selectedProperty}`)
+      // Navigate with the address in the state
+      const path = CREATE_FORM.replace(
+        ':venue',
+        selectedProperty || ''
+      ).replace(':date', formattedDate)
+      if (address != null) {
+        navigate(path, { state: address })
+      }
+    } catch (error) {
+      console.error('Error fetching address:', error)
+      alert('Failed to fetch the address.')
+    }
+  }, [selectedDate, selectedProperty, selectedState, selectedPlace, navigate])
+
+  const isFormValid = useCallback(
+    () => selectedState && selectedPlace && selectedProperty && selectedDate,
     [selectedState, selectedPlace, selectedProperty, selectedDate]
-  );
+  )
 
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex flex-wrap justify-between items-end">
         <div className="flex flex-col flex-1 mx-4">
           <label className="font-semibold mb-2">
-            Select State  <span className="text-Primary">*</span>
+            Select State <span className="text-Primary">*</span>
           </label>
           <select
             id="state"
@@ -148,7 +175,12 @@ const CreatebyDateEvent = () => {
             <label className="font-semibold mb-2">
               Date<span className="text-Primary">*</span>
             </label>
-            <Link onClick={handleFindProperty} className="text-Primary cursor-pointer">Find Property</Link>
+            <Link
+              onClick={handleFindProperty}
+              className="text-Primary cursor-pointer"
+            >
+              Find Property
+            </Link>
           </div>
           <input
             type="date"
@@ -179,7 +211,9 @@ const CreatebyDateEvent = () => {
 
         <button
           onClick={formcreate}
-          className={`button md:m-5  ${isFormValid() ? '' : 'opacity-50 cursor-not-allowed'}`}
+          className={`button md:m-5  ${
+            isFormValid() ? '' : 'opacity-50 cursor-not-allowed'
+          }`}
           disabled={!isFormValid()}
         >
           Done
@@ -189,7 +223,7 @@ const CreatebyDateEvent = () => {
       <div className="w-full flex flex-wrap justify-center items-center">
         {Object.keys(calenderEvents).map((venue, index) => (
           <Calender
-            key={`${venue}-${renderKey}`} 
+            key={`${venue}-${renderKey}`}
             events={calenderEvents[venue]}
             selectedDate={selectedDateString}
             setSelectedDate={setSelectedDateString}
@@ -200,7 +234,7 @@ const CreatebyDateEvent = () => {
         ))}
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreatebyDateEvent;
+export default CreatebyDateEvent

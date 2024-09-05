@@ -28,19 +28,19 @@ const Invoice = () => {
         <div className="m-4">
           <h2 className="font-semibold text-2xl">Invoice</h2>
           <div className="flex flex-col items-start">
-            <div className="w-[80%] flex justify-between">
+            <div className="w-[90%] flex justify-between">
               <p>Invoice to {formData.guestName}</p>
               <p>Invoice ID: {formData.bookingId}</p>
             </div>
-            <div className="w-[80%] flex justify-between">
+            <div className="w-[90%] flex justify-between">
               <p>{formData.addressLine1}</p>
               <p>Order Date: {formData.checkInDate}</p>
             </div>
-            <div className="w-[80%] flex justify-between">
+            <div className="w-[90%] flex justify-between">
               <p>Host Name: {formData.hostOwnerName}</p>
               <p>{formData.venue}</p>
             </div>
-            <div className="w-[80%] flex justify-between">
+            <div className="w-[90%] flex justify-between">
               <p>
                 {formData.zipCode}, {formData.city}
               </p>
@@ -218,7 +218,7 @@ const Invoice = () => {
               </div>
             </div>
             <div className="flex-1 p-4 bg-Bordgrey flex flex-col items-start">
-              <p className="text-2xl font-semibold mt-2">Visit our site</p>
+              <p className="text-2xl font-semibold my-2">Visit our site</p>
               <img
                 src={qr}
                 alt="QR Code"
