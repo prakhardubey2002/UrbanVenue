@@ -14,7 +14,8 @@ const CreatebyPropertyEvent = () => {
   const [selectedPlace, setSelectedPlace] = useState('')
   const [selectedProperty, setSelectedProperty] = useState('')
   const [selectedDate, setSelectedDate] = useState('')
-  const [ven,setven]=useState();
+  const [ven, setven] = useState()
+  const [address, setAddress] = useState(null)
   const [isFormValid, setIsFormValid] = useState(false)
   // const [defaultDate, setDefaultDate] = useState(new Date())
   const navigate = useNavigate()
@@ -136,8 +137,11 @@ const CreatebyPropertyEvent = () => {
       ':date',
       formattedDate
     )
+    if(address != null){
 
-    navigate(path)
+      navigate(path,{state: address})
+    }
+
   }
   useEffect(() => {
     if (selectedState && selectedPlace && selectedProperty) {
@@ -147,8 +151,10 @@ const CreatebyPropertyEvent = () => {
             `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/events`
           )
           setEvents(eventsResponse.data)
+          // setAddress(eventsResponse.data.address)
           // setDefaultDate(eventsResponse?.data[0]?.start)
           console.log(eventsResponse.data)
+          // console.log(eventsResponse.data)
         } catch (error) {
           console.error('Error fetching events:', error)
         }
@@ -156,9 +162,25 @@ const CreatebyPropertyEvent = () => {
       fetchEvents()
     }
   }, [selectedState, selectedPlace, selectedProperty])
+  // Fetch address based on selected property
   useEffect(() => {
-    console.log(events[selectedProperty])
+    if (selectedState && selectedPlace && selectedProperty) {
+      const fetchAddress = async () => {
+        try {
+          const addressResponse = await axios.get(
+            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/address`
+          )
+          setAddress(addressResponse.data)
+        } catch (error) {
+          console.error('Error fetching address:', error)
+        }
+      }
+      fetchAddress()
+    }
   }, [selectedState, selectedPlace, selectedProperty])
+  // useEffect(() => {
+  //   // console.log(events[selectedProperty])
+  // }, [selectedState, selectedPlace, selectedProperty])
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex flex-wrap justify-between items-end">
@@ -240,7 +262,6 @@ const CreatebyPropertyEvent = () => {
       </div>
       <div className="w-full flex justify-center items-center">
         {events && (
-          
           <Calender
             events={events}
             selectedDate={selectedDate}

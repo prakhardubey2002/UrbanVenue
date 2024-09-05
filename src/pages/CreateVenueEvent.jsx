@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import NavTopBar from '../components/NavTopBar'
 import BreadCrumbBar from '../components/BreadCrumbBar'
 import InfoIcon from '@mui/icons-material/Info'
@@ -13,9 +13,13 @@ import {
 import { INVOICE_ROUTE } from '../routes/Routes'
 const CreateVenueEvent = () => {
   const { venue, date } = useParams()
+  const location = useLocation()
+  const data = location.state
   const navigate = useNavigate()
   // const history = useHistory();
-
+  // useEffect(() => {
+  //   console.log(data)
+  // }, [])
   // State to manage form values
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
@@ -41,12 +45,12 @@ const CreateVenueEvent = () => {
 
     // termsConditions: '',
     venue: venue,
-    addressLine1: '',
-    addressLine2: '',
-    country: '',
-    city: '',
-    citySuburb: '',
-    zipCode: '',
+    addressLine1: data.addressLine1,
+    addressLine2: data.addressLine2,
+    country: data.country,
+    city: data.city,
+    citySuburb: data.suburb,
+    zipCode: data.zipCode,
     urbanvenuecommission: 5000,
   })
   function generateBookingId() {
@@ -89,8 +93,8 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking ID</label>
           <input
-          disabled
-          readOnly
+            disabled
+            readOnly
             name="bookingId"
             value={formData.bookingId}
             onChange={handleChange}
@@ -377,6 +381,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Address Line 1</label>
               <input
+              disabled
                 name="addressLine1"
                 value={formData.addressLine1}
                 onChange={handleChange}
@@ -388,6 +393,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Address Line 2</label>
               <input
+              disabled
                 name="addressLine2"
                 value={formData.addressLine2}
                 onChange={handleChange}
@@ -401,6 +407,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Country</label>
               <input
+              disabled
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
@@ -412,6 +419,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">City</label>
               <input
+              disabled
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
@@ -425,6 +433,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">City/Suburb</label>
               <input
+              disabled
                 name="citySuburb"
                 value={formData.citySuburb}
                 onChange={handleChange}
@@ -436,6 +445,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Zip/Post Code</label>
               <input
+              disabled
                 name="zipCode"
                 value={formData.zipCode}
                 onChange={handleChange}
