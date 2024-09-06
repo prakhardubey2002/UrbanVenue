@@ -1,15 +1,36 @@
-import React, { useState } from 'react'
-import NavTopBar from '../components/NavTopBar'
-import PieChartIcon from '@mui/icons-material/PieChart'
-import SearchIcon from '@mui/icons-material/Search'
-import HouseIcon from '@mui/icons-material/House'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import RefreshIcon from '@mui/icons-material/Refresh'
-import datax from '../data/Demodata.json'
-import DataTable from '../components/DataTable'
+import React, { useEffect, useState } from 'react';
+import NavTopBar from '../components/NavTopBar';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import SearchIcon from '@mui/icons-material/Search';
+import HouseIcon from '@mui/icons-material/House';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import DataTable from '../components/DataTable';
+import axios from 'axios';
 
 const Dashboard = () => {
-  const [data,setData]=useState(datax);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get('http://localhost:3000/api/invoices/invoices');
+        setData(response.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.message);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <div className="w-full h-screen flex flex-col">
       <NavTopBar />
@@ -26,6 +47,7 @@ const Dashboard = () => {
             <div className="bg-white rounded border border-Bordgrey">
               <div className="px-4 py-4">
                 <div className="flex flex-wrap justify-between mb-[21px]">
+                  {/* Filters and Search Inputs */}
                   <div className="flex flex-wrap md:flex-col md:space-y-2">
                     <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mr-2">
                       <SearchIcon className="text-Bordgrey" />
@@ -126,7 +148,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;

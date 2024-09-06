@@ -9,7 +9,21 @@ import FilterListIcon from '@mui/icons-material/FilterList'
 const Table = ({ data, setData }) => {
   const [open, setOpen] = useState(false)
   const [selectedRow, setSelectedRow] = useState(null)
+  const convertTo12HourFormat = (time24) => {
+    // Split the input time into hours and minutes
+    const [hours, minutes] = time24.split(':').map(Number)
 
+    // Determine AM/PM and adjust hours for 12-hour format
+    const period = hours >= 12 ? 'PM' : 'AM'
+    const hours12 = hours % 12 || 12 // Convert 0 hours to 12 for 12 AM
+
+    // Format hours and minutes with leading zero if necessary
+    const formattedTime = `${hours12}:${minutes
+      .toString()
+      .padStart(2, '0')} ${period}`
+
+    return formattedTime
+  }
   const handleClickOpen = (row) => {
     setSelectedRow(row)
     setOpen(true)
@@ -27,7 +41,7 @@ const Table = ({ data, setData }) => {
 
   const handleFilterClick = (guestName) => {
     const filteredData = data.filter((row) =>
-      row.GuestName.toLowerCase().includes(guestName.toLowerCase())
+      row.guestName.toLowerCase().includes(guestName.toLowerCase())
     )
     setData(filteredData)
   }
@@ -37,51 +51,139 @@ const Table = ({ data, setData }) => {
       <table className="min-w-full bg-white border-b border-b-gray-300">
         <thead>
           <tr>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">ID</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Guest Name</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Phone Number</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Property Name</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Booking Date</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Check-In</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Check-Out</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Maximum People</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Category</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Status</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Total</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Advance</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Pending</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Security</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Payment Mode</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Action</th>
-            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Filter</th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              ID
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Guest Name
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Phone Number
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Property Name
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Booking Date
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Check-In
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Check-Out
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Maximum People
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Category
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Status
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Total
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Advance
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Pending
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Security
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Advance Mode
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Action
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Filter
+            </th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, index) => (
             <tr key={index}>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.ID}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.GuestName}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.PhoneNumber}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.PropertyName}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.BookingDate}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.CheckIn}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.CheckOut}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.MaximumPeople}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.Category}</td>
-              <td className={`border-b px-4 py-4 flex items-center ${row.Status === 'Canceled' ? 'text-red-500' : row.Status === 'Paid' ? 'text-green-500' : 'text-blue-500'}`}>
-                <span className={`inline-block w-2 h-2 rounded-full mr-2 ${row.Status === 'Canceled' ? 'bg-red-500' : row.Status === 'Paid' ? 'bg-green-500' : 'bg-blue-500'}`} />
-                {row.Status}
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.bookingId}
               </td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.Total}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.Advance}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.Pending}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.Security}</td>
-              <td className="border-b px-4 py-4 whitespace-nowrap">{row.PaymentMode}</td>
-              <td className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap" onClick={() => handleClickOpen(row)}>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.guestName}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.phoneNumber}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.venue}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {new Date(row.checkInDate).toLocaleDateString()}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {new Date(row.checkInDate).toLocaleDateString()} -{' '}
+                {convertTo12HourFormat(row.checkInTime)}{' '}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {new Date(row.checkOutDate).toLocaleDateString()} -{' '}
+                {convertTo12HourFormat(row.checkOutTime)}{' '}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.maxPeople}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.occasion}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                <div
+                  className={`flex items-center ${
+                    row.status === 'Canceled'
+                      ? 'text-red-500'
+                      : row.status === 'Paid'
+                      ? 'text-green-500'
+                      : 'text-blue-500'
+                  }`}
+                >
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                      row.status === 'Canceled'
+                        ? 'bg-red-500'
+                        : row.status === 'Paid'
+                        ? 'bg-green-500'
+                        : 'bg-blue-500'
+                    }`}
+                  />
+                  {row.status}
+                </div>
+              </td>
+
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                ₹ {row.advance + row.securityAmount + row.balancePayment}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                ₹ {row.advance}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                ₹ {row.balancePayment}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                ₹ {row.securityAmount}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.advanceMode}
+              </td>
+              <td
+                className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap"
+                onClick={() => handleClickOpen(row)}
+              >
                 View Detail
               </td>
               <td className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap">
-                <FilterListIcon onClick={() => handleFilterClick(row.GuestName)} />
+                <FilterListIcon
+                  onClick={() => handleFilterClick(row.guestName)}
+                />
               </td>
             </tr>
           ))}
@@ -91,17 +193,17 @@ const Table = ({ data, setData }) => {
       {/* Dialog Popup */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Details</DialogTitle>
-        <DialogContent className="w-min-[50vw] h-min-[50vh] px-5 py-5 ">
-          <div className="grid grid-cols-2 gap-4">
+        <DialogContent className="w-min-[80vw] h-min-[50vh] px-5 py-5 ">
+          <div className="grid grid-cols-4 gap-4">
             <TextField
-              label="ID"
+              label="bookingId"
               fullWidth
               margin="dense"
-              value={selectedRow?.ID || ''}
+              value={selectedRow?.bookingId || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  ID: e.target.value,
+                  bookingId: e.target.value,
                 })
               }
             />
@@ -109,11 +211,11 @@ const Table = ({ data, setData }) => {
               label="Guest Name"
               fullWidth
               margin="dense"
-              value={selectedRow?.GuestName || ''}
+              value={selectedRow?.guestName || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  GuestName: e.target.value,
+                  guestName: e.target.value,
                 })
               }
             />
@@ -121,11 +223,11 @@ const Table = ({ data, setData }) => {
               label="Phone Number"
               fullWidth
               margin="dense"
-              value={selectedRow?.PhoneNumber || ''}
+              value={selectedRow?.phoneNumber || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  PhoneNumber: e.target.value,
+                  phoneNumber: e.target.value,
                 })
               }
             />
@@ -133,11 +235,11 @@ const Table = ({ data, setData }) => {
               label="Property Name"
               fullWidth
               margin="dense"
-              value={selectedRow?.PropertyName || ''}
+              value={selectedRow?.venue || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  PropertyName: e.target.value,
+                  venue: e.target.value,
                 })
               }
             />
@@ -145,47 +247,82 @@ const Table = ({ data, setData }) => {
               label="Booking Date"
               fullWidth
               margin="dense"
-              value={selectedRow?.BookingDate || ''}
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={
+                selectedRow?.checkInDate
+                  ? new Date(selectedRow.checkInDate)
+                      .toISOString()
+                      .substring(0, 10)
+                  : ''
+              }
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  BookingDate: e.target.value,
+                  checkInDate: e.target.value,
                 })
               }
             />
             <TextField
-              label="Check-In"
+              label="Check-In Time"
               fullWidth
               margin="dense"
-              value={selectedRow?.CheckIn || ''}
+              type="time"
+              InputLabelProps={{ shrink: true }}
+              value={selectedRow?.checkInTime || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  CheckIn: e.target.value,
+                  checkInTime: e.target.value,
+                })
+              }
+            />
+
+            <TextField
+              label="Check-Out Date"
+              fullWidth
+              margin="dense"
+              type="date"
+              InputLabelProps={{ shrink: true }}
+              value={
+                selectedRow?.checkOutDate
+                  ? new Date(selectedRow?.checkOutDate)
+                      .toISOString()
+                      .split('T')[0]
+                  : ''
+              }
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  checkOutDate: e.target.value,
                 })
               }
             />
             <TextField
-              label="Check-Out"
+              label="Check-Out Time"
               fullWidth
               margin="dense"
-              value={selectedRow?.CheckOut || ''}
+              type="time"
+              InputLabelProps={{ shrink: true }}
+              value={selectedRow?.checkOutTime || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  CheckOut: e.target.value,
+                  checkOutTime: e.target.value,
                 })
               }
             />
+
             <TextField
               label="Maximum People"
               fullWidth
               margin="dense"
-              value={selectedRow?.MaximumPeople || ''}
+              type='number'
+              value={selectedRow?.maxPeople || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  MaximumPeople: e.target.value,
+                  maxPeople: e.target.value,
                 })
               }
             />
@@ -193,11 +330,11 @@ const Table = ({ data, setData }) => {
               label="Category"
               fullWidth
               margin="dense"
-              value={selectedRow?.Category || ''}
+              value={selectedRow?.occasion|| ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  Category: e.target.value,
+                  occasion: e.target.value,
                 })
               }
             />
@@ -205,11 +342,11 @@ const Table = ({ data, setData }) => {
               label="Status"
               fullWidth
               margin="dense"
-              value={selectedRow?.Status || ''}
+              value={selectedRow?.status || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  Status: e.target.value,
+                  status: e.target.value,
                 })
               }
             />
@@ -217,7 +354,8 @@ const Table = ({ data, setData }) => {
               label="Total"
               fullWidth
               margin="dense"
-              value={selectedRow?.Total || ''}
+              // value={selectedRow?.Total || ''}
+              value={selectedRow?.advance + selectedRow?.securityAmount + selectedRow?.balancePayment || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
@@ -229,7 +367,7 @@ const Table = ({ data, setData }) => {
               label="Advance Amount"
               fullWidth
               margin="dense"
-              value={selectedRow?.Advance || ''}
+              value={selectedRow?.advance || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
@@ -238,10 +376,10 @@ const Table = ({ data, setData }) => {
               }
             />
             <TextField
-              label="Pending Amount"
+              label="Balance Payment"
               fullWidth
               margin="dense"
-              value={selectedRow?.Pending || ''}
+              value={selectedRow?.balancePayment || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
@@ -253,7 +391,7 @@ const Table = ({ data, setData }) => {
               label="Security"
               fullWidth
               margin="dense"
-              value={selectedRow?.Security || ''}
+              value={selectedRow?.securityAmount|| ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
@@ -262,18 +400,18 @@ const Table = ({ data, setData }) => {
               }
             />
             <TextField
-              label="Payment Mode"
+              label="Advance Mode"
               fullWidth
               margin="dense"
-              value={selectedRow?.PaymentMode || ''}
+              value={selectedRow?.advanceMode|| ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  PaymentMode: e.target.value,
+                  advanceMode: e.target.value,
                 })
               }
             />
-            <TextField
+            {/* <TextField
               label="Organiser"
               fullWidth
               margin="dense"
@@ -284,7 +422,7 @@ const Table = ({ data, setData }) => {
                   Organiser: e.target.value,
                 })
               }
-            />
+            /> */}
           </div>
         </DialogContent>
         <DialogActions>

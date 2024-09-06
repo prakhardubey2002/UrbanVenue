@@ -46,6 +46,7 @@ const CreateVenueEvent = () => {
     securityAmount: '',
 
     // termsConditions: '',
+    status:'',
     venue: venue,
     addressLine1: data.addressLine1,
     addressLine2: data.addressLine2,
@@ -310,6 +311,21 @@ const CreateVenueEvent = () => {
           >
             <option value="yes">Yes</option>
             <option value="no">No</option>
+          </select>
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">
+            status
+          </label>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            <option value="Upcoming">Upcoming</option>
+            <option value="Paid">Paid</option>
+            <option value="Canceled">Canceled</option>
           </select>
         </div>
 
@@ -599,6 +615,12 @@ const CreateVenueEvent = () => {
                   Security Amount:
                 </td>
                 <td className="p-2">{formData.securityAmount}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Status:
+                </td>
+                <td className="p-2">{formData.status}</td>
               </tr>
 
               <tr className="border-b border-gray-300">
