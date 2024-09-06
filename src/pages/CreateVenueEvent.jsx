@@ -39,14 +39,15 @@ const CreateVenueEvent = () => {
     farmTref: '',
     otherServices: '',
     advance: '',
-    advanceCollectedBy: 'owner',
+    advanceCollectedBy: 'Not Assigned',
+    pendingCollectedBy: 'Not Assigned',
     showAdvanceDetails: '',
     advanceMode: 'cash',
     balancePayment: '',
     securityAmount: '',
 
     // termsConditions: '',
-    status:'',
+    status: '',
     venue: venue,
     addressLine1: data.addressLine1,
     addressLine2: data.addressLine2,
@@ -291,12 +292,26 @@ const CreateVenueEvent = () => {
           <label className="font-semibold">Advance Collected By</label>
           <select
             name="advanceCollectedBy"
-            value={formData.advanceCollectedBy}
+            value={formData.advanceCollectedBy || 'Not Assigned'}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
-            <option value="owner">Owner</option>
-            <option value="guest">Guest</option>
+            <option value="Not Assigned">Not Assigned</option>
+            <option value="Farm Owner">Farm Owner</option>
+            <option value="Organiser">Organiser</option>
+          </select>
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Pending Collected By</label>
+          <select
+            name="pendingCollectedBy"
+            value={formData.pendingCollectedBy || 'Not Assigned'}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            <option value="Not Assigned">Not Assigned</option>
+            <option value="Farm Owner">Farm Owner</option>
+            <option value="Organiser">Organiser</option>
           </select>
         </div>
         <div className="flex flex-col border-b">
@@ -314,9 +329,7 @@ const CreateVenueEvent = () => {
           </select>
         </div>
         <div className="flex flex-col border-b">
-          <label className="font-semibold">
-            status
-          </label>
+          <label className="font-semibold">status</label>
           <select
             name="status"
             value={formData.status}
@@ -628,6 +641,18 @@ const CreateVenueEvent = () => {
                   Venue:
                 </td>
                 <td className="p-2">{formData.venue}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                 Advance Collected By:
+                </td>
+                <td className="p-2">{formData.advanceCollectedBy}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                Pending Collected By:
+                </td>
+                <td className="p-2">{formData.pendingCollectedBy}</td>
               </tr>
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">

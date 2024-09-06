@@ -5,7 +5,8 @@ import DialogContent from '@mui/material/DialogContent'
 import DialogTitle from '@mui/material/DialogTitle'
 import TextField from '@mui/material/TextField'
 import FilterListIcon from '@mui/icons-material/FilterList'
-
+import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
+import { toast } from 'react-hot-toast'
 const Table = ({ data, setData }) => {
   const [open, setOpen] = useState(false)
   const [selectedRow, setSelectedRow] = useState(null)
@@ -34,8 +35,40 @@ const Table = ({ data, setData }) => {
     setSelectedRow(null)
   }
 
-  const handleFormSubmit = () => {
-    console.log('Form submitted:', selectedRow)
+  const handleFormSubmit = async () => {
+    try {
+      // Update API URL (use dynamic ID from selectedRow if needed)
+      const apiUrl = `http://localhost:3000/api/invoices/invoices/${selectedRow._id}`
+
+      // Send PUT request to update the invoice
+      const response = await fetch(apiUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(selectedRow),
+      })
+
+      // Check if the response is ok
+      if (!response.ok) {
+        throw new Error('Failed to update the invoice')
+      }
+      if (response.ok) {
+        toast.success('Updated Successfully')
+      }
+
+      // Parse the response
+      const result = await response.json()
+      console.log('Form submitted:', result)
+
+      // Handle successful update (e.g., show a success message)
+      // For example, you might want to display a notification
+    } catch (error) {
+      console.error('Error updating the invoice:', error)
+      // Handle error (e.g., show an error message)
+    }
+
+    // Close the dialog
     handleClose()
   }
 
@@ -317,7 +350,7 @@ const Table = ({ data, setData }) => {
               label="Maximum People"
               fullWidth
               margin="dense"
-              type='number'
+              type="number"
               value={selectedRow?.maxPeople || ''}
               onChange={(e) =>
                 setSelectedRow({
@@ -330,7 +363,7 @@ const Table = ({ data, setData }) => {
               label="Category"
               fullWidth
               margin="dense"
-              value={selectedRow?.occasion|| ''}
+              value={selectedRow?.occasion || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
@@ -338,24 +371,35 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Status</InputLabel>
+              <Select
+                value={selectedRow?.status || 'Upcoming'}
+                onChange={(e) =>
+                  setSelectedRow({
+                    ...selectedRow,
+                    status: e.target.value,
+                  })
+                }
+                label="Status"
+              >
+                <MenuItem value="Upcoming">Upcoming</MenuItem>
+                <MenuItem value="Paid">Paid</MenuItem>
+                <MenuItem value="Canceled">Canceled</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
-              label="Status"
-              fullWidth
-              margin="dense"
-              value={selectedRow?.status || ''}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  status: e.target.value,
-                })
-              }
-            />
-            <TextField
+            disabled
               label="Total"
+              type="number"
               fullWidth
               margin="dense"
               // value={selectedRow?.Total || ''}
-              value={selectedRow?.advance + selectedRow?.securityAmount + selectedRow?.balancePayment || ''}
+              value={(
+                (parseInt(selectedRow?.advance) || 0) +
+                (parseInt(selectedRow?.securityAmount) || 0) +
+                (parseInt(selectedRow?.balancePayment) || 0)
+              ).toString()}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
@@ -371,46 +415,86 @@ const Table = ({ data, setData }) => {
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  Advance: e.target.value,
+                  advance: e.target.value,
                 })
               }
             />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Advance Collected By</InputLabel>
+              <Select
+                value={selectedRow?.advanceCollectedBy || 'Not Assigned'}
+                onChange={(e) =>
+                  setSelectedRow({
+                    ...selectedRow,
+                    advanceCollectedBy: e.target.value,
+                  })
+                }
+                label="Advance Collected By"
+              >
+                <MenuItem value="Not Assigned">Not Assigned</MenuItem>
+                <MenuItem value="Farm Owner">Farm Owner</MenuItem>
+                <MenuItem value="Organiser">Organiser</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               label="Balance Payment"
+              type="number"
               fullWidth
               margin="dense"
               value={selectedRow?.balancePayment || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  Pending: e.target.value,
+                  balancePayment: e.target.value,
                 })
               }
             />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Pending Collected By</InputLabel>
+              <Select
+                value={selectedRow?.pendingCollectedBy || 'Not Assigned'}
+                onChange={(e) =>
+                  setSelectedRow({
+                    ...selectedRow,
+                    pendingCollectedBy: e.target.value,
+                  })
+                }
+                label="Pending Collected By"
+              >
+                <MenuItem value="Not Assigned">Not Assigned</MenuItem>
+                <MenuItem value="Farm Owner">Farm Owner</MenuItem>
+                <MenuItem value="Organiser">Organiser</MenuItem>
+              </Select>
+            </FormControl>
             <TextField
               label="Security"
+              type="number"
               fullWidth
               margin="dense"
-              value={selectedRow?.securityAmount|| ''}
+              value={selectedRow?.securityAmount || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  Security: e.target.value,
+                  securityAmount: e.target.value,
                 })
               }
             />
-            <TextField
-              label="Advance Mode"
-              fullWidth
-              margin="dense"
-              value={selectedRow?.advanceMode|| ''}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  advanceMode: e.target.value,
-                })
-              }
-            />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Advance Mode</InputLabel>
+              <Select
+                value={selectedRow?.advanceMode || ''}
+                onChange={(e) =>
+                  setSelectedRow({
+                    ...selectedRow,
+                    advanceMode: e.target.value,
+                  })
+                }
+                label="Advance Mode"
+              >
+                <MenuItem value="Cash">Cash</MenuItem>
+                <MenuItem value="Online">Online</MenuItem>
+              </Select>
+            </FormControl>
             {/* <TextField
               label="Organiser"
               fullWidth
