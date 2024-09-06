@@ -12,6 +12,7 @@ import {
 import CreateVenueEvent from './pages/CreateVenueEvent'
 import Invoice from './pages/Invoice'
 import { AuthProvider } from './context/context'
+import { Toaster } from 'react-hot-toast'
 const App = () => {
   return (
     <div>
@@ -23,6 +24,7 @@ const App = () => {
           <Route path={CREATE_FORM} element={<CreateVenueEvent />} />
           <Route path={INVOICE_ROUTE} element={<Invoice />} />
         </Routes>
+        <Toaster position="top-right" reverseOrder={false} />
       </AuthProvider>
     </div>
   )

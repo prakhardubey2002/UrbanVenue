@@ -7,6 +7,7 @@ import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp'
 import { Link, useNavigate } from 'react-router-dom'
 import { CREATE_ROUTE, SIGNIN_ROUTE } from '../routes/Routes'
 import AuthContext from '../context/context'
+import { toast } from 'react-hot-toast'
 
 const NavTopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false)
@@ -17,6 +18,7 @@ const NavTopBar = () => {
   }
   const Logout=()=>{
     logout();
+    toast.success("Logged out")
     navigate(SIGNIN_ROUTE);
   }
 

@@ -11,6 +11,8 @@ import {
   Button,
 } from '@mui/material'
 import { INVOICE_ROUTE } from '../routes/Routes'
+import axios from 'axios'
+import { Toaster, toast } from 'react-hot-toast'
 const CreateVenueEvent = () => {
   const { venue, date } = useParams()
   const location = useLocation()
@@ -82,12 +84,24 @@ const CreateVenueEvent = () => {
     // Redirect to invoice page or perform any action
     // history.push('/invoice-page');
     // navigate();
-    navigate(INVOICE_ROUTE, { state: formData })
+    axios
+      .post('http://localhost:3000/api/invoices/invoices', formData)
+      .then((response) => {
+        console.log('Form submitted successfully:', response.data)
+        toast.success('Successfully Saved data!')
+        navigate(INVOICE_ROUTE, { state: formData })
+        // Handle success (e.g., redirect or show a success message)
+      })
+      .catch((error) => {
+        console.error('Error submitting form:', error)
+        // Handle error (e.g., show an error message)
+      })
   }
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <NavTopBar />
       <BreadCrumbBar />
+      <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl ">Create Venue Event</h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm ">
         <div className="flex flex-col border-b">
@@ -369,6 +383,7 @@ const CreateVenueEvent = () => {
           <div className=" my-8 flex flex-col border-b">
             <label className="font-semibold">Venue</label>
             <input
+              disabled
               name="venue"
               value={formData.venue}
               onChange={handleChange}
@@ -381,7 +396,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Address Line 1</label>
               <input
-              disabled
+                disabled
                 name="addressLine1"
                 value={formData.addressLine1}
                 onChange={handleChange}
@@ -393,7 +408,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Address Line 2</label>
               <input
-              disabled
+                disabled
                 name="addressLine2"
                 value={formData.addressLine2}
                 onChange={handleChange}
@@ -407,7 +422,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Country</label>
               <input
-              disabled
+                disabled
                 name="country"
                 value={formData.country}
                 onChange={handleChange}
@@ -419,7 +434,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">City</label>
               <input
-              disabled
+                disabled
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
@@ -433,7 +448,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">City/Suburb</label>
               <input
-              disabled
+                disabled
                 name="citySuburb"
                 value={formData.citySuburb}
                 onChange={handleChange}
@@ -445,7 +460,7 @@ const CreateVenueEvent = () => {
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Zip/Post Code</label>
               <input
-              disabled
+                disabled
                 name="zipCode"
                 value={formData.zipCode}
                 onChange={handleChange}
