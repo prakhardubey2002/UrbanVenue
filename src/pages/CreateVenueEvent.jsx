@@ -350,8 +350,8 @@ const CreateVenueEvent = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
-            <option value="cash">Cash</option>
-            <option value="online">Online</option>
+            <option value="Cash">Cash</option>
+            <option value="Online">Online</option>
           </select>
         </div>
 

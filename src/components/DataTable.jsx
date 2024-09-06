@@ -227,8 +227,9 @@ const Table = ({ data, setData }) => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Details</DialogTitle>
         <DialogContent className="w-min-[80vw] h-min-[50vh] px-5 py-5 ">
-          <div className="grid grid-cols-4 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <TextField
+            disabled
               label="bookingId"
               fullWidth
               margin="dense"
@@ -409,6 +410,7 @@ const Table = ({ data, setData }) => {
             />
             <TextField
               label="Advance Amount"
+              type='number'
               fullWidth
               margin="dense"
               value={selectedRow?.advance || ''}
