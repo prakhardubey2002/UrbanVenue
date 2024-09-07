@@ -33,18 +33,18 @@ const Invoice = () => {
               <p>Invoice ID: {formData.bookingId}</p>
             </div>
             <div className="w-[90%] flex justify-between">
-              <p>{formData.addressLine1}</p>
+              <p>{formData.phoneNumber}</p>
               <p>Order Date: {formData.checkInDate}</p>
             </div>
             <div className="w-[90%] flex justify-between">
-              <p>Host Name: {formData.hostOwnerName}</p>
+              <p> </p>
               <p>{formData.venue}</p>
             </div>
             <div className="w-[90%] flex justify-between">
               <p>
-                {formData.zipCode}, {formData.city}
+                
               </p>
-              <p>{formData.addressLine2}</p>
+              <p>{formData.addressLine1}</p>
             </div>
           </div>
         </div>

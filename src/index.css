@@ -3,32 +3,41 @@
 @tailwind utilities;
 
 .button {
-    @apply w-fit bg-Primary text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
-  }
+  @apply w-fit bg-Primary text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
+}
 .button2 {
-    @apply w-fit bg-Textgray text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
+  @apply w-fit bg-Textgray text-white h-[40px] flex justify-center items-center rounded border-t border-transparent px-12 py-[1px];
+}
+
+@layer utilities {
+  /* Scrollbar width */
+  ::-webkit-scrollbar {
+    width: 6px;
   }
-  
-  @layer utilities {
-    /* Scrollbar width */
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-  
-    /* Scrollbar track */
-    ::-webkit-scrollbar-track {
-      background: #f1f1f1;
-    }
-  
-    /* Scrollbar handle */
-    ::-webkit-scrollbar-thumb {
-      background: #ec7e7d;
-      border-radius: 2rem;
-    }
-  
-    /* Scrollbar handle on hover */
-    ::-webkit-scrollbar-thumb:hover {
-      background: #c24444;
-    }
+
+  /* Scrollbar track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
   }
-  
+
+  /* Scrollbar handle */
+  ::-webkit-scrollbar-thumb {
+    background: #ec7e7d;
+    border-radius: 2rem;
+  }
+
+  /* Scrollbar handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #c24444;
+  }
+}
+input[type='number']::-webkit-outer-spin-button,
+input[type='number']::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type='number'] {
+  -moz-appearance: textfield;
+}

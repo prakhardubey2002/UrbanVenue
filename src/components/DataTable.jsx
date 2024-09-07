@@ -27,6 +27,7 @@ const Table = ({ data, setData }) => {
   }
   const handleClickOpen = (row) => {
     setSelectedRow(row)
+    console.log(row)
     setOpen(true)
   }
 
@@ -227,9 +228,9 @@ const Table = ({ data, setData }) => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Details</DialogTitle>
         <DialogContent className="w-min-[80vw] h-min-[50vh] px-5 py-5 ">
-          <div className="grid grid-cols-3 gap-4">
+          <div className="grid grid-cols-2 gap-4">
             <TextField
-            disabled
+              disabled
               label="bookingId"
               fullWidth
               margin="dense"
@@ -360,18 +361,26 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
-            <TextField
-              label="Category"
-              fullWidth
-              margin="dense"
-              value={selectedRow?.occasion || ''}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  occasion: e.target.value,
-                })
-              }
-            />
+            <FormControl fullWidth margin="dense">
+              <InputLabel>Occasion</InputLabel>
+              <Select
+                label="Occasion"
+                value={selectedRow?.occasion || ''}
+                onChange={(e) =>
+                  setSelectedRow({
+                    ...selectedRow,
+                    occasion: e.target.value,
+                  })
+                }
+              >
+                <MenuItem value="">Select Occasion</MenuItem>
+                <MenuItem value="Wedding">Wedding</MenuItem>
+                <MenuItem value="Engagement">Engagement</MenuItem>
+                <MenuItem value="Office Party">Office Party</MenuItem>
+                <MenuItem value="Haldi Ceremony">Haldi Ceremony</MenuItem>
+                <MenuItem value="Mehndi Ceremony">Mehndi Ceremony</MenuItem>
+              </Select>
+            </FormControl>
             <FormControl fullWidth margin="dense">
               <InputLabel>Status</InputLabel>
               <Select
@@ -389,8 +398,8 @@ const Table = ({ data, setData }) => {
                 <MenuItem value="Canceled">Canceled</MenuItem>
               </Select>
             </FormControl>
-            <TextField
-            disabled
+            {/* <TextField
+              disabled
               label="Total"
               type="number"
               fullWidth
@@ -407,10 +416,24 @@ const Table = ({ data, setData }) => {
                   Total: e.target.value,
                 })
               }
+            /> */}
+            <TextField
+              disabled
+              label="Total"
+              type="number"
+              fullWidth
+              margin="dense"
+              value={
+                parseFloat(selectedRow?.totalBooking || 0) +
+                parseFloat(selectedRow?.securityAmount || 0)
+              }
+              InputProps={{
+                readOnly: true, 
+              }}
             />
             <TextField
               label="Advance Amount"
-              type='number'
+              type="number"
               fullWidth
               margin="dense"
               value={selectedRow?.advance || ''}
@@ -439,11 +462,14 @@ const Table = ({ data, setData }) => {
               </Select>
             </FormControl>
             <TextField
+              disabled
               label="Balance Payment"
               type="number"
               fullWidth
               margin="dense"
-              value={selectedRow?.balancePayment || ''}
+              value={
+                (selectedRow?.totalBooking || 0) - (selectedRow?.advance || 0)
+              }
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,

@@ -19,9 +19,9 @@ const CreateVenueEvent = () => {
   const data = location.state
   const navigate = useNavigate()
   // const history = useHistory();
-  // useEffect(() => {
-  //   console.log(data)
-  // }, [])
+  useEffect(() => {
+    console.log(data)
+  }, [])
   // State to manage form values
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
@@ -52,7 +52,7 @@ const CreateVenueEvent = () => {
     addressLine1: data.addressLine1,
     addressLine2: data.addressLine2,
     country: data.country,
-    city: data.city,
+    state: data.state,
     citySuburb: data.suburb,
     zipCode: data.zipCode,
     urbanvenuecommission: 5000,
@@ -61,7 +61,12 @@ const CreateVenueEvent = () => {
     const timestamp = new Date().getTime()
     return `BOOK-${venue}-${date}-${timestamp}`
   }
-
+  useEffect(() => {
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      balancePayment: prevFormData.totalBooking - prevFormData.advance,
+    }))
+  }, [formData.totalBooking, formData.advance])
   // State to manage dialog visibility
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -144,6 +149,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="9847777780"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -209,19 +215,26 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="150"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
           <label className="font-semibold">Occasion</label>
-          <input
+          <select
             name="occasion"
             value={formData.occasion}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Wedding"
-          />
+          >
+            <option value="">Select Occasion</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Engagement">Engagement</option>
+            <option value="Office Party">Office Party</option>
+            <option value="Haldi Ceremony">Haldi Ceremony</option>
+            <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+          </select>
         </div>
+
         <div className="flex flex-col border-b">
           <label className="font-semibold">Host Owner Name</label>
           <input
@@ -242,6 +255,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Host number here"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -253,6 +267,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Total Booking"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -264,6 +279,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="50,000"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col  border-b ">
@@ -275,6 +291,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm "
             type="number"
             placeholder="50,000"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -286,6 +303,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Advance Payment"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -358,12 +376,14 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Balance Payment</label>
           <input
+            disabled
             name="balancePayment"
             value={formData.balancePayment}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Balance Payment"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -375,6 +395,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Security Amount"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -386,6 +407,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Commission"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col  border-b ">
@@ -461,15 +483,15 @@ const CreateVenueEvent = () => {
               />
             </div>
             <div className=" flex-1 flex flex-col">
-              <label className="font-semibold">City</label>
+              <label className="font-semibold">State</label>
               <input
                 disabled
-                name="city"
-                value={formData.city}
+                name="state"
+                value={formData.state}
                 onChange={handleChange}
                 className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
                 type="text"
-                placeholder="Enter City"
+                placeholder="Enter state"
               />
             </div>
           </div>
@@ -644,13 +666,13 @@ const CreateVenueEvent = () => {
               </tr>
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
-                 Advance Collected By:
+                  Advance Collected By:
                 </td>
                 <td className="p-2">{formData.advanceCollectedBy}</td>
               </tr>
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
-                Pending Collected By:
+                  Pending Collected By:
                 </td>
                 <td className="p-2">{formData.pendingCollectedBy}</td>
               </tr>
@@ -674,9 +696,9 @@ const CreateVenueEvent = () => {
               </tr>
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
-                  City:
+                  State:
                 </td>
-                <td className="p-2">{formData.city}</td>
+                <td className="p-2">{formData.state}</td>
               </tr>
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
