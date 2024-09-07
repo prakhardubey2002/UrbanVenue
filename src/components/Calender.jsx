@@ -12,9 +12,9 @@ import {
 
 const localizer = momentLocalizer(moment);
 
-const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSelectedProperty,setven }) => {
+const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSelectedProperty, setven }) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
-  const [defaultDate, setDefaultDate] = useState(new Date());
+  const [defaultDate, setDefaultDate] = useState(new Date(intializer));
 
   useEffect(() => {
     if (events.length > 0) {
@@ -28,12 +28,12 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
       setSelectedDate(selectedSlot.toISOString());
       setven(venue)
     },
-    [setSelectedDate]
+    [setSelectedDate, venue]
   );
 
   const handleSelectEvent = useCallback((event) => {
     setSelectedEvent(event);
-    setSelectedProperty(venue); // Update the selected property when an event is selected
+    setSelectedProperty(venue);
   }, [venue, setSelectedProperty]);
 
   const handleCloseDialog = () => {
@@ -42,9 +42,9 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
 
   return (
     <div className="">
-      <div className="w-fit m-1 px-1 py-1">
+      <div className="w-fit m-4 px-1 py-1">
         {venue && (
-          <h2 className="px-1 py-1 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
+          <h2 className="px-2 py-2 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
             {venue}
           </h2>
         )}

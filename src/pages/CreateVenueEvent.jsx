@@ -347,7 +347,7 @@ const CreateVenueEvent = () => {
           </select>
         </div>
         <div className="flex flex-col border-b">
-          <label className="font-semibold">status</label>
+          <label className="font-semibold">Event status</label>
           <select
             name="status"
             value={formData.status}

@@ -127,6 +127,12 @@ const CreatebyDateEvent = () => {
     [selectedState, selectedPlace, selectedProperty, selectedDate]
   )
 
+  useEffect(() => {
+    if (selectedDate) {
+      handleFindProperty()
+    }
+  }, [selectedDate, handleFindProperty])
+
   return (
     <div className="h-full w-[100%] justify-center items-center">
       <div className="flex flex-wrap justify-between items-end">
@@ -175,12 +181,7 @@ const CreatebyDateEvent = () => {
             <label className="font-semibold mb-2">
               Date<span className="text-Primary">*</span>
             </label>
-            <Link
-              onClick={handleFindProperty}
-              className="text-Primary cursor-pointer"
-            >
-              Find Property
-            </Link>
+            {/* Removed Link component */}
           </div>
           <input
             type="date"
@@ -232,6 +233,7 @@ const CreatebyDateEvent = () => {
             setven={setven}
           />
         ))}
+      
       </div>
     </div>
   )
