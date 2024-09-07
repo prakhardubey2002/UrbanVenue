@@ -56,6 +56,10 @@ const Table = ({ data, setData }) => {
       }
       if (response.ok) {
         toast.success('Updated Successfully')
+        setTimeout(()=>{
+
+          window.location.reload()
+        },1000)
       }
 
       // Parse the response
@@ -418,15 +422,21 @@ const Table = ({ data, setData }) => {
               }
             /> */}
             <TextField
-              disabled
+              // disabled
               label="Total"
               type="number"
               fullWidth
               margin="dense"
               value={
-                parseFloat(selectedRow?.totalBooking || 0) +
-                parseFloat(selectedRow?.securityAmount || 0)
+                parseFloat(selectedRow?.totalBooking || 0) 
+                +parseFloat(selectedRow?.securityAmount || 0)
               }
+              // onChange={(e) =>
+              //   setSelectedRow({
+              //     ...selectedRow,
+              //     totalBooking: e.target.value,
+              //   })
+              // }
               InputProps={{
                 readOnly: true, 
               }}

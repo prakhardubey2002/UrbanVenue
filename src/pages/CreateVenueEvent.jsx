@@ -147,7 +147,7 @@ const CreateVenueEvent = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="number"
+            type="tel"
             placeholder="9847777780"
             onWheel={(e) => e.target.blur()}
           />
