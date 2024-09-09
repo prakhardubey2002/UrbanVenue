@@ -1,62 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import NavTopBar from '../components/NavTopBar'
-import PieChartIcon from '@mui/icons-material/PieChart'
-import SearchIcon from '@mui/icons-material/Search'
-import HouseIcon from '@mui/icons-material/House'
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
-import RefreshIcon from '@mui/icons-material/Refresh'
-import DataTable from '../components/DataTable'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react';
+import NavTopBar from '../components/NavTopBar';
+import PieChartIcon from '@mui/icons-material/PieChart';
+import SearchIcon from '@mui/icons-material/Search';
+import HouseIcon from '@mui/icons-material/House';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import DataTable from '../components/DataTable';
+import axios from 'axios';
 
 const Dashboard = () => {
-  const [data, setData] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
-  const [guests, setGuests] = useState([]) // State to store guest names
-  const [filteredGuests, setFilteredGuests] = useState([]) // State for autocomplete suggestions
-  const [searchTerm, setSearchTerm] = useState('')
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [guests, setGuests] = useState([]);
+  const [owners, setOwners] = useState([]);
+  const [properties, setProperties] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedGuest, setSelectedGuest] = useState('');
+  const [selectedOwner, setSelectedOwner] = useState('');
+  const [selectedProperty, setSelectedProperty] = useState('');
 
+  const find= ()=>{
+    console.log(`guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} `)
+  }
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/invoices/invoices')
-        setData(response.data)
-        setLoading(false)
+        const response = await Promise.all([
+          axios.get('http://localhost:3000/api/invoices/invoices'),
+          axios.get('http://localhost:3000/api/invoices/guests'),
+          axios.get('http://localhost:3000/api/invoices/owners'),
+          axios.get('http://localhost:3000/api/invoices/venues')
+        ]);
+        
+        setData(response[0].data);
+        setGuests(response[1].data);
+        setOwners(response[2].data);
+        setProperties(response[3].data);
+
+        setLoading(false);
       } catch (error) {
-        setError(error.message)
-        setLoading(false)
+        setError(error.message);
+        setLoading(false);
       }
-    }
+    };
 
-    fetchData()
-  }, [])
+    fetchData();
+  }, []);
 
-  useEffect(() => {
-    const fetchGuests = async () => {
-      try {
-        const response = await axios.get('http://localhost:3000/api/invoices/guests')
-        setGuests(response.data)
-      } catch (error) {
-        console.error('Error fetching guests:', error)
-      }
-    }
+  const handleInputChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
 
-    fetchGuests()
-  }, [])
-
-  useEffect(() => {
-    if (searchTerm.trim() === '') {
-      setFilteredGuests([])
-    } else {
-      const filtered = guests.filter((guest) =>
-        guest.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-      setFilteredGuests(filtered)
-    }
-  }, [searchTerm, guests])
-
-  if (loading) return <div>Loading...</div>
-  if (error) return <div>Error: {error}</div>
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -80,46 +77,49 @@ const Dashboard = () => {
                       <SearchIcon className="text-Bordgrey" />
                       <input
                         type="text"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
+                        value={selectedGuest}
+                        onChange={(e) => setSelectedGuest(e.target.value)}
                         className="outline-none border-none px-2 pr-12"
-                        placeholder="Search By guest Name"
+                        placeholder="Select Guest"
+                        list="guestList"
                       />
-                      {filteredGuests.length > 0 && (
-                        <ul 
-                          className="absolute bg-white border border-Bordgrey w-full mt-1 max-h-40 overflow-y-auto z-10 p-2"
-                          style={{ top: 'calc(100% + 8px)' }}
-                        >
-                          {filteredGuests.map((guest, index) => (
-                            <li
-                              key={index}
-                              className="cursor-pointer hover:bg-gray-200"
-                              onClick={() => {
-                                setSearchTerm(guest)
-                                setFilteredGuests([])
-                              }}
-                            >
-                              {guest}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                      <datalist id="guestList">
+                        {guests.map((guest, index) => (
+                          <option key={index} value={guest}>{guest}</option>
+                        ))}
+                      </datalist>
                     </div>
                     <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mr-2">
                       <HouseIcon className="text-Bordgrey" />
                       <input
                         type="text"
+                        value={selectedOwner}
+                        onChange={(e) => setSelectedOwner(e.target.value)}
                         className="outline-none border-none px-2"
-                        placeholder="Search by property name"
+                        placeholder="Select Owner"
+                        list="ownerList"
                       />
+                      <datalist id="ownerList">
+                        {owners.map((owner, index) => (
+                          <option key={index} value={owner}>{owner}</option>
+                        ))}
+                      </datalist>
                     </div>
                     <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md">
                       <HouseIcon className="text-Bordgrey" />
                       <input
                         type="text"
+                        value={selectedProperty}
+                        onChange={(e) => setSelectedProperty(e.target.value)}
                         className="outline-none border-none px-2"
-                        placeholder="Search by owner name"
+                        placeholder="Select Property"
+                        list="propertyList"
                       />
+                      <datalist id="propertyList">
+                        {properties.map((property, index) => (
+                          <option key={index} value={property}>{property}</option>
+                        ))}
+                      </datalist>
                     </div>
                     <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mt-2 md:mt-0">
                       <CalendarMonthIcon className="text-Bordgrey" />
@@ -161,13 +161,6 @@ const Dashboard = () => {
                         placeholder="Status"
                       />
                     </div>
-                    {/* <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <input
-                        type="text"
-                        className="outline-none border-none px-2"
-                        placeholder="Last 30 days"
-                      />
-                    </div> */}
                     <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
                       <input
                         type="number"
@@ -184,7 +177,7 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="mt-2 md:mt-0">
-                    <button className="w-full bg-Primary text-white h-[40px] flex items-center justify-center rounded-tl-[3px] border-t border-transparent px-4 py-[10px]">
+                    <button onClick={()=>find()} className="w-full bg-Primary text-white h-[40px] flex items-center justify-center rounded-tl-[3px] border-t border-transparent px-4 py-[10px]">
                       <p>Find</p>
                     </button>
                   </div>
@@ -196,7 +189,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Dashboard
+export default Dashboard;
