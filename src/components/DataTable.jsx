@@ -96,6 +96,9 @@ const Table = ({ data, setData }) => {
               Guest Name
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+             Owner Name
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Phone Number
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
@@ -150,6 +153,9 @@ const Table = ({ data, setData }) => {
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
                 {row.guestName}
+              </td>
+              <td className="border-b px-4 py-4 whitespace-nowrap">
+                {row.hostOwnerName}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
                 {row.phoneNumber}

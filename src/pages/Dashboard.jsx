@@ -1,27 +1,65 @@
-import React, { useEffect, useState } from 'react';
-import NavTopBar from '../components/NavTopBar';
-import PieChartIcon from '@mui/icons-material/PieChart';
-import SearchIcon from '@mui/icons-material/Search';
-import HouseIcon from '@mui/icons-material/House';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import DataTable from '../components/DataTable';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react'
+import NavTopBar from '../components/NavTopBar'
+import PieChartIcon from '@mui/icons-material/PieChart'
+import SearchIcon from '@mui/icons-material/Search'
+import HouseIcon from '@mui/icons-material/House'
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import DataTable from '../components/DataTable'
+import axios from 'axios'
 
 const Dashboard = () => {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [guests, setGuests] = useState([]);
-  const [owners, setOwners] = useState([]);
-  const [properties, setProperties] = useState([]);
-  const [searchTerm, setSearchTerm] = useState('');
-  const [selectedGuest, setSelectedGuest] = useState('');
-  const [selectedOwner, setSelectedOwner] = useState('');
-  const [selectedProperty, setSelectedProperty] = useState('');
+  const [data, setData] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
+  const [guests, setGuests] = useState([])
+  const [owners, setOwners] = useState([])
+  const [properties, setProperties] = useState([])
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedGuest, setSelectedGuest] = useState('')
+  const [selectedOwner, setSelectedOwner] = useState('')
+  const [phonenumber, setPhonenumber] = useState([])
+  const [selectedphonenumber, setSelectedPhonenumber] = useState([])
+  const [selectedProperty, setSelectedProperty] = useState('')
+  const [selectedStatus, setSelectedStatus] = useState('')
+  const [startDate, setStartDate] = useState('')
+  const [endDate, setEndDate] = useState('')
+  // const find = () => {
+  //   console.log(
+  //     `guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} Phone : ${selectedphonenumber} status : ${selectedStatus} start: ${startDate} End : ${endDate}  `
+  //   )
+  // }
+  const find = async () => {
+    try {
+      
+      console.log(
+             `guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} Phone : ${selectedphonenumber} status : ${selectedStatus} start: ${startDate} End : ${endDate}  `
+         )
+      const queryParams = {
+        selectedGuest,
+        selectedOwner,
+        selectedProperty,
+        selectedPhoneNumber: selectedphonenumber || '',
+        selectedStatus,
+        startDate,
+        endDate,
+      }
 
-  const find= ()=>{
-    console.log(`guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} `)
+      // Convert the query params to a URL search string
+      const queryString = new URLSearchParams(queryParams).toString()
+
+      // Make API request
+      const response = await axios.get(
+        `http://localhost:3000/api/invoices/search?${queryString}`
+      )
+
+      // Set the data received from the API
+      setData(response.data.data)
+
+      console.log(`Filtered Invoices:`, response.data.data)
+    } catch (error) {
+      console.error('Error fetching filtered invoices:', error)
+    }
   }
   useEffect(() => {
     const fetchData = async () => {
@@ -30,30 +68,40 @@ const Dashboard = () => {
           axios.get('http://localhost:3000/api/invoices/invoices'),
           axios.get('http://localhost:3000/api/invoices/guests'),
           axios.get('http://localhost:3000/api/invoices/owners'),
-          axios.get('http://localhost:3000/api/invoices/venues')
-        ]);
-        
-        setData(response[0].data);
-        setGuests(response[1].data);
-        setOwners(response[2].data);
-        setProperties(response[3].data);
+          axios.get('http://localhost:3000/api/invoices/venues'),
+          axios.get('http://localhost:3000/api/invoices/unique-phone-numbers'),
+        ])
 
-        setLoading(false);
+        setData(response[0].data)
+        setGuests(response[1].data)
+        setOwners(response[2].data)
+        setProperties(response[3].data)
+        setPhonenumber(response[4].data)
+
+        setLoading(false)
       } catch (error) {
-        setError(error.message);
-        setLoading(false);
+        setError(error.message)
+        setLoading(false)
       }
-    };
+    }
 
-    fetchData();
-  }, []);
-
+    fetchData()
+  }, [])
+  const resetFilters = () => {
+    setSelectedGuest('')
+    setSelectedOwner('')
+    setSelectedPhonenumber('')
+    setSelectedProperty('')
+    setSelectedStatus('')
+    setStartDate('')
+    setEndDate('')
+  }
   const handleInputChange = (e) => {
-    setSearchTerm(e.target.value);
-  };
+    setSearchTerm(e.target.value)
+  }
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -85,7 +133,9 @@ const Dashboard = () => {
                       />
                       <datalist id="guestList">
                         {guests.map((guest, index) => (
-                          <option key={index} value={guest}>{guest}</option>
+                          <option key={index} value={guest}>
+                            {guest}
+                          </option>
                         ))}
                       </datalist>
                     </div>
@@ -101,7 +151,9 @@ const Dashboard = () => {
                       />
                       <datalist id="ownerList">
                         {owners.map((owner, index) => (
-                          <option key={index} value={owner}>{owner}</option>
+                          <option key={index} value={owner}>
+                            {owner}
+                          </option>
                         ))}
                       </datalist>
                     </div>
@@ -117,7 +169,9 @@ const Dashboard = () => {
                       />
                       <datalist id="propertyList">
                         {properties.map((property, index) => (
-                          <option key={index} value={property}>{property}</option>
+                          <option key={index} value={property}>
+                            {property}
+                          </option>
                         ))}
                       </datalist>
                     </div>
@@ -126,6 +180,8 @@ const Dashboard = () => {
                       <input
                         type="date"
                         className="outline-none border-none px-2"
+                        value={startDate}
+                        onChange={(e) => setStartDate(e.target.value)}
                         placeholder="From date"
                       />
                     </div>
@@ -134,12 +190,14 @@ const Dashboard = () => {
                       <input
                         type="date"
                         className="outline-none border-none px-2"
+                        value={endDate}
+                        onChange={(e) => setEndDate(e.target.value)}
                         placeholder="To date"
                       />
                     </div>
                   </div>
                   <div className="mt-2 md:mt-0">
-                    <button className="flex items-center justify-center py-[8px] px-[14px] border border-Bordgrey rounded-md">
+                    <button onClick={(e)=> resetFilters()} className="flex items-center justify-center py-[8px] px-[14px] border border-Bordgrey rounded-md">
                       <RefreshIcon className="text-black mr-2" />
                       <p className="font-normal text-[14px]">Refresh</p>
                     </button>
@@ -155,29 +213,57 @@ const Dashboard = () => {
                       />
                     </div>
                     <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <input
-                        type="text"
+                      <select
                         className="outline-none border-none px-2"
-                        placeholder="Status"
-                      />
+                        value={selectedStatus} // Bind the state value to the select input
+                        onChange={(e) => setSelectedStatus(e.target.value)} // Update the state when the value changes
+                      >
+                        <option value="" disabled>
+                          Select Status
+                        </option>
+                        <option value="Upcoming">Upcoming</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Canceled">Canceled</option>
+                      </select>
                     </div>
                     <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
                       <input
                         type="number"
                         className="outline-none border-none px-2"
                         placeholder="Phone Number"
+                        value={selectedphonenumber}
+                        onChange={(e) => setSelectedPhonenumber(e.target.value)}
+                        list="phoneList"
                       />
+                      <datalist id="phoneList">
+                        {phonenumber.map((phone, index) => (
+                          <option key={index} value={phone}>
+                            {phone}
+                          </option>
+                        ))}
+                      </datalist>
                     </div>
                     <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <input
-                        type="text"
+                      <select
                         className="outline-none border-none px-2"
-                        placeholder="Category"
-                      />
+                        defaultValue=""
+                      >
+                        <option value="" disabled>
+                          Select Category
+                        </option>
+                        <option value="Wedding">Wedding</option>
+                        <option value="Engagement">Engagement</option>
+                        <option value="Office Party">Office Party</option>
+                        <option value="Haldi Ceremony">Haldi Ceremony</option>
+                        <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+                      </select>
                     </div>
                   </div>
                   <div className="mt-2 md:mt-0">
-                    <button onClick={()=>find()} className="w-full bg-Primary text-white h-[40px] flex items-center justify-center rounded-tl-[3px] border-t border-transparent px-4 py-[10px]">
+                    <button
+                      onClick={() => find()}
+                      className="w-full bg-Primary text-white h-[40px] flex items-center justify-center rounded-tl-[3px] border-t border-transparent px-4 py-[10px]"
+                    >
                       <p>Find</p>
                     </button>
                   </div>
@@ -189,7 +275,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard
