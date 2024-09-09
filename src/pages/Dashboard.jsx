@@ -24,6 +24,7 @@ const Dashboard = () => {
   const [selectedStatus, setSelectedStatus] = useState('')
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState('')
   // const find = () => {
   //   console.log(
   //     `guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} Phone : ${selectedphonenumber} status : ${selectedStatus} start: ${startDate} End : ${endDate}  `
@@ -31,36 +32,38 @@ const Dashboard = () => {
   // }
   const find = async () => {
     try {
-      
       console.log(
-             `guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} Phone : ${selectedphonenumber} status : ${selectedStatus} start: ${startDate} End : ${endDate}  `
-         )
+        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate}`
+      );
+      
       const queryParams = {
         selectedGuest,
         selectedOwner,
         selectedProperty,
         selectedPhoneNumber: selectedphonenumber || '',
         selectedStatus,
+        selectedCategory, // Include selected category in query params
         startDate,
         endDate,
-      }
-
+      };
+  
       // Convert the query params to a URL search string
-      const queryString = new URLSearchParams(queryParams).toString()
-
+      const queryString = new URLSearchParams(queryParams).toString();
+  
       // Make API request
       const response = await axios.get(
         `http://localhost:3000/api/invoices/search?${queryString}`
-      )
-
+      );
+  
       // Set the data received from the API
-      setData(response.data.data)
-
-      console.log(`Filtered Invoices:`, response.data.data)
+      setData(response.data.data);
+  
+      console.log('Filtered Invoices:', response.data.data);
     } catch (error) {
-      console.error('Error fetching filtered invoices:', error)
+      console.error('Error fetching filtered invoices:', error);
     }
-  }
+  };
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -95,6 +98,7 @@ const Dashboard = () => {
     setSelectedStatus('')
     setStartDate('')
     setEndDate('')
+    setSelectedCategory('')
   }
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value)
@@ -197,7 +201,10 @@ const Dashboard = () => {
                     </div>
                   </div>
                   <div className="mt-2 md:mt-0">
-                    <button onClick={(e)=> resetFilters()} className="flex items-center justify-center py-[8px] px-[14px] border border-Bordgrey rounded-md">
+                    <button
+                      onClick={(e) => resetFilters()}
+                      className="flex items-center justify-center py-[8px] px-[14px] border border-Bordgrey rounded-md"
+                    >
                       <RefreshIcon className="text-black mr-2" />
                       <p className="font-normal text-[14px]">Refresh</p>
                     </button>
@@ -246,7 +253,8 @@ const Dashboard = () => {
                     <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
                       <select
                         className="outline-none border-none px-2"
-                        defaultValue=""
+                        value={selectedCategory}
+                        onChange={(e)=>setSelectedCategory(e.target.value)}
                       >
                         <option value="" disabled>
                           Select Category
