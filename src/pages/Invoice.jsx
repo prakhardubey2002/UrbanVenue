@@ -15,6 +15,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import LinkedInIcon from '@mui/icons-material/LinkedIn';
 import PinterestIcon from '@mui/icons-material/Pinterest';
+
 const Invoice = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -92,13 +93,13 @@ const Invoice = () => {
               <tr>
                 <td className="py-2 px-4 border-b text-left">Check-In</td>
                 <td className="py-2 px-4 border-b text-right">
-                  {formData.checkInDate}, {formData.checkInTime}
+                  {new Date(formData.checkInDate).toLocaleDateString('en-GB')}, {formData.checkInTime}
                 </td>
               </tr>
               <tr>
                 <td className="py-2 px-4 border-b text-left">Check-Out</td>
                 <td className="py-2 px-4 border-b text-right">
-                  {formData.checkOutDate}, {formData.checkOutTime}
+                  {new Date(formData.checkOutDate).toLocaleDateString('en-GB')}, {formData.checkOutTime}
                 </td>
               </tr>
               <tr>

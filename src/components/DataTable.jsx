@@ -7,7 +7,11 @@ import TextField from '@mui/material/TextField'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
 import { toast } from 'react-hot-toast'
+import { INVOICE_ROUTE } from '../routes/Routes'
+import { useNavigate } from 'react-router-dom'
+import DownloadIcon from '@mui/icons-material/Download';
 const Table = ({ data, setData }) => {
+  const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [selectedRow, setSelectedRow] = useState(null)
   const convertTo12HourFormat = (time24) => {
@@ -29,6 +33,9 @@ const Table = ({ data, setData }) => {
     setSelectedRow(row)
     console.log(row)
     setOpen(true)
+  }
+  const invoicenavigate =(formData)=>{
+    navigate(INVOICE_ROUTE, { state: formData })
   }
 
   const handleClose = () => {
@@ -141,6 +148,9 @@ const Table = ({ data, setData }) => {
               Action
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Invoice
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Filter
             </th>
           </tr>
@@ -223,6 +233,13 @@ const Table = ({ data, setData }) => {
                 onClick={() => handleClickOpen(row)}
               >
                 View Detail
+              </td>
+              <td
+                className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap"
+                onClick={() => invoicenavigate(row)}
+              >
+                <DownloadIcon/>
+                View Invoice
               </td>
               <td className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap">
                 <FilterListIcon
