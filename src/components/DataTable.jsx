@@ -85,7 +85,7 @@ const Table = ({ data, setData }) => {
   }
 
   return (
-    <div className="overflow-x-auto my-4 text-sm">
+    <div className="overflow-x-auto max-h-[44vh] my-4 text-sm">
       <table className="min-w-full bg-white border-b border-b-gray-300">
         <thead>
           <tr>
