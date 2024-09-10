@@ -164,14 +164,14 @@ const Table = ({ data, setData }) => {
                 {row.venue}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
-                {new Date(row.checkInDate).toLocaleDateString()}
+                {new Date(row.checkInDate).toLocaleDateString('en-GB')}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
-                {new Date(row.checkInDate).toLocaleDateString()} -{' '}
+                {new Date(row.checkInDate).toLocaleDateString('en-GB')} -{' '}
                 {convertTo12HourFormat(row.checkInTime)}{' '}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
-                {new Date(row.checkOutDate).toLocaleDateString()} -{' '}
+                {new Date(row.checkOutDate).toLocaleDateString('en-GB')} -{' '}
                 {convertTo12HourFormat(row.checkOutTime)}{' '}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">

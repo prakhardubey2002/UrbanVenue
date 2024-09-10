@@ -7,7 +7,11 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import DataTable from '../components/DataTable'
 import axios from 'axios'
-
+import Dialog from '@mui/material/Dialog'
+import DialogTitle from '@mui/material/DialogTitle'
+import DialogContent from '@mui/material/DialogContent'
+import DialogActions from '@mui/material/DialogActions'
+import Button from '@mui/material/Button'
 const Dashboard = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -25,17 +29,34 @@ const Dashboard = () => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
   const [selectedCategory, setSelectedCategory] = useState('')
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [dialogMessage, setDialogMessage] = useState('')
+
+  const handleOpenDialog = (message) => {
+    setDialogMessage(message)
+    setDialogOpen(true)
+  }
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false)
+    setDialogMessage('')
+  }
   // const find = () => {
   //   console.log(
   //     `guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} Phone : ${selectedphonenumber} status : ${selectedStatus} start: ${startDate} End : ${endDate}  `
   //   )
   // }
   const find = async () => {
+    if (startDate && !endDate) {
+      handleOpenDialog('Please choose an end date')
+    } else if (!startDate && endDate) {
+      handleOpenDialog('Please choose a start date')
+    }
     try {
       console.log(
         `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate}`
-      );
-      
+      )
+
       const queryParams = {
         selectedGuest,
         selectedOwner,
@@ -45,25 +66,25 @@ const Dashboard = () => {
         selectedCategory, // Include selected category in query params
         startDate,
         endDate,
-      };
-  
+      }
+
       // Convert the query params to a URL search string
-      const queryString = new URLSearchParams(queryParams).toString();
-  
+      const queryString = new URLSearchParams(queryParams).toString()
+
       // Make API request
       const response = await axios.get(
         `http://localhost:3000/api/invoices/search?${queryString}`
-      );
-  
+      )
+
       // Set the data received from the API
-      setData(response.data.data);
-  
-      console.log('Filtered Invoices:', response.data.data);
+      setData(response.data.data)
+
+      console.log('Filtered Invoices:', response.data.data)
     } catch (error) {
-      console.error('Error fetching filtered invoices:', error);
+      console.error('Error fetching filtered invoices:', error)
     }
-  };
-  
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -122,83 +143,156 @@ const Dashboard = () => {
             <br />
             <div className="bg-white rounded border border-Bordgrey">
               <div className="px-4 py-4">
-                <div className="flex flex-wrap justify-between mb-[21px]">
+                <div className="grid grid-cols-4 gap-4 mb-[21px] md:grid-cols-2 ">
                   {/* Filters and Search Inputs */}
-                  <div className="relative flex flex-wrap md:flex-col md:space-y-2">
-                    <div className="relative flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mr-2">
-                      <SearchIcon className="text-Bordgrey" />
-                      <input
-                        type="text"
-                        value={selectedGuest}
-                        onChange={(e) => setSelectedGuest(e.target.value)}
-                        className="outline-none border-none px-2 pr-12"
-                        placeholder="Select Guest"
-                        list="guestList"
-                      />
-                      <datalist id="guestList">
-                        {guests.map((guest, index) => (
-                          <option key={index} value={guest}>
-                            {guest}
-                          </option>
-                        ))}
-                      </datalist>
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mr-2">
-                      <HouseIcon className="text-Bordgrey" />
-                      <input
-                        type="text"
-                        value={selectedOwner}
-                        onChange={(e) => setSelectedOwner(e.target.value)}
-                        className="outline-none border-none px-2"
-                        placeholder="Select Owner"
-                        list="ownerList"
-                      />
-                      <datalist id="ownerList">
-                        {owners.map((owner, index) => (
-                          <option key={index} value={owner}>
-                            {owner}
-                          </option>
-                        ))}
-                      </datalist>
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md">
-                      <HouseIcon className="text-Bordgrey" />
-                      <input
-                        type="text"
-                        value={selectedProperty}
-                        onChange={(e) => setSelectedProperty(e.target.value)}
-                        className="outline-none border-none px-2"
-                        placeholder="Select Property"
-                        list="propertyList"
-                      />
-                      <datalist id="propertyList">
-                        {properties.map((property, index) => (
-                          <option key={index} value={property}>
-                            {property}
-                          </option>
-                        ))}
-                      </datalist>
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mt-2 md:mt-0">
-                      <CalendarMonthIcon className="text-Bordgrey" />
-                      <input
-                        type="date"
-                        className="outline-none border-none px-2"
-                        value={startDate}
-                        onChange={(e) => setStartDate(e.target.value)}
-                        placeholder="From date"
-                      />
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[10px] border border-Bordgrey rounded-md mt-2 md:mt-0">
-                      <CalendarMonthIcon className="text-Bordgrey" />
-                      <input
-                        type="date"
-                        className="outline-none border-none px-2"
-                        value={endDate}
-                        onChange={(e) => setEndDate(e.target.value)}
-                        placeholder="To date"
-                      />
-                    </div>
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <SearchIcon className="text-Bordgrey" />
+                    <input
+                      type="text"
+                      value={selectedGuest}
+                      onChange={(e) => setSelectedGuest(e.target.value)}
+                      className="outline-none border-none px-2 pr-12 w-full"
+                      placeholder="Select Guest"
+                      list="guestList"
+                    />
+                    <datalist id="guestList">
+                      {guests.map((guest, index) => (
+                        <option key={index} value={guest}>
+                          {guest}
+                        </option>
+                      ))}
+                    </datalist>
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <HouseIcon className="text-Bordgrey" />
+                    <input
+                      type="text"
+                      value={selectedOwner}
+                      onChange={(e) => setSelectedOwner(e.target.value)}
+                      className="outline-none border-none px-2 w-full"
+                      placeholder="Select Owner"
+                      list="ownerList"
+                    />
+                    <datalist id="ownerList">
+                      {owners.map((owner, index) => (
+                        <option key={index} value={owner}>
+                          {owner}
+                        </option>
+                      ))}
+                    </datalist>
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <HouseIcon className="text-Bordgrey" />
+                    <input
+                      type="text"
+                      value={selectedProperty}
+                      onChange={(e) => setSelectedProperty(e.target.value)}
+                      className="outline-none border-none px-2 w-full"
+                      placeholder="Select Property"
+                      list="propertyList"
+                    />
+                    <datalist id="propertyList">
+                      {properties.map((property, index) => (
+                        <option key={index} value={property}>
+                          {property}
+                        </option>
+                      ))}
+                    </datalist>
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <CalendarMonthIcon className="text-Bordgrey absolute left-3" />
+                    <input
+                      type="text"
+                      className="outline-none border-none px-8 w-full" // Add padding-left to make space for the icon
+                      value={startDate ? startDate : ''}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      placeholder="Start date"
+                      onFocus={(e) => (e.target.type = 'date')} // Switch input type to 'date' on focus
+                      onBlur={(e) => {
+                        if (!startDate) {
+                          e.target.type = 'text' // Revert to 'text' if no date is selected
+                        }
+                      }}
+                    />
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <CalendarMonthIcon className="text-Bordgrey mr-2" />
+                    <input
+                      type="text"
+                      className="outline-none border-none px-2 w-full"
+                      value={endDate ? endDate : ''}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      placeholder="End date"
+                      onFocus={(e) => (e.target.type = 'date')} // Change input type to 'date' on focus
+                      onBlur={(e) => {
+                        if (!endDate) {
+                          e.target.type = 'text' // Revert back to 'text' if no date is chosen
+                        }
+                      }}
+                    />
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <input
+                      type="number"
+                      className="outline-none border-none px-2 w-full"
+                      placeholder="Phone Number"
+                      value={selectedphonenumber}
+                      onChange={(e) => setSelectedPhonenumber(e.target.value)}
+                      list="phoneList"
+                    />
+                    <datalist id="phoneList">
+                      {phonenumber.map((phone, index) => (
+                        <option key={index} value={phone}>
+                          {phone}
+                        </option>
+                      ))}
+                    </datalist>
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <select
+                      className="outline-none border-none px-2 w-full"
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Status
+                      </option>
+                      <option value="Upcoming">Upcoming</option>
+                      <option value="Paid">Paid</option>
+                      <option value="Canceled">Canceled</option>
+                    </select>
+                  </div>
+
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <select
+                      className="outline-none border-none px-2 w-full"
+                      value={selectedCategory}
+                      onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                      <option value="" disabled>
+                        Select Category
+                      </option>
+                      <option value="Wedding">Wedding</option>
+                      <option value="Engagement">Engagement</option>
+                      <option value="Office Party">Office Party</option>
+                      <option value="Haldi Ceremony">Haldi Ceremony</option>
+                      <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+                    </select>
+                  </div>
+
+                  <div className="mt-2 md:mt-0">
+                    <button
+                      onClick={() => find()}
+                      className="w-full bg-Primary text-white h-[40px] flex items-center justify-center rounded-tl-[3px] border-t border-transparent px-4 py-[10px]"
+                    >
+                      <p>Find</p>
+                    </button>
                   </div>
                   <div className="mt-2 md:mt-0">
                     <button
@@ -210,7 +304,8 @@ const Dashboard = () => {
                     </button>
                   </div>
                 </div>
-                <div className="flex flex-wrap justify-between">
+
+                {/* <div className="flex flex-wrap justify-between">
                   <div className="flex flex-wrap md:flex-col md:space-y-2">
                     <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
                       <input
@@ -254,7 +349,7 @@ const Dashboard = () => {
                       <select
                         className="outline-none border-none px-2"
                         value={selectedCategory}
-                        onChange={(e)=>setSelectedCategory(e.target.value)}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
                       >
                         <option value="" disabled>
                           Select Category
@@ -275,13 +370,24 @@ const Dashboard = () => {
                       <p>Find</p>
                     </button>
                   </div>
-                </div>
+                </div> */}
               </div>
               <DataTable data={data} setData={setData} />
             </div>
           </div>
         </div>
       </div>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <DialogTitle>Date Boundary</DialogTitle>
+        <DialogContent>
+          <p>{dialogMessage}</p>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   )
 }
