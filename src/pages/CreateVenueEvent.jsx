@@ -78,9 +78,32 @@ const CreateVenueEvent = () => {
 
   // Handle Next button click
   const handleNext = () => {
-    setOpenDialog(true)
+    const requiredFields = [
+      'guestName',
+      'phoneNumber',
+      'checkInDate',
+      'checkInTime',
+      'checkOutDate',
+      'checkOutTime',
+      'maxPeople',
+      'occasion',
+      'hostOwnerName',
+      'hostNumber',
+      'totalBooking',
+      'advance',
+      'balancePayment',
+      'securityAmount',
+      'status'
+    ]
+    const missing = requiredFields.filter(field => !formData[field] || formData[field] === 'Not Assigned')
+    if (missing.length > 0) {
+      alert(`Please fill in the following fields:\n${missing.map(field => field.replace(/([A-Z])/g, ' $1').trim()).join('\n')}`)
+    } else {
+      // Proceed to submit
+      handleSubmit()
+    }
   }
-
+  
   // Handle dialog close
   const handleCloseDialog = () => {
     setOpenDialog(false)
@@ -728,6 +751,7 @@ const CreateVenueEvent = () => {
           </button>
         </DialogActions>
       </Dialog>
+      
     </div>
   )
 }

@@ -41,7 +41,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
   };
 
   return (
-    <div className="">
+    <div className=" flex justify-center items-center">
       <div className="w-fit m-4 px-1 py-1">
         {venue && (
           <h2 className="px-2 py-2 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">

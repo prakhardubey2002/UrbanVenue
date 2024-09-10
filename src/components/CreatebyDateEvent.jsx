@@ -220,20 +220,20 @@ const CreatebyDateEvent = () => {
           Done
         </button>
       </div>
-
-      <div className="w-full flex flex-wrap justify-center items-center">
-        {Object.keys(calenderEvents).map((venue, index) => (
-          <Calender
-            key={`${venue}-${renderKey}`}
-            events={calenderEvents[venue]}
-            selectedDate={selectedDateString}
-            setSelectedDate={setSelectedDateString}
-            venue={venue}
-            intializer={selectedDate}
-            setven={setven}
-          />
-        ))}
-      
+      <div className="w-full flex justify-center">
+        <div className="w-full grid grid-cols-2 md:grid-cols-1 gap-1">
+          {Object.keys(calenderEvents).map((venue, index) => (
+            <Calender
+              key={`${venue}-${renderKey}`}
+              events={calenderEvents[venue]}
+              selectedDate={selectedDateString}
+              setSelectedDate={setSelectedDateString}
+              venue={venue}
+              intializer={selectedDate}
+              setven={setven}
+            />
+          ))}
+        </div>
       </div>
     </div>
   )
