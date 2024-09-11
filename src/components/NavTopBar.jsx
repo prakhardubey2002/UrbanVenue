@@ -5,7 +5,7 @@ import Profile from '../assets/Profile.png';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import { Link, useNavigate } from 'react-router-dom';
-import { CREATE_ROUTE, SIGNIN_ROUTE } from '../routes/Routes';
+import { CREATE_ROUTE, DASHBOARD_ROUTE, SIGNIN_ROUTE } from '../routes/Routes';
 import AuthContext from '../context/context';
 import { toast } from 'react-hot-toast';
 
@@ -27,7 +27,7 @@ const NavTopBar = () => {
   return (
     <div className="w-full h-fit flex justify-between items-center border py-2 px-4 md:px-6 lg:px-8 xl:px-12 relative">
       <div>
-        <Link to={SIGNIN_ROUTE}>
+        <Link to={DASHBOARD_ROUTE}>
           <img src={Logo} alt="Logo" className="h-[30px] sm:h-[25px] md:h-[30px] lg:h-[35px]" />
         </Link>
       </div>
@@ -53,7 +53,7 @@ const NavTopBar = () => {
           {isDropdownOpen && (
             <div className="absolute top-[100%] right-0 mt-2 w-[120px] md:w-[150px] bg-white border rounded shadow-lg z-10">
               <Link
-                to="/"
+                to={DASHBOARD_ROUTE}
                 className="block px-4 py-2 text-black text-xs sm:text-sm hover:bg-gray-100"
                 onClick={() => setIsDropdownOpen(false)}
               >

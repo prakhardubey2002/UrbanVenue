@@ -188,6 +188,7 @@ const CreatebyDateEvent = () => {
             className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
+            min={new Date().toISOString().split("T")[0]}
           />
         </div>
 

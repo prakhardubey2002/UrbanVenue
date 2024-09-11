@@ -373,7 +373,7 @@ const Dashboard = () => {
                   </div>
                 </div> */}
               </div>
-              <DataTable data={data} setData={setData} />
+              <DataTable data={[...data].reverse()} setData={setData} />
             </div>
           </div>
         </div>
