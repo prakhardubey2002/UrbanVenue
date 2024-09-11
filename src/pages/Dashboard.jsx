@@ -112,14 +112,14 @@ const Dashboard = () => {
     fetchData()
   }, [])
   const resetFilters = () => {
-    setSelectedGuest('')
-    setSelectedOwner('')
-    setSelectedPhonenumber('')
-    setSelectedProperty('')
-    setSelectedStatus('')
-    setStartDate('')
-    setEndDate('')
-    setSelectedCategory('')
+    // setSelectedGuest('')
+    // setSelectedOwner('')
+    // setSelectedPhonenumber('')
+    // setSelectedProperty('')
+    // setSelectedStatus('')
+    // setStartDate('')
+    // setEndDate('')
+    // setSelectedCategory('')
     window.location.reload()
   }
   const handleInputChange = (e) => {
@@ -152,11 +152,11 @@ const Dashboard = () => {
                       type="text"
                       value={selectedGuest}
                       onChange={(e) => setSelectedGuest(e.target.value)}
-                      className="outline-none border-none px-2 pr-12 w-full"
+                      className="outline-none border-none px-2  w-full"
                       placeholder="Select Guest"
                       list="guestList"
                     />
-                    <datalist id="guestList">
+                    <datalist id="guestList"  >
                       {guests.map((guest, index) => (
                         <option key={index} value={guest}>
                           {guest}
@@ -265,7 +265,8 @@ const Dashboard = () => {
                         Select Status
                       </option>
                       <option value="Upcoming">Upcoming</option>
-                      <option value="Paid">Paid</option>
+                      <option value="Completed">Completed</option>
+                      {/* <option value="Paid">Paid</option> */}
                       <option value="Canceled">Canceled</option>
                     </select>
                   </div>

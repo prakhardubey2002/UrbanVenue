@@ -378,6 +378,7 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
             <option value="Upcoming">Upcoming</option>
+            <option value="Completed">Completed</option>
             <option value="Paid">Paid</option>
             <option value="Canceled">Canceled</option>
           </select>
