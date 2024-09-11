@@ -90,7 +90,7 @@ const CreatebyDateEvent = () => {
       }
 
       formattedDate = date.toISOString().split('T')[0]
-      alert(`Date: ${formattedDate}`)
+      alert(` Propert : ${ven} Date: ${new Date(formattedDate).toLocaleDateString('en-GB')}`)
     } catch (error) {
       console.error('Error parsing date:', error)
       alert(`Invalid date format: ${selectedDate}`)

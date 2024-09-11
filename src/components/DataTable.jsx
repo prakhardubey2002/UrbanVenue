@@ -200,32 +200,31 @@ const Table = ({ data, setData }) => {
                 {row.occasion}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
-  <div
-    className={`flex items-center ${
-      row.status === 'Canceled'
-        ? 'text-red-500'
-        : row.status === 'Paid' || row.status === 'Completed'
-        ? 'text-green-500'
-        : row.status === 'Upcoming'
-        ? 'text-purple-500'
-        : 'text-gray-500'
-    }`}
-  >
-    <span
-      className={`inline-block w-2 h-2 rounded-full mr-2 ${
-        row.status === 'Canceled'
-          ? 'bg-red-500'
-          : row.status === 'Paid' || row.status === 'Completed'
-          ? 'bg-green-500'
-          : row.status === 'Upcoming'
-          ? 'bg-purple-500'
-          : 'bg-gray-500'
-      }`}
-    />
-    {row.status}
-  </div>
-</td>
-
+                <div
+                  className={`flex items-center ${
+                    row.status === 'Canceled'
+                      ? 'text-red-500'
+                      : row.status === 'Paid' || row.status === 'Completed'
+                      ? 'text-green-500'
+                      : row.status === 'Upcoming'
+                      ? 'text-purple-500'
+                      : 'text-gray-500'
+                  }`}
+                >
+                  <span
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
+                      row.status === 'Canceled'
+                        ? 'bg-red-500'
+                        : row.status === 'Paid' || row.status === 'Completed'
+                        ? 'bg-green-500'
+                        : row.status === 'Upcoming'
+                        ? 'bg-purple-500'
+                        : 'bg-gray-500'
+                    }`}
+                  />
+                  {row.status}
+                </div>
+              </td>
 
               <td className="border-b px-4 py-4 whitespace-nowrap">
                 ₹ {row.advance + row.securityAmount + row.balancePayment}
@@ -435,6 +434,7 @@ const Table = ({ data, setData }) => {
                 label="Status"
               >
                 <MenuItem value="Upcoming">Upcoming</MenuItem>
+                <MenuItem value="Completed">Completed</MenuItem>
                 <MenuItem value="Paid">Paid</MenuItem>
                 <MenuItem value="Canceled">Canceled</MenuItem>
               </Select>
