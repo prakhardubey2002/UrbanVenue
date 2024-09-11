@@ -58,7 +58,13 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
             selectable
             onSelectEvent={handleSelectEvent}
             onSelectSlot={handleSelectSlot}
-            style={{ height: 320 }}
+            style={{
+              height: 340,
+              width: '100%', // Set width to 100% for responsiveness
+              maxWidth: '420px', // Limit max width to 420px for larger screens
+            }}
+            views={{ month: true }} // Only enable the "month" view
+            // toolbar={false} // Remove toolbar (which contains the view buttons)
           />
         )}
       </div>

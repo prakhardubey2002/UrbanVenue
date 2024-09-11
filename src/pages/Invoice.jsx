@@ -20,7 +20,7 @@ const Invoice = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const formData = location.state
-  const { toPDF, targetRef } = usePDF({ filename: 'page.pdf' })
+  const { toPDF, targetRef } = usePDF({ filename: `${formData.guestName}.pdf` })
   const Home = () => {
     navigate(DASHBOARD_ROUTE)
   }
@@ -57,7 +57,7 @@ const Invoice = () => {
             </div>
             <div className="w-full flex justify-between">
               <p>{formData.phoneNumber}</p>
-              <p>Order Date: {formData.checkInDate}</p>
+              <p>Order Date: {new Date(formData.checkInDate).toLocaleDateString('en-GB')}</p>
             </div>
             <div className="w-full flex justify-between">
               <p> </p>
@@ -66,6 +66,14 @@ const Invoice = () => {
             <div className="w-full flex justify-between">
               <p></p>
               <p>{formData.addressLine1}</p>
+            </div>
+            <div className="w-full flex justify-between">
+              <p></p>
+              <p>{formData.addressLine2}</p>
+            </div>
+            <div className="w-full flex justify-between">
+              <p></p>
+              <p>{formData.state},{formData.country},{formData.zipCode}</p>
             </div>
           </div>
         </div>

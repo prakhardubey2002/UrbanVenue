@@ -42,12 +42,12 @@ const CreateVenueEvent = () => {
     advanceCollectedBy: 'Not Assigned',
     pendingCollectedBy: 'Not Assigned',
     showAdvanceDetails: '',
-    advanceMode: 'cash',
+    advanceMode: 'Cash',
     balancePayment: '',
     securityAmount: '',
 
     // termsConditions: '',
-    status: '',
+    status: 'Upcoming',
     venue: venue,
     addressLine1: data.addressLine1,
     addressLine2: data.addressLine2,
@@ -301,7 +301,7 @@ const CreateVenueEvent = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="50,000"
+            placeholder="50000"
             onWheel={(e) => e.target.blur()}
           />
         </div>
@@ -313,7 +313,7 @@ const CreateVenueEvent = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm "
             type="number"
-            placeholder="50,000"
+            placeholder="50000"
             onWheel={(e) => e.target.blur()}
           />
         </div>
