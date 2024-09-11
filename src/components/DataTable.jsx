@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
 import DialogContent from '@mui/material/DialogContent'
@@ -9,11 +9,12 @@ import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
 import { toast } from 'react-hot-toast'
 import { INVOICE_ROUTE } from '../routes/Routes'
 import { useNavigate } from 'react-router-dom'
-import DownloadIcon from '@mui/icons-material/Download';
+import DownloadIcon from '@mui/icons-material/Download'
 const Table = ({ data, setData }) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
-  const [selectedRow, setSelectedRow] = useState(null)
+  const [selectedRow, setSelectedRow] = useState({})
+
   const convertTo12HourFormat = (time24) => {
     // Split the input time into hours and minutes
     const [hours, minutes] = time24.split(':').map(Number)
@@ -34,7 +35,7 @@ const Table = ({ data, setData }) => {
     console.log(row)
     setOpen(true)
   }
-  const invoicenavigate =(formData)=>{
+  const invoicenavigate = (formData) => {
     navigate(INVOICE_ROUTE, { state: formData })
   }
 
@@ -42,9 +43,18 @@ const Table = ({ data, setData }) => {
     setOpen(false)
     setSelectedRow(null)
   }
+  useEffect(() => {
+    if (selectedRow?.totalBooking && selectedRow?.advance) {
+      setSelectedRow((prev) => ({
+        ...prev,
+        balancePayment: (prev.totalBooking || 0) - (prev.advance || 0),
+      }))
+    }
+  }, [selectedRow?.totalBooking, selectedRow?.advance])
 
   const handleFormSubmit = async () => {
     try {
+      console.log(selectedRow)
       // Update API URL (use dynamic ID from selectedRow if needed)
       const apiUrl = `http://localhost:3000/api/invoices/invoices/${selectedRow._id}`
 
@@ -63,10 +73,9 @@ const Table = ({ data, setData }) => {
       }
       if (response.ok) {
         toast.success('Updated Successfully')
-        setTimeout(()=>{
-
+        setTimeout(() => {
           window.location.reload()
-        },1000)
+        }, 1000)
       }
 
       // Parse the response
@@ -103,7 +112,7 @@ const Table = ({ data, setData }) => {
               Guest Name
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
-             Owner Name
+              Owner Name
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Phone Number
@@ -238,7 +247,7 @@ const Table = ({ data, setData }) => {
                 className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap"
                 onClick={() => invoicenavigate(row)}
               >
-                <DownloadIcon/>
+                <DownloadIcon />
                 View Invoice
               </td>
               <td className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap">
@@ -451,18 +460,15 @@ const Table = ({ data, setData }) => {
               fullWidth
               margin="dense"
               value={
-                parseFloat(selectedRow?.totalBooking || 0) 
-                +parseFloat(selectedRow?.securityAmount || 0)
+                parseFloat(selectedRow?.totalBooking || 0) +
+                parseFloat(selectedRow?.securityAmount || 0)
               }
-              // onChange={(e) =>
-              //   setSelectedRow({
-              //     ...selectedRow,
-              //     totalBooking: e.target.value,
-              //   })
-              // }
-              InputProps={{
-                readOnly: true, 
-              }}
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  totalBooking: e.target.value,
+                })
+              }
             />
             <TextField
               label="Advance Amount"
@@ -470,12 +476,14 @@ const Table = ({ data, setData }) => {
               fullWidth
               margin="dense"
               value={selectedRow?.advance || ''}
-              onChange={(e) =>
+              onChange={(e) => {
+                const value =
+                  e.target.value === '' ? 0 : parseInt(e.target.value, 10)
                 setSelectedRow({
                   ...selectedRow,
-                  advance: e.target.value,
+                  advance: value,
                 })
-              }
+              }}
             />
             <FormControl fullWidth margin="dense">
               <InputLabel>Advance Collected By</InputLabel>
@@ -500,15 +508,7 @@ const Table = ({ data, setData }) => {
               type="number"
               fullWidth
               margin="dense"
-              value={
-                (selectedRow?.totalBooking || 0) - (selectedRow?.advance || 0)
-              }
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  balancePayment: e.target.value,
-                })
-              }
+              value={selectedRow?.balancePayment || 0} // Safely handle null values
             />
             <FormControl fullWidth margin="dense">
               <InputLabel>Pending Collected By</InputLabel>
@@ -533,12 +533,14 @@ const Table = ({ data, setData }) => {
               fullWidth
               margin="dense"
               value={selectedRow?.securityAmount || ''}
-              onChange={(e) =>
+              onChange={(e) => {
+                const value =
+                  e.target.value === '' ? 0 : parseInt(e.target.value, 10)
                 setSelectedRow({
                   ...selectedRow,
-                  securityAmount: e.target.value,
+                  securityAmount: value,
                 })
-              }
+              }}
             />
             <FormControl fullWidth margin="dense">
               <InputLabel>Advance Mode</InputLabel>
@@ -578,7 +580,7 @@ const Table = ({ data, setData }) => {
           >
             Cancel
           </button>
-          <button onClick={handleFormSubmit} className="button ">
+          <button onClick={() => handleFormSubmit()} className="button ">
             Submit
           </button>
         </DialogActions>

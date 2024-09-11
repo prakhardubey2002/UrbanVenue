@@ -55,7 +55,7 @@ const CreateVenueEvent = () => {
     state: data.state,
     citySuburb: data.suburb,
     zipCode: data.zipCode,
-    urbanvenuecommission: 5000,
+    urbanvenuecommission: 5000,//total amount 10%
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()

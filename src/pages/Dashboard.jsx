@@ -120,6 +120,7 @@ const Dashboard = () => {
     setStartDate('')
     setEndDate('')
     setSelectedCategory('')
+    window.location.reload()
   }
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value)
