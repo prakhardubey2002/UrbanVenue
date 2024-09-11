@@ -100,7 +100,7 @@ const CreateVenueEvent = () => {
       alert(`Please fill in the following fields:\n${missing.map(field => field.replace(/([A-Z])/g, ' $1').trim()).join('\n')}`)
     } else {
       // Proceed to submit
-      handleSubmit()
+      setOpenDialog(true)
     }
   }
   
