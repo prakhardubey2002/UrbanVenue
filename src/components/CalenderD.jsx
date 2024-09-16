@@ -12,7 +12,7 @@ import {
 
 const localizer = momentLocalizer(moment);
 
-const CalenderD = ({ events, venue, setSelectedDate, initializer, setven, SetData}) => {
+const CalenderD = ({ events, venue, setSelectedDate, initializer, setven, SetData,city}) => {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [defaultDate, setDefaultDate] = useState(new Date(initializer));
 
@@ -27,7 +27,7 @@ const CalenderD = ({ events, venue, setSelectedDate, initializer, setven, SetDat
       const selectedSlot = rest?.slots[0];
       setSelectedDate(selectedSlot.toISOString());
       setven(venue);
-      SetData({ venue: venue, date: selectedSlot });
+      SetData({ venue: venue, date: selectedSlot,city:city });
       console.log('Selected slot:', selectedSlot);
     },
     [setSelectedDate, venue, setven, SetData]
