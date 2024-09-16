@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import Calender from './Calender';
+import CalenderD from './CalenderD';
 import { useNavigate } from 'react-router-dom';
 import { CREATE_FORM } from '../routes/Routes';
 import axios from 'axios';
@@ -11,8 +11,17 @@ const CreatebyDateRange = () => {
   const [selectedProperty, setSelectedProperty] = useState('');
   const [renderKey, setRenderKey] = useState(0);
   const [address, setAddress] = useState('');
-  const [ven, setven] = useState()
   const navigate = useNavigate();
+  const [selectedDateString, setSelectedDateString] = useState(new Date());
+  const [data, SetData] = useState({
+    venue: '',
+    date: '',
+  });
+
+  useEffect(() => {
+    console.log(data.venue);
+    console.log(data.date);
+  }, [data]);
 
   // Fetch farms based on date range
   const fetchFarmsByDateRange = useCallback(async () => {
@@ -28,18 +37,36 @@ const CreatebyDateRange = () => {
         console.log('Farms data:', farms);
 
         // Transform the data into the desired format
-        const formattedEvents = farms.reduce((acc, farm) => {
-          acc[farm.name] = farm.events?.map(event => ({
-            title: event.title,
-            start: new Date(event.start).toISOString(),
-            end: new Date(event.end).toISOString(),
-            id: event._id
-          }));
-          return acc;
-        }, {});
+        const formattedEvents = {};
+        farms.forEach((farm) => {
+          Object.keys(farm.places).forEach((place) => {
+            if (!formattedEvents[farm.name]) {
+              formattedEvents[farm.name] = {};
+            }
+            if (!formattedEvents[farm.name][place]) {
+              formattedEvents[farm.name][place] = {};
+            }
+            farm.places[place].farms.forEach((farmItem) => {
+              if (!formattedEvents[farm.name][place]) {
+                formattedEvents[farm.name][place] = {};
+              }
+              if (!formattedEvents[farm.name][place][farmItem.name]) {
+                formattedEvents[farm.name][place][farmItem.name] = [];
+              }
+              farmItem.events.forEach((event) => {
+                formattedEvents[farm.name][place][farmItem.name].push({
+                  title: event.title,
+                  start: new Date(event.start).toISOString(),
+                  end: new Date(event.end).toISOString(),
+                  id: event._id
+                });
+              });
+            });
+          });
+        });
 
         setCalenderEvents(formattedEvents);
-        setRenderKey(prevKey => prevKey + 1); // Update the key to force re-render
+        setRenderKey((prevKey) => prevKey + 1); // Update the key to force re-render
       } catch (error) {
         console.error('Error fetching events:', error);
       }
@@ -57,7 +84,11 @@ const CreatebyDateRange = () => {
       const formattedStartDate = new Date(startDate).toISOString().split('T')[0];
       const formattedEndDate = new Date(endDate).toISOString().split('T')[0];
 
-      alert(`Property: ${selectedProperty} Start Date: ${new Date(formattedStartDate).toLocaleDateString('en-GB')} End Date: ${new Date(formattedEndDate).toLocaleDateString('en-GB')}`);
+      alert(
+        `Property: ${selectedProperty} Start Date: ${new Date(formattedStartDate).toLocaleDateString(
+          'en-GB'
+        )} End Date: ${new Date(formattedEndDate).toLocaleDateString('en-GB')}`
+      );
 
       // Fetch the address
       const addressResponse = await axios.get(
@@ -68,9 +99,9 @@ const CreatebyDateRange = () => {
       setAddress(address);
       console.log('Address:', address);
 
-      const path = CREATE_FORM.replace(':venue', selectedProperty || '')
-                              .replace(':startDate', formattedStartDate)
-                              .replace(':endDate', formattedEndDate);
+      const path = CREATE_FORM.replace(':venue', selectedProperty)
+        .replace(':startDate', formattedStartDate)
+        .replace(':endDate', formattedEndDate);
 
       if (address) {
         navigate(path, { state: address });
@@ -82,10 +113,11 @@ const CreatebyDateRange = () => {
   }, [startDate, endDate, selectedProperty, navigate]);
 
   // Validate form
-  const isFormValid = useCallback(
-    () => selectedProperty && startDate && endDate,
-    [selectedProperty, startDate, endDate]
-  );
+  const isFormValid = useCallback(() => selectedProperty && startDate && endDate, [
+    selectedProperty,
+    startDate,
+    endDate,
+  ]);
 
   // Fetch farms when date range changes
   useEffect(() => {
@@ -131,13 +163,31 @@ const CreatebyDateRange = () => {
             onChange={(e) => setSelectedProperty(e.target.value)}
             className="bg-white border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
           >
-            <option value="">Select Property</option>
-            {Object.keys(calenderEvents)?.map((property) => (
-              <option key={property} value={property}>
-                {property}
-              </option>
-            ))}
+            <option value="">Select Farm</option>
+            {Object.entries(calenderEvents).map(([city, cityData]) =>
+              Object.entries(cityData).map(([place, placeData]) => {
+                const farmNames = Object.keys(placeData);
+                return farmNames.map((farm) => (
+                  <option key={`${city}-${place}-${farm}`} value={farm}>
+                    {`${farm}`}
+                  </option>
+                ));
+              })
+            )}
           </select>
+        </div>
+
+        {/* Uneditable input for displaying selected date */}
+        <div className="flex flex-col flex-1 mx-4">
+          <label className="font-semibold mb-2">
+            Event Date
+          </label>
+          <input
+            type="date"
+            className="bg-gray-100 border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
+            value={data.date ? new Date(data.date).toLocaleDateString('en-CA') : ''}
+            readOnly
+          />
         </div>
 
         <button
@@ -149,17 +199,32 @@ const CreatebyDateRange = () => {
         </button>
       </div>
 
-      <div className="w-full flex justify-center mt-4">
-        <div className="w-full grid grid-cols-2 md:grid-cols-1 gap-1">
-          {Object.keys(calenderEvents)?.map((venue) => (
-            <Calender
-              key={`${venue}-${renderKey}`}
-              events={calenderEvents[venue] || []}
-              venue={venue}
-              setven={setven}
-            />
-          ))}
-        </div>
+      <div className="w-full grid grid-cols-2 md:grid-cols-1 gap-1 mt-4">
+        {Object.keys(calenderEvents).map((city, index) => (
+          <div key={`${city}-${renderKey}-${index}`}>
+            {Object.entries(calenderEvents[city]).map(([place, placeData], placeIndex) => (
+              <div key={`${city}-${place}-${renderKey}-${placeIndex}`}>
+                {Object.entries(placeData).map(([farm, farmData], farmIndex) => (
+                  <div key={`${city}-${place}-${farm}-${renderKey}-${farmIndex}`}>
+                    {farmData && farmData.length > 0 ? (
+                      <CalenderD
+                        events={farmData}
+                        selectedDate={selectedDateString}
+                        setSelectedDate={setSelectedDateString}
+                        venue={farm}
+                        initializer={new Date()}
+                        setven={setSelectedProperty}
+                        SetData={SetData}
+                      />
+                    ) : (
+                      <p>No events found for this farm.</p>
+                    )}
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        ))}
       </div>
     </div>
   );
