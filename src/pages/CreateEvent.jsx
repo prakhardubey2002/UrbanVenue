@@ -3,6 +3,7 @@ import NavTopBar from '../components/NavTopBar'
 import BreadCrumbBar from '../components/BreadCrumbBar'
 import CreatebyPropertyEvent from '../components/CreatebyPropertyEvent'
 import CreatebyDateEvent from '../components/CreatebyDateEvent'
+import CreatebyDateRange from '../components/CreatebyDateRange'
 
 const CreateEvent = () => {
   const [selectedOption, setSelectedOption] = useState('By Choosing Property')
@@ -26,12 +27,14 @@ const CreateEvent = () => {
           >
             <option value="By Choosing Property">By Choosing Property</option>
             <option value="By Choosing Date">By Choosing Date</option>
+            <option value="By Choosing Date Range">By Choosing Date Range</option>
           </select>
         </div>
       </div>
       <div className="w-[90%]">
         {selectedOption === 'By Choosing Property' && <CreatebyPropertyEvent />}
         {selectedOption === 'By Choosing Date' && <CreatebyDateEvent />}
+        {selectedOption === 'By Choosing Date Range' && <CreatebyDateRange/>}
       </div>
     </div>
   )
