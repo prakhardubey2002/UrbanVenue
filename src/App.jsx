@@ -3,6 +3,7 @@ import SignIn from './pages/SignIn'
 import Dashboard from './pages/Dashboard'
 import CreateEvent from './pages/CreateEvent'
 import {
+  ADMIN_DASHBOARD,
   CREATE_FORM,
   CREATE_ROUTE,
   DASHBOARD_ROUTE,
@@ -13,12 +14,14 @@ import CreateVenueEvent from './pages/CreateVenueEvent'
 import Invoice from './pages/Invoice'
 import { AuthProvider } from './context/context'
 import { Toaster } from 'react-hot-toast'
+import Admin from './pages/Admin'
 const App = () => {
   return (
     <div>
       <AuthProvider>
         <Routes>
           <Route path={SIGNIN_ROUTE} element={<SignIn />} />
+          <Route path={ADMIN_DASHBOARD} element={<Admin/>}/>
           <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
           <Route path={CREATE_ROUTE} element={<CreateEvent />} />
           <Route path={CREATE_FORM} element={<CreateVenueEvent />} />

@@ -1,47 +1,52 @@
-import React, { useState, useContext } from 'react';
-import Logo from '../assets/Logo.png';
-import { Link, useNavigate } from 'react-router-dom';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import IconButton from '@mui/material/IconButton';
-import Grid from '@mui/material/Grid';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
-import axios from 'axios';
-import AuthContext from '../context/context'; // Import AuthContext
-import { DASHBOARD_ROUTE } from '../routes/Routes';
-import { toast } from 'react-hot-toast';
+import React, { useState, useContext } from 'react'
+import Logo from '../assets/Logo.png'
+import { Link, useNavigate } from 'react-router-dom'
+import Visibility from '@mui/icons-material/Visibility'
+import VisibilityOff from '@mui/icons-material/VisibilityOff'
+import IconButton from '@mui/material/IconButton'
+import Grid from '@mui/material/Grid'
+import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import axios from 'axios'
+import AuthContext from '../context/context' // Import AuthContext
+import { DASHBOARD_ROUTE, ADMIN_DASHBOARD } from '../routes/Routes'
+import { toast } from 'react-hot-toast'
 
 const SignIn = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [userType, setUserType] = useState('Executive'); // Default userType
-  const [error, setError] = useState('');
-  const { setToken } = useContext(AuthContext); // Use AuthContext for token management
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [userType, setUserType] = useState('Executive') // Default userType
+  const [error, setError] = useState('')
+  const { setToken } = useContext(AuthContext) // Use AuthContext for token management
+  const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState);
-  };
+    setShowPassword((prevState) => !prevState)
+  }
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault()
 
     try {
       const response = await axios.post('http://localhost:3000/login', {
         username: email, // Assuming username is email
         password,
         userType, // Include userType
-      });
+      })
 
-      toast.success('Login Successful');
-      setToken(response.data.token); // Save the token in the context
-      setError('');
-      navigate(DASHBOARD_ROUTE); // Redirect to the dashboard
+      toast.success('Login Successful')
+      setToken(response.data.token) 
+      setError('')
+
+      if (response.data.userType === 'Admin') {
+        navigate(ADMIN_DASHBOARD) 
+      } else {
+        navigate(DASHBOARD_ROUTE) 
+      }
     } catch (err) {
-      setError('Invalid credentials');
+      setError('Invalid credentials')
     }
-  };
+  }
 
   return (
     <div className="w-screen h-screen flex lg:flex-col">
@@ -147,7 +152,7 @@ const SignIn = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default SignIn;
+export default SignIn
