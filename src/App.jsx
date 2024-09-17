@@ -4,6 +4,7 @@ import Dashboard from './pages/Dashboard'
 import CreateEvent from './pages/CreateEvent'
 import {
   ADMIN_DASHBOARD,
+  ALL_FARMS,
   CREATE_FORM,
   CREATE_ROUTE,
   DASHBOARD_ROUTE,
@@ -15,6 +16,7 @@ import Invoice from './pages/Invoice'
 import { AuthProvider } from './context/context'
 import { Toaster } from 'react-hot-toast'
 import Admin from './pages/Admin'
+import AllFarms from './pages/AllFarms'
 const App = () => {
   return (
     <div>
@@ -22,6 +24,7 @@ const App = () => {
         <Routes>
           <Route path={SIGNIN_ROUTE} element={<SignIn />} />
           <Route path={ADMIN_DASHBOARD} element={<Admin/>}/>
+          <Route path={ALL_FARMS} element={<AllFarms/>}/>
           <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
           <Route path={CREATE_ROUTE} element={<CreateEvent />} />
           <Route path={CREATE_FORM} element={<CreateVenueEvent />} />

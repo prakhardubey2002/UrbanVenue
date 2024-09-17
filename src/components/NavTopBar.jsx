@@ -12,8 +12,19 @@ import { toast } from 'react-hot-toast';
 const NavTopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useContext(AuthContext);
-
+  const { logout,usertype } = useContext(AuthContext);
+  const getUserTypeStyles = (type) => {
+    switch (type) {
+      case 'Executive':
+        return 'bg-blue-200 text-blue-800'; // Light blue background, dark blue text
+      case 'Admin':
+        return 'bg-orange-200 text-orange-800'; // Light orange background, dark orange text
+      case 'SuperAdmin':
+        return 'bg-green-200 text-green-800'; // Light green background, dark green text
+      default:
+        return 'bg-gray-200 text-gray-800'; // Default gray style
+    }
+  };
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
   };
@@ -31,7 +42,12 @@ const NavTopBar = () => {
           <img src={Logo} alt="Logo" className="h-[30px] sm:h-[25px] md:h-[30px] lg:h-[35px]" />
         </Link>
       </div>
+      
       <div className="flex items-center space-x-4 md:space-x-6">
+      <div className={`p-4 rounded-md justify-center flex items-center  h-[40px] ${getUserTypeStyles(usertype)}`}>
+      {usertype}
+    </div>
+  
         <button className="bg-Primary text-white h-[40px] flex items-center rounded-tl-[3px] border-t border-transparent px-4 py-[1px] text-xs sm:text-sm md:px-6 md:py-2">
           <Link className="flex items-center" to={CREATE_ROUTE}>
             <CalendarMonthIcon className="mr-1" />
