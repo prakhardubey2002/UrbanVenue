@@ -1,52 +1,54 @@
-import React, { useState, useContext } from 'react'
-import Logo from '../assets/Logo.png'
-import { Link, useNavigate } from 'react-router-dom'
-import Visibility from '@mui/icons-material/Visibility'
-import VisibilityOff from '@mui/icons-material/VisibilityOff'
-import IconButton from '@mui/material/IconButton'
-import Grid from '@mui/material/Grid'
-import ExitToAppIcon from '@mui/icons-material/ExitToApp'
-import axios from 'axios'
-import AuthContext from '../context/context' // Import AuthContext
-import { DASHBOARD_ROUTE } from '../routes/Routes'
-import { toast } from 'react-hot-toast'
+import React, { useState, useContext } from 'react';
+import Logo from '../assets/Logo.png';
+import { Link, useNavigate } from 'react-router-dom';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
+import axios from 'axios';
+import AuthContext from '../context/context'; // Import AuthContext
+import { DASHBOARD_ROUTE } from '../routes/Routes';
+import { toast } from 'react-hot-toast';
 
 const SignIn = () => {
-  const [showPassword, setShowPassword] = useState(false)
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [error, setError] = useState('')
-  const { setToken } = useContext(AuthContext) // Use AuthContext for token management
-  const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [userType, setUserType] = useState('Executive'); // Default userType
+  const [error, setError] = useState('');
+  const { setToken } = useContext(AuthContext); // Use AuthContext for token management
+  const navigate = useNavigate();
 
   const togglePasswordVisibility = () => {
-    setShowPassword((prevState) => !prevState)
-  }
+    setShowPassword((prevState) => !prevState);
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     try {
       const response = await axios.post('http://localhost:3000/login', {
         username: email, // Assuming username is email
         password,
-      })
+        userType, // Include userType
+      });
 
-      toast.success('Login Successfull')
-      setToken(response.data.token) // Save the token in the context
-      setError('')
-      navigate(DASHBOARD_ROUTE) // Redirect to the dashboard
+      toast.success('Login Successful');
+      setToken(response.data.token); // Save the token in the context
+      setError('');
+      navigate(DASHBOARD_ROUTE); // Redirect to the dashboard
     } catch (err) {
-      setError('Invalid credentials')
+      setError('Invalid credentials');
     }
-  }
+  };
 
   return (
     <div className="w-screen h-screen flex lg:flex-col">
       <div className="w-[35%] bg-Primary relative flex justify-center items-center lg:w-full lg:h-[15%]">
         <img
           src={Logo}
-          alt=""
+          alt="Logo"
           className="absolute top-[50px] left-[50px] lg:top-[15%] lg:left-[5%]"
         />
         <h2 className="w-[80%] font-roboto text-[30px] font-semibold leading-[38px] text-left text-white lg:hidden">
@@ -106,7 +108,7 @@ const SignIn = () => {
                     <IconButton
                       onClick={togglePasswordVisibility}
                       edge="start"
-                      className="pr-2" // Adjust padding as needed
+                      className="pr-2"
                       size="small"
                     >
                       {showPassword ? <VisibilityOff /> : <Visibility />}
@@ -114,6 +116,22 @@ const SignIn = () => {
                   </Grid>
                 </Grid>
               </div>
+            </div>
+            {/* User Type Select */}
+            <div className="flex flex-col mt-5">
+              <label htmlFor="userType" className="text-sm font-semibold">
+                User Type*
+              </label>
+              <select
+                id="userType"
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
+                className="outline-none h-[48px] px-4 border-[1px] bg-[#F9F9F9] rounded-tl-[3px]"
+              >
+                <option value="Executive">Executive</option>
+                <option value="Admin">Admin</option>
+                <option value="SuperAdmin">SuperAdmin</option>
+              </select>
             </div>
             <button
               onClick={handleSubmit}
@@ -129,7 +147,7 @@ const SignIn = () => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SignIn
+export default SignIn;
