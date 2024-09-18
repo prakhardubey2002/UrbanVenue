@@ -13,10 +13,12 @@ import {
 const localizer = momentLocalizer(moment);
 
 const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSelectedProperty, setven }) => {
+  const [hasEvents, setHasEvents] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [defaultDate, setDefaultDate] = useState(new Date(intializer));
 
   useEffect(() => {
+    setHasEvents(events.length > 0);
     if (events.length > 0) {
       setDefaultDate(new Date(intializer));
     }
@@ -26,7 +28,7 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
     ({ start, end, ...rest }) => {
       const selectedSlot = rest?.slots[0];
       setSelectedDate(selectedSlot.toISOString());
-      setven(venue)
+      setven(venue);
     },
     [setSelectedDate, venue]
   );
@@ -41,14 +43,14 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
   };
 
   return (
-    <div className=" flex justify-center items-center">
+    <div className="flex justify-center items-center">
       <div className="w-fit m-4 px-1 py-1">
         {venue && (
           <h2 className="px-2 py-2 font-bold w-fit bg-white rounded-md shadow-sm focus:outline-none sm:text-sm">
             {venue}
           </h2>
         )}
-        {events[0]?.start && (
+        {hasEvents && (
           <Calendar
             localizer={localizer}
             events={events}
@@ -60,11 +62,10 @@ const CalendarComponent = ({ events, venue, setSelectedDate, intializer, setSele
             onSelectSlot={handleSelectSlot}
             style={{
               height: 340,
-              width: '100%', // Set width to 100% for responsiveness
-              maxWidth: '420px', // Limit max width to 420px for larger screens
+              width: '100%',
+              maxWidth: '420px',
             }}
-            views={{ month: true }} // Only enable the "month" view
-            // toolbar={false} // Remove toolbar (which contains the view buttons)
+            views={{ month: true }}
           />
         )}
       </div>
