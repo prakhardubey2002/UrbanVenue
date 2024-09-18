@@ -4,6 +4,8 @@ import SearchIcon from '@mui/icons-material/Search'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import axios from 'axios'
 import RefreshIcon from '@mui/icons-material/Refresh'
+import CustomNavTopbar from '../components/CustomNavTopbar'
+import { CREATE_FARMS } from '../routes/Routes'
 const AllFarms = () => {
   const [farms, setFarms] = useState([])
   const [loading, setLoading] = useState(true)
@@ -71,7 +73,8 @@ const AllFarms = () => {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <NavTopBar />
+      {/* <NavTopBar /> */}
+      <CustomNavTopbar text={"Create Property"} route={CREATE_FARMS}  />
       <div className="flex-1 flex justify-center items-center">
         <div className="px-4 w-[90%] min-h-[60%]">
           <h2 className="text-2xl font-semibold my-4">Filter Farms</h2>
