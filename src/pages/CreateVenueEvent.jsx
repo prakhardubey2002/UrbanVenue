@@ -59,7 +59,8 @@ const CreateVenueEvent = () => {
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
-    return `BOOK-${venue}-${date}-${timestamp}`
+    let a= `BOOK-${venue}-${date}-${timestamp}`
+    return a.replace(/\s+/g, '-')
   }
   useEffect(() => {
     setFormData((prevFormData) => ({

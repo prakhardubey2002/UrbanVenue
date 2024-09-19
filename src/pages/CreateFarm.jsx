@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
-import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
-import { Toaster, toast } from 'react-hot-toast'
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
 
 const CreateFarm = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   // State to manage form values
   const [formData, setFormData] = useState({
@@ -32,23 +32,76 @@ const CreateFarm = () => {
     balancePayment: '',
     securityAmount: '',
     status: 'Available',
-  })
+  });
+
+  // Generate unique farmId based on stateName and placeName
+  const generateFarmId = (stateName, placeName) => {
+    const cleanedStateName = stateName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+    const cleanedPlaceName = placeName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
+    const timestamp = Date.now();
+    return `${cleanedStateName}-${cleanedPlaceName}-${timestamp}`;
+  };
 
   // Handle input change
   const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData({ ...formData, [name]: value })
-  }
+    const { name, value } = e.target;
+    setFormData((prevData) => {
+      const updatedData = { ...prevData, [name]: value };
+
+      // If stateName or placeName is changed, update farmId
+      if (name === 'stateName' || name === 'placeName') {
+        updatedData.farmId = generateFarmId(updatedData.stateName, updatedData.placeName);
+      }
+
+      // If stateName is changed, update state to the same value
+      if (name === 'stateName') {
+        updatedData.state = value;
+      }
+      // If placeName is changed, update suburb to the same value
+      if (name === 'placeName') {
+        updatedData.suburb = value;
+      }
+      // If suburb is changed, update placeName to the same value
+      if (name === 'suburb') {
+        updatedData.placeName = value;
+      }
+
+      return updatedData;
+    });
+  };
 
   // Handle form submission
   const handleSubmit = () => {
     const requiredFields = [
-      'stateName', 'placeName', 'name', 'addressLine1', 'country', 'state', 'suburb', 'zipCode', 'phoneNumber', 'checkInDate', 'checkInTime', 'checkOutDate', 'checkOutTime', 'maxPeople', 'occasion', 'hostOwnerName', 'hostNumber', 'totalBooking', 'advance', 'balancePayment', 'securityAmount', 'status'
-    ]
-    const missingFields = requiredFields.filter(field => !formData[field])
+      'stateName',
+      'placeName',
+      'name',
+      'addressLine1',
+      'country',
+      'state',
+      'suburb',
+      'zipCode',
+      'phoneNumber',
+      'checkInDate',
+      'checkInTime',
+      'checkOutDate',
+      'checkOutTime',
+      'maxPeople',
+      'occasion',
+      'hostOwnerName',
+      'hostNumber',
+      'totalBooking',
+      'advance',
+      'balancePayment',
+      'securityAmount',
+      'status',
+    ];
+    const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
-      toast.error(`Please fill in the following fields: ${missingFields.join(', ')}`)
+      toast.error(
+        `Please fill in the following fields: ${missingFields.join(', ')}`
+      );
     } else {
       // Structure the data as per the API requirements
       const apiData = {
@@ -63,7 +116,7 @@ const CreateFarm = () => {
             country: formData.country,
             state: formData.state,
             suburb: formData.suburb,
-            zipCode: formData.zipCode
+            zipCode: formData.zipCode,
           },
           phoneNumber: formData.phoneNumber,
           checkInDate: formData.checkInDate,
@@ -79,27 +132,27 @@ const CreateFarm = () => {
           balancePayment: formData.balancePayment,
           securityAmount: formData.securityAmount,
           status: formData.status,
-        }
-      }
+        },
+      };
 
-      axios.post('http://localhost:3000/api/calender/add-farm', apiData)
-        .then(response => {
-          toast.success('Farm created successfully!')
-          navigate('/farms')
+      axios
+        .post('http://localhost:3000/api/calender/add-farm', apiData)
+        .then((response) => {
+          toast.success('Farm created successfully!');
+          navigate('/farms');
         })
-        .catch(error => {
-          toast.error('Error creating farm!')
-          console.error('Error:', error)
-        })
+        .catch((error) => {
+          toast.error('Error creating farm!');
+          console.error('Error:', error);
+        });
     }
-  }
+  };
 
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl">Create Farm</h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm">
-        
         {/* State Name */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">State Name</label>
@@ -132,10 +185,10 @@ const CreateFarm = () => {
           <input
             name="farmId"
             value={formData.farmId}
-            onChange={handleChange}
+            readOnly
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="text"
-            placeholder="Enter Farm ID"
+            placeholder="Farm ID will be auto-generated"
           />
         </div>
 
@@ -195,6 +248,7 @@ const CreateFarm = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">State</label>
           <input
+            readOnly
             name="state"
             value={formData.state}
             onChange={handleChange}
@@ -208,6 +262,7 @@ const CreateFarm = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Suburb</label>
           <input
+            readOnly
             name="suburb"
             value={formData.suburb}
             onChange={handleChange}
@@ -238,71 +293,69 @@ const CreateFarm = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="tel"
+            type="text"
             placeholder="Enter Phone Number"
           />
         </div>
 
-        {/* Check-in Date and Time */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Check-in Date</label>
-          <input
-            name="checkInDate"
-            value={formData.checkInDate}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="date"
-            placeholder="Enter Check-in Date"
-          />
+        {/* Check-In Date & Time */}
+        <div className="flex border-b">
+          <div className="flex-1 flex flex-col mr-2">
+            <label className="font-semibold">Check-In Date</label>
+            <input
+              name="checkInDate"
+              value={formData.checkInDate}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="date"
+            />
+          </div>
+          <div className="flex-1 flex flex-col ml-2">
+            <label className="font-semibold">Check-In Time</label>
+            <input
+              name="checkInTime"
+              value={formData.checkInTime}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="time"
+            />
+          </div>
         </div>
 
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Check-in Time</label>
-          <input
-            name="checkInTime"
-            value={formData.checkInTime}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="time"
-            placeholder="Enter Check-in Time"
-          />
-        </div>
-
-        {/* Check-out Date and Time */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Check-out Date</label>
-          <input
-            name="checkOutDate"
-            value={formData.checkOutDate}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="date"
-            placeholder="Enter Check-out Date"
-          />
-        </div>
-
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Check-out Time</label>
-          <input
-            name="checkOutTime"
-            value={formData.checkOutTime}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="time"
-            placeholder="Enter Check-out Time"
-          />
+        {/* Check-Out Date & Time */}
+        <div className="flex border-b">
+          <div className="flex-1 flex flex-col mr-2">
+            <label className="font-semibold">Check-Out Date</label>
+            <input
+              name="checkOutDate"
+              value={formData.checkOutDate}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="date"
+            />
+          </div>
+          <div className="flex-1 flex flex-col ml-2">
+            <label className="font-semibold">Check-Out Time</label>
+            <input
+              name="checkOutTime"
+              value={formData.checkOutTime}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="time"
+            />
+          </div>
         </div>
 
         {/* Max People */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Maximum People</label>
+          <label className="font-semibold">Max People</label>
           <input
             name="maxPeople"
             value={formData.maxPeople}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Maximum People"
+            placeholder="Enter Max People"
           />
         </div>
 
@@ -323,7 +376,6 @@ const CreateFarm = () => {
     <option value="Mehndi Ceremony">Mehndi Ceremony</option>
   </select>
 </div>
-
 
         {/* Host Owner Name */}
         <div className="flex flex-col border-b">
@@ -346,7 +398,7 @@ const CreateFarm = () => {
             value={formData.hostNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="tel"
+            type="text"
             placeholder="Enter Host Number"
           />
         </div>
@@ -364,9 +416,9 @@ const CreateFarm = () => {
           />
         </div>
 
-        {/* Advance Payment */}
+        {/* Advance */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Advance Payment</label>
+          <label className="font-semibold">Advance</label>
           <input
             name="advance"
             value={formData.advance}
@@ -405,25 +457,31 @@ const CreateFarm = () => {
 
         {/* Status */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Status</label>
-          <select
-            name="status"
-            value={formData.status}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-          >
-            <option value="Available">Available</option>
-            <option value="Not Available">Not Available</option>
-          </select>
-        </div>
+  <label className="font-semibold">Status</label>
+  <select
+    name="status"
+    value={formData.status}
+    onChange={handleChange}
+    className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+  >
+    <option value="">Select Status</option>
+    <option value="confirmed">Confirmed</option>
+    <option value="pending">Pending</option>
+    <option value="cancelled">Cancelled</option>
+  </select>
+</div>
+
 
         {/* Submit Button */}
-        <button onClick={handleSubmit} className="button my-8">
-          Create Farm
+        <button
+          className="bg-blue-500 text-white p-2 rounded mt-4"
+          onClick={handleSubmit}
+        >
+          Submit
         </button>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default CreateFarm
+export default CreateFarm;
