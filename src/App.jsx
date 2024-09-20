@@ -25,9 +25,9 @@ const App = () => {
       <AuthProvider>
         <Routes>
           <Route path={SIGNIN_ROUTE} element={<SignIn />} />
-          <Route path={ADMIN_DASHBOARD} element={<Admin/>}/>
-          <Route path={ALL_FARMS} element={<AllFarms/>}/>
-          <Route path ={CREATE_FARMS} element={<CreateFarm/>}/>
+          <Route path={ADMIN_DASHBOARD} element={<Admin />} />
+          <Route path={ALL_FARMS} element={<AllFarms />} />
+          <Route path={CREATE_FARMS} element={<CreateFarm />} />
           <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
           <Route path={CREATE_ROUTE} element={<CreateEvent />} />
           <Route path={CREATE_FORM} element={<CreateVenueEvent />} />

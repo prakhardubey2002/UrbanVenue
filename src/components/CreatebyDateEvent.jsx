@@ -90,7 +90,11 @@ const CreatebyDateEvent = () => {
       }
 
       formattedDate = date.toISOString().split('T')[0]
-      alert(` Propert : ${ven} Date: ${new Date(formattedDate).toLocaleDateString('en-GB')}`)
+      alert(
+        ` Propert : ${ven} Date: ${new Date(formattedDate).toLocaleDateString(
+          'en-GB'
+        )}`
+      )
     } catch (error) {
       console.error('Error parsing date:', error)
       alert(`Invalid date format: ${selectedDate}`)
@@ -188,7 +192,7 @@ const CreatebyDateEvent = () => {
             className="bg-white  border border-black rounded-md shadow-sm focus:outline-none sm:text-sm px-2 py-2"
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
-             min={new Date().toISOString().split("T")[0]}
+            min={new Date().toISOString().split('T')[0]}
           />
         </div>
 
@@ -223,17 +227,23 @@ const CreatebyDateEvent = () => {
       </div>
       <div className="w-full flex justify-center">
         <div className="w-full grid grid-cols-2 md:grid-cols-1 gap-1">
-          {Object.keys(calenderEvents).map((venue, index) => (
-            <Calender
-              key={`${venue}-${renderKey}`}
-              events={calenderEvents[venue]}
-              selectedDate={selectedDateString}
-              setSelectedDate={setSelectedDateString}
-              venue={venue}
-              intializer={selectedDate}
-              setven={setven}
-            />
-          ))}
+          {Object.keys(calenderEvents).map((venue, index) => {
+            console.log(
+              venue
+            )
+
+            return (
+              <Calender
+                key={`${venue}-${renderKey}`}
+                events={calenderEvents[venue]}
+                selectedDate={selectedDateString}
+                setSelectedDate={setSelectedDateString}
+                venue={venue}
+                intializer={selectedDate}
+                setven={setven}
+              />
+            )
+          })}
         </div>
       </div>
     </div>

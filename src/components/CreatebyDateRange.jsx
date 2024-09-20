@@ -101,8 +101,8 @@ const CreatebyDateRange = () => {
       console.log('Address:', address);
   
       const path = CREATE_FORM.replace(':venue', selectedProperty)
-        .replace(':startDate', formattedStartDate)
-        .replace(':endDate', formattedEndDate);
+        .replace(':date', formattedStartDate)
+        // .replace(':endDate', formattedEndDate);
   
       if (address) {
         navigate(path, { state: address });

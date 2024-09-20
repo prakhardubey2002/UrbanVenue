@@ -63,6 +63,7 @@ const CreatebyPropertyEvent = () => {
             `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms`
           )
           setProperties(propertiesResponse.data)
+          console.log(propertiesResponse.data)
         } catch (error) {
           console.error('Error fetching properties:', error)
         }
