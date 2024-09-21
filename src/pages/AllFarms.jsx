@@ -162,7 +162,8 @@ const AllFarms = () => {
       )
       setDialogOpen(false)
       setDialogOpen(false)
-      await fetchFarms()
+      window.location.reload();
+      // await fetchFarms()
     } catch (error) {
       console.error('Error updating farm:', error.message)
     }
