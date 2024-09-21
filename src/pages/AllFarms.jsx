@@ -1,32 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import NavTopBar from '../components/NavTopBar';
-import SearchIcon from '@mui/icons-material/Search';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import axios from 'axios';
-import RefreshIcon from '@mui/icons-material/Refresh';
-import EditIcon from '@mui/icons-material/Edit';
-import CustomNavTopbar from '../components/CustomNavTopbar';
-import { CREATE_FARMS } from '../routes/Routes';
-import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import NavTopBar from '../components/NavTopBar'
+import SearchIcon from '@mui/icons-material/Search'
+import LocationOnIcon from '@mui/icons-material/LocationOn'
+import axios from 'axios'
+import RefreshIcon from '@mui/icons-material/Refresh'
+import EditIcon from '@mui/icons-material/Edit'
+import CustomNavTopbar from '../components/CustomNavTopbar'
+import { CREATE_FARMS } from '../routes/Routes'
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+} from '@mui/material'
 
 const AllFarms = () => {
-  const [farms, setFarms] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  const [states, setStates] = useState([]);
-  const [places, setPlaces] = useState([]);
-  const [farmNames, setFarmNames] = useState([]);
-  const [addresses, setAddresses] = useState([]);
+  const [farms, setFarms] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  const [selectedState, setSelectedState] = useState('');
-  const [selectedPlace, setSelectedPlace] = useState('');
-  const [selectedFarmName, setSelectedFarmName] = useState('');
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [states, setStates] = useState([])
+  const [places, setPlaces] = useState([])
+  const [farmNames, setFarmNames] = useState([])
+  const [addresses, setAddresses] = useState([])
 
-  const [filteredFarms, setFilteredFarms] = useState([]);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [currentFarm, setCurrentFarm] = useState(null);
+  const [selectedState, setSelectedState] = useState('')
+  const [selectedPlace, setSelectedPlace] = useState('')
+  const [selectedFarmName, setSelectedFarmName] = useState('')
+  const [selectedAddress, setSelectedAddress] = useState('')
+
+  const [filteredFarms, setFilteredFarms] = useState([])
+  const [dialogOpen, setDialogOpen] = useState(false)
+  const [currentFarm, setCurrentFarm] = useState(null)
   const [updatedFields, setUpdatedFields] = useState({
     place: '',
     address: {
@@ -51,34 +58,35 @@ const AllFarms = () => {
     balancePayment: '',
     securityAmount: '',
     status: '',
-  });
-  
+  })
 
   useEffect(() => {
     const fetchFarms = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/api/calender/all-farms');
-        const farmData = response.data;
-    
-        setFarms(farmData);
-        setFilteredFarms(farmData); // Update filtered farms too
-    
-        // Extract unique values for filter options
-        setStates([...new Set(farmData.map((farm) => farm.state))]);
-        setPlaces([...new Set(farmData.map((farm) => farm.place))]);
-        setFarmNames([...new Set(farmData.map((farm) => farm.name))]);
-        setAddresses([...new Set(farmData.map((farm) => farm.address.addressLine1))]);
-        
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
+        const response = await axios.get(
+          'http://localhost:3000/api/calender/all-farms'
+        )
+        const farmData = response.data
 
-    fetchFarms();
-  }, []);
+        setFarms(farmData)
+        setFilteredFarms(farmData) // Update filtered farms too
+
+        // Extract unique values for filter options
+        setStates([...new Set(farmData.map((farm) => farm.state))])
+        setPlaces([...new Set(farmData.map((farm) => farm.place))])
+        setFarmNames([...new Set(farmData.map((farm) => farm.name))])
+        setAddresses([
+          ...new Set(farmData.map((farm) => farm.address.addressLine1)),
+        ])
+      } catch (error) {
+        setError(error.message)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchFarms()
+  }, [])
 
   const handleFind = () => {
     const filtered = farms.filter((farm) => {
@@ -86,22 +94,24 @@ const AllFarms = () => {
         (selectedState ? farm.state === selectedState : true) &&
         (selectedPlace ? farm.place === selectedPlace : true) &&
         (selectedFarmName ? farm.name === selectedFarmName : true) &&
-        (selectedAddress ? farm.address.addressLine1.includes(selectedAddress) : true)
-      );
-    });
-    setFilteredFarms(filtered);
-  };
+        (selectedAddress
+          ? farm.address.addressLine1.includes(selectedAddress)
+          : true)
+      )
+    })
+    setFilteredFarms(filtered)
+  }
 
   const resetFilters = () => {
-    setSelectedState('');
-    setSelectedPlace('');
-    setSelectedFarmName('');
-    setSelectedAddress('');
-    setFilteredFarms(farms); // Reset to show all farms
-  };
+    setSelectedState('')
+    setSelectedPlace('')
+    setSelectedFarmName('')
+    setSelectedAddress('')
+    setFilteredFarms(farms) // Reset to show all farms
+  }
 
   const handleUpdateFarm = (farm) => {
-    setCurrentFarm(farm);
+    setCurrentFarm(farm)
     setUpdatedFields({
       place: farm.place,
       address: {
@@ -126,39 +136,40 @@ const AllFarms = () => {
       balancePayment: farm.balancePayment,
       securityAmount: farm.securityAmount,
       status: farm.status,
-    });
-    setDialogOpen(true);
-  };
-  
+    })
+    setDialogOpen(true)
+  }
 
   const handleFieldChange = (e) => {
-    const { name, value } = e.target;
-    setUpdatedFields((prev) => ({ ...prev, [name]: value }));
-  };
-  
+    const { name, value } = e.target
+    setUpdatedFields((prev) => ({ ...prev, [name]: value }))
+  }
+
   // For nested address fields, create a specific handler
   const handleAddressChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setUpdatedFields((prev) => ({
       ...prev,
       address: { ...prev.address, [name]: value },
-    }));
-  };
+    }))
+  }
 
   const handleSubmitUpdate = async () => {
     try {
-      await axios.patch(`http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`, updatedFields);
-      setDialogOpen(false);
-      setDialogOpen(false);
+      await axios.patch(
+        `http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`,
+        updatedFields
+      )
+      setDialogOpen(false)
+      setDialogOpen(false)
       await fetchFarms()
     } catch (error) {
-      console.error('Error updating farm:', error.message);
+      console.error('Error updating farm:', error.message)
     }
-  };
-  
+  }
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
+  if (loading) return <div>Loading...</div>
+  if (error) return <div>Error: {error}</div>
 
   return (
     <div className="w-full h-screen flex flex-col">
@@ -357,8 +368,8 @@ const AllFarms = () => {
             </table>
           </div>
 
-      {/* Update Dialog */}
-      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+          {/* Update Dialog */}
+          <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
             <DialogTitle>Update Farm</DialogTitle>
             <DialogContent>
               <TextField
@@ -453,58 +464,62 @@ const AllFarms = () => {
                 margin="normal"
               />
               <TextField
-  name="place"
-  label="Place"
-  value={updatedFields.place}
-  onChange={handleFieldChange}
-  fullWidth
-  margin="normal"
-/>
-{/* Address Fields */}
-<TextField
-  name="addressLine1"
-  label="Address Line 1"
-  value={updatedFields.address.addressLine1}
-  onChange={handleAddressChange}
-  fullWidth
-  margin="normal"
-/>
-<TextField
-  name="addressLine2"
-  label="Address Line 2"
-  value={updatedFields.address.addressLine2}
-  onChange={handleAddressChange}
-  fullWidth
-  margin="normal"
-/>
-<TextField
-  name="suburb"
-  label="Suburb"
-  value={updatedFields.address.suburb}
-  onChange={handleAddressChange}
-  fullWidth
-  margin="normal"
-/>
-<TextField
-  name="zipCode"
-  label="Zip Code"
-  value={updatedFields.address.zipCode}
-  onChange={handleAddressChange}
-  fullWidth
-  margin="normal"
-/>
-<TextField
-  name="country"
-  label="Country"
-  value={updatedFields.address.country}
-  onChange={handleAddressChange}
-  fullWidth
-  margin="normal"
-/>
+                name="place"
+                label="Place"
+                value={updatedFields.place}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              {/* Address Fields */}
+              <TextField
+                name="addressLine1"
+                label="Address Line 1"
+                value={updatedFields.address.addressLine1}
+                onChange={handleAddressChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="addressLine2"
+                label="Address Line 2"
+                value={updatedFields.address.addressLine2}
+                onChange={handleAddressChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="suburb"
+                label="Suburb"
+                value={updatedFields.address.suburb}
+                onChange={handleAddressChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="zipCode"
+                label="Zip Code"
+                value={updatedFields.address.zipCode}
+                onChange={handleAddressChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="country"
+                label="Country"
+                value={updatedFields.address.country}
+                onChange={handleAddressChange}
+                fullWidth
+                margin="normal"
+              />
             </DialogContent>
             <DialogActions>
-              <Button onClick={handleSubmitUpdate} color="primary">Update</Button>
-              <Button onClick={() => setDialogOpen(false)} color="secondary">Cancel</Button>
+              <Button onClick={handleSubmitUpdate} color="primary">
+                Update
+              </Button>
+              <Button onClick={() => setDialogOpen(false)} color="secondary">
+                Cancel
+              </Button>
             </DialogActions>
           </Dialog>
         </div>

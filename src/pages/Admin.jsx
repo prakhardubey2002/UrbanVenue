@@ -2,13 +2,15 @@ import React from 'react'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useNavigate } from 'react-router-dom'
-import { ALL_FARMS } from '../routes/Routes'
+import { ALL_EXECUTIVE, ALL_FARMS } from '../routes/Routes'
 const Admin = () => {
   const navigate = useNavigate()
   const redirect = (data) => {
     switch (data) {
       case 'All Farms':
         return navigate(ALL_FARMS)
+      case 'All Executive':
+        return navigate(ALL_EXECUTIVE)
     }
   }
   return (
