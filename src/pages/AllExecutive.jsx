@@ -59,6 +59,17 @@ const ExecutiveList = () => {
     }
   };
 
+  const handleDelete = async (executiveId) => {
+    try {
+      await axios.delete(`http://localhost:3000/executives/${executiveId}`);
+      toast.success('Executive deleted successfully!');
+      fetchExecutives(); // Refresh the list after deletion
+    } catch (error) {
+      console.error('Error deleting executive:', error);
+      toast.error('Failed to delete executive');
+    }
+  };
+
   const handleClose = () => {
     setOpen(false);
     setSelectedExecutive(null);
@@ -168,6 +179,14 @@ const ExecutiveList = () => {
                   </td>
                   <td className="border-b px-4 py-4 whitespace-nowrap">
                     <CreateIcon onClick={() => handleUpdateClick(executive)} />
+                    <Button 
+                      color="secondary" 
+                      onClick={() => handleDelete(executive.id)} 
+                      style={{ marginLeft: '8px' }} 
+                      size="small"
+                    >
+                      Delete
+                    </Button>
                   </td>
                 </tr>
               );
