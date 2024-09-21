@@ -1,81 +1,81 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  Paper,
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  TextField,
-  Select,
-  MenuItem,
-  InputLabel,
-  FormControl,
-} from '@mui/material';
+import NavTopBar from '../components/NavTopBar';
 import SearchIcon from '@mui/icons-material/Search';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
+import axios from 'axios';
 import RefreshIcon from '@mui/icons-material/Refresh';
+import EditIcon from '@mui/icons-material/Edit';
 import CustomNavTopbar from '../components/CustomNavTopbar';
 import { CREATE_FARMS } from '../routes/Routes';
+import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Button } from '@mui/material';
 
 const AllFarms = () => {
   const [farms, setFarms] = useState([]);
-  const [filteredFarms, setFilteredFarms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
   const [states, setStates] = useState([]);
   const [places, setPlaces] = useState([]);
   const [farmNames, setFarmNames] = useState([]);
   const [addresses, setAddresses] = useState([]);
+
   const [selectedState, setSelectedState] = useState('');
   const [selectedPlace, setSelectedPlace] = useState('');
   const [selectedFarmName, setSelectedFarmName] = useState('');
   const [selectedAddress, setSelectedAddress] = useState('');
-  const [openDialog, setOpenDialog] = useState(false);
-  const [selectedFarm, setSelectedFarm] = useState(null);
-  const [formData, setFormData] = useState({});
 
-  const convertTo24Hour = (time12h) => {
-    const [time, modifier] = time12h.split(' ');
-    let [hours, minutes] = time.split(':');
-    if (modifier === 'PM' && hours !== '12') hours = parseInt(hours, 10) + 12;
-    if (modifier === 'AM' && hours === '12') hours = 0;
-    return `${hours.toString().padStart(2, '0')}:${minutes}`;
-  };
-
-  const convertTo12Hour = (time24h) => {
-    let [hours, minutes] = time24h.split(':');
-    const modifier = hours >= 12 ? 'PM' : 'AM';
-    hours = hours % 12 || 12;
-    return `${hours}:${minutes} ${modifier}`;
-  };
+  const [filteredFarms, setFilteredFarms] = useState([]);
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [currentFarm, setCurrentFarm] = useState(null);
+  const [updatedFields, setUpdatedFields] = useState({
+    place: '',
+    address: {
+      addressLine1: '',
+      addressLine2: '',
+      suburb: '',
+      zipCode: '',
+      country: '',
+    },
+    name: '',
+    phoneNumber: '',
+    checkInDate: '',
+    checkInTime: '',
+    checkOutDate: '',
+    checkOutTime: '',
+    maxPeople: '',
+    occasion: '',
+    hostOwnerName: '',
+    hostNumber: '',
+    totalBooking: '',
+    advance: '',
+    balancePayment: '',
+    securityAmount: '',
+    status: '',
+  });
+  
 
   useEffect(() => {
     const fetchFarms = async () => {
       try {
         const response = await axios.get('http://localhost:3000/api/calender/all-farms');
         const farmData = response.data;
+    
         setFarms(farmData);
-        setFilteredFarms(farmData);
-
+        setFilteredFarms(farmData); // Update filtered farms too
+    
+        // Extract unique values for filter options
         setStates([...new Set(farmData.map((farm) => farm.state))]);
         setPlaces([...new Set(farmData.map((farm) => farm.place))]);
-        setFarmNames([...new Set(farmData.map((farm) => farm.details?.name))]);
-        setAddresses([...new Set(farmData.map((farm) => farm.address?.addressLine1))]);
-
-        setLoading(false);
+        setFarmNames([...new Set(farmData.map((farm) => farm.name))]);
+        setAddresses([...new Set(farmData.map((farm) => farm.address.addressLine1))]);
+        
       } catch (error) {
         setError(error.message);
+      } finally {
         setLoading(false);
       }
     };
+    
 
     fetchFarms();
   }, []);
@@ -85,8 +85,8 @@ const AllFarms = () => {
       return (
         (selectedState ? farm.state === selectedState : true) &&
         (selectedPlace ? farm.place === selectedPlace : true) &&
-        (selectedFarmName ? farm.details?.name === selectedFarmName : true) &&
-        (selectedAddress ? farm.address?.addressLine1.includes(selectedAddress) : true)
+        (selectedFarmName ? farm.name === selectedFarmName : true) &&
+        (selectedAddress ? farm.address.addressLine1.includes(selectedAddress) : true)
       );
     });
     setFilteredFarms(filtered);
@@ -97,48 +97,65 @@ const AllFarms = () => {
     setSelectedPlace('');
     setSelectedFarmName('');
     setSelectedAddress('');
-    setFilteredFarms(farms);
+    setFilteredFarms(farms); // Reset to show all farms
   };
 
-  const handleEditClick = (farm) => {
-    setSelectedFarm(farm);
-    setFormData({
-      ...farm,
-      checkInTime: farm.checkInTime ? convertTo24Hour(farm.checkInTime) : '',
-      checkOutTime: farm.checkOutTime ? convertTo24Hour(farm.checkOutTime) : '',
+  const handleUpdateFarm = (farm) => {
+    setCurrentFarm(farm);
+    setUpdatedFields({
+      place: farm.place,
+      address: {
+        addressLine1: farm.address.addressLine1,
+        addressLine2: farm.address.addressLine2,
+        suburb: farm.address.suburb,
+        zipCode: farm.address.zipCode,
+        country: farm.address.country,
+      },
+      name: farm.name,
+      phoneNumber: farm.phoneNumber,
+      checkInDate: farm.checkInDate,
+      checkInTime: farm.checkInTime,
+      checkOutDate: farm.checkOutDate,
+      checkOutTime: farm.checkOutTime,
+      maxPeople: farm.maxPeople,
+      occasion: farm.occasion,
+      hostOwnerName: farm.hostOwnerName,
+      hostNumber: farm.hostNumber,
+      totalBooking: farm.totalBooking,
+      advance: farm.advance,
+      balancePayment: farm.balancePayment,
+      securityAmount: farm.securityAmount,
+      status: farm.status,
     });
-    setOpenDialog(true);
+    setDialogOpen(true);
   };
+  
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false);
-    setSelectedFarm(null);
-    setFormData({});
-  };
-
-  const handleChange = (e) => {
+  const handleFieldChange = (e) => {
     const { name, value } = e.target;
-    if (name.includes('Time')) {
-      // Convert to 24-hour format before setting form data
-      setFormData({ ...formData, [name]: value ? convertTo24Hour(value) : '' });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
+    setUpdatedFields((prev) => ({ ...prev, [name]: value }));
+  };
+  
+  // For nested address fields, create a specific handler
+  const handleAddressChange = (e) => {
+    const { name, value } = e.target;
+    setUpdatedFields((prev) => ({
+      ...prev,
+      address: { ...prev.address, [name]: value },
+    }));
   };
 
-  const handleSubmit = async () => {
-    if (!selectedFarm) return;
-    console.log(formData)
+  const handleSubmitUpdate = async () => {
     try {
-      await axios.put(`http://localhost:3000/api/calender/update-farm/${selectedFarm.farmId}`, formData);
-      const response = await axios.get('http://localhost:3000/api/calender/all-farms');
-      setFarms(response.data);
-      handleFind();
-      handleCloseDialog();
+      await axios.patch(`http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`, updatedFields);
+      setDialogOpen(false);
+      setDialogOpen(false);
+      await fetchFarms()
     } catch (error) {
-      console.error('Error updating farm:', error);
+      console.error('Error updating farm:', error.message);
     }
   };
+  
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -224,7 +241,7 @@ const AllFarms = () => {
             </button>
             <button
               onClick={resetFilters}
-              className="flex items-center justify-center text-gray-600 h-[40px] border border-gray-300 rounded-tl-[3px] px-4 py-[10px]"
+              className="flex items-center justify-center py-[8px] px-[14px] border border-Bordgrey rounded-md"
             >
               <RefreshIcon className="text-black mr-2" />
               Reset
@@ -233,248 +250,267 @@ const AllFarms = () => {
 
           {/* Farms Table */}
           <div className="overflow-auto">
-            <TableContainer component={Paper}>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>State</TableCell>
-                    <TableCell>Place</TableCell>
-                    <TableCell>Farm Name</TableCell>
-                    <TableCell>Farm ID</TableCell>
-                    <TableCell>Address Line 1</TableCell>
-                    <TableCell>Address Line 2</TableCell>
-                    <TableCell>Suburb</TableCell>
-                    <TableCell>Zip Code</TableCell>
-                    <TableCell>Country</TableCell>
-                    <TableCell>Action</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {filteredFarms.map((farm, index) => {
-                    const address = farm.address || {};
-                    return (
-                      <TableRow key={index}>
-                        <TableCell>{farm.state}</TableCell>
-                        <TableCell>{farm.place}</TableCell>
-                        <TableCell>{farm.name || 'N/A'}</TableCell>
-                        <TableCell>{farm.farmId || 'N/A'}</TableCell>
-                        <TableCell>{address.addressLine1 || 'N/A'}</TableCell>
-                        <TableCell>{address.addressLine2 || 'N/A'}</TableCell>
-                        <TableCell>{address.suburb || 'N/A'}</TableCell>
-                        <TableCell>{address.zipCode || 'N/A'}</TableCell>
-                        <TableCell>{address.country || 'N/A'}</TableCell>
-                        <TableCell>
-                          <Button
-                            onClick={() => handleEditClick(farm)}
-                            variant="contained"
-                            color="primary"
-                          >
-                            Edit
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    );
-                  })}
-                </TableBody>
-              </Table>
-            </TableContainer>
+            <table className="min-w-full bg-white border border-gray-300">
+              <thead>
+                <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Farm Id
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    State
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Place
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Farm Name
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Phone Number
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Check-In Date
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Check-In Time
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Check-Out Date
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Check-Out Time
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Host Owner Name
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Total Booking
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Security Amount
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Advance
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-600 text-sm font-light">
+                {filteredFarms.map((farm, index) => {
+                  const address = farm.address || {}
+
+                  return (
+                    <tr key={index}>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.farmId}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.state}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.place}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.name}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.phoneNumber}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {new Date(farm.checkInDate).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.checkInTime}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {new Date(farm.checkOutDate).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.checkOutTime}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.hostOwnerName}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.totalBooking}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.securityAmount}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        {farm.advance}
+                      </td>
+                      <td className="py-3 px-6 border border-gray-300">
+                        <button
+                          onClick={() => handleUpdateFarm(farm)}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          <EditIcon />
+                        </button>
+                      </td>
+                    </tr>
+                  )
+                })}
+              </tbody>
+            </table>
           </div>
+
+      {/* Update Dialog */}
+      <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
+            <DialogTitle>Update Farm</DialogTitle>
+            <DialogContent>
+              <TextField
+                name="phoneNumber"
+                label="Phone Number"
+                value={updatedFields.phoneNumber || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="checkInDate"
+                label="Check-In Date"
+                type="date"
+                value={updatedFields.checkInDate?.slice(0, 10) || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                name="checkInTime"
+                label="Check-In Time"
+                type="time"
+                value={updatedFields.checkInTime || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                name="checkOutDate"
+                label="Check-Out Date"
+                type="date"
+                value={updatedFields.checkOutDate?.slice(0, 10) || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                name="checkOutTime"
+                label="Check-Out Time"
+                type="time"
+                value={updatedFields.checkOutTime || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+                InputLabelProps={{
+                  shrink: true,
+                }}
+              />
+              <TextField
+                name="hostOwnerName"
+                label="Host Owner Name"
+                value={updatedFields.hostOwnerName || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="totalBooking"
+                label="Total Booking"
+                type="number"
+                value={updatedFields.totalBooking || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="securityAmount"
+                label="Security Amount"
+                type="number"
+                value={updatedFields.securityAmount || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="advance"
+                label="Advance"
+                type="number"
+                value={updatedFields.advance || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+  name="place"
+  label="Place"
+  value={updatedFields.place}
+  onChange={handleFieldChange}
+  fullWidth
+  margin="normal"
+/>
+{/* Address Fields */}
+<TextField
+  name="addressLine1"
+  label="Address Line 1"
+  value={updatedFields.address.addressLine1}
+  onChange={handleAddressChange}
+  fullWidth
+  margin="normal"
+/>
+<TextField
+  name="addressLine2"
+  label="Address Line 2"
+  value={updatedFields.address.addressLine2}
+  onChange={handleAddressChange}
+  fullWidth
+  margin="normal"
+/>
+<TextField
+  name="suburb"
+  label="Suburb"
+  value={updatedFields.address.suburb}
+  onChange={handleAddressChange}
+  fullWidth
+  margin="normal"
+/>
+<TextField
+  name="zipCode"
+  label="Zip Code"
+  value={updatedFields.address.zipCode}
+  onChange={handleAddressChange}
+  fullWidth
+  margin="normal"
+/>
+<TextField
+  name="country"
+  label="Country"
+  value={updatedFields.address.country}
+  onChange={handleAddressChange}
+  fullWidth
+  margin="normal"
+/>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleSubmitUpdate} color="primary">Update</Button>
+              <Button onClick={() => setDialogOpen(false)} color="secondary">Cancel</Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div>
-
-      {/* Edit Dialog */}
-      <Dialog open={openDialog} onClose={handleCloseDialog} fullWidth>
-        <DialogTitle>Edit Farm Details</DialogTitle>
-        <DialogContent>
-          <TextField
-            margin="dense"
-            name="name"
-            label="Farm Name"
-            fullWidth
-            value={formData.name || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="phoneNumber"
-            label="Phone Number"
-            fullWidth
-            value={formData.phoneNumber || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="checkInDate"
-            label="Check-In Date"
-            type="date"
-            fullWidth
-            value={formData.checkInDate?.slice(0, 10) || ''}
-            onChange={handleChange}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            margin="dense"
-            name="checkInTime"
-            label="Check-In Time"
-            type="time"
-            fullWidth
-            value={formData.checkInTime || ''}
-            onChange={handleChange}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            margin="dense"
-            name="checkOutDate"
-            label="Check-Out Date"
-            type="date"
-            fullWidth
-            value={formData.checkOutDate?.slice(0, 10) || ''}
-            onChange={handleChange}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            margin="dense"
-            name="checkOutTime"
-            label="Check-Out Time"
-            type="time"
-            fullWidth
-            value={formData.checkOutTime || ''}
-            onChange={handleChange}
-            InputLabelProps={{ shrink: true }}
-          />
-          <TextField
-            margin="dense"
-            name="maxPeople"
-            label="Max People"
-            type="number"
-            fullWidth
-            value={formData.maxPeople || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="occasion"
-            label="Occasion"
-            fullWidth
-            value={formData.occasion || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="hostOwnerName"
-            label="Host Owner Name"
-            fullWidth
-            value={formData.hostOwnerName || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="hostNumber"
-            label="Host Number"
-            fullWidth
-            value={formData.hostNumber || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="totalBooking"
-            label="Total Booking"
-            type="number"
-            fullWidth
-            value={formData.totalBooking || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="advance"
-            label="Advance"
-            type="number"
-            fullWidth
-            value={formData.advance || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="balancePayment"
-            label="Balance Payment"
-            type="number"
-            fullWidth
-            value={formData.balancePayment || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="securityAmount"
-            label="Security Amount"
-            type="number"
-            fullWidth
-            value={formData.securityAmount || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="address.addressLine1"
-            label="Address Line 1"
-            fullWidth
-            value={formData.address?.addressLine1 || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="address.addressLine2"
-            label="Address Line 2"
-            fullWidth
-            value={formData.address?.addressLine2 || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="address.suburb"
-            label="Suburb"
-            fullWidth
-            value={formData.address?.suburb || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="address.zipCode"
-            label="Zip Code"
-            fullWidth
-            value={formData.address?.zipCode || ''}
-            onChange={handleChange}
-          />
-          <TextField
-            margin="dense"
-            name="address.country"
-            label="Country"
-            fullWidth
-            value={formData.address?.country || ''}
-            onChange={handleChange}
-          />
-          <FormControl fullWidth>
-            <InputLabel>Status</InputLabel>
-            <Select
-              name="status"
-              value={formData.status || ''}
-              onChange={handleChange}
-            >
-              <MenuItem value="confirmed">Confirmed</MenuItem>
-              <MenuItem value="pending">Pending</MenuItem>
-              <MenuItem value="cancelled">Cancelled</MenuItem>
-            </Select>
-          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleSubmit} color="primary">
-            Update
-          </Button>
-        </DialogActions>
-      </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default AllFarms;
+export default AllFarms
