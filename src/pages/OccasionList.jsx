@@ -11,7 +11,7 @@ import {
   TextField,
 } from '@mui/material';
 import CreateIcon from '@mui/icons-material/Create';
-
+import DeleteIcon from '@mui/icons-material/Delete';
 const OccasionList = () => {
   const [occasions, setOccasions] = useState([]);
   const [filters, setFilters] = useState({
@@ -43,7 +43,9 @@ const OccasionList = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.patch(`http://localhost:3000/occasion/occasions/${selectedOccasion.id}`, selectedOccasion);
+      console.log(`http://localhost:3000/occasion/occasion/${selectedOccasion._id}`)
+      console.log(selectedOccasion)
+      await axios.patch(`http://localhost:3000/occasion/occasion/${selectedOccasion._id}`, selectedOccasion);
       toast.success('Occasion updated successfully!');
       fetchOccasions();
       setOpen(false);
@@ -104,37 +106,55 @@ const OccasionList = () => {
 
       {/* Occasions Table */}
       <div className="my-8 bg-white p-4 w-full rounded-md shadow-sm">
-        <table className="min-w-full bg-white border-b border-b-gray-300">
-          <thead>
-            <tr>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">ID</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Name</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {occasions.filter(occasion => (
-              (!filters.id || occasion.id.includes(filters.id)) &&
-              (!filters.name || occasion.name.includes(filters.name))
-            )).map((occasion) => (
-              <tr key={occasion.id}>
-                <td className="border-b px-4 py-4 whitespace-nowrap">{occasion.id}</td>
-                <td className="border-b px-4 py-4 whitespace-nowrap">{occasion.name}</td>
-                <td className="border-b px-4 py-4 whitespace-nowrap">
-                  <CreateIcon onClick={() => handleUpdateClick(occasion)} />
-                  <Button 
-                    color="secondary" 
-                    onClick={() => handleDelete(occasion.id)} 
-                    style={{ marginLeft: '8px' }} 
-                    size="small"
-                  >
-                    Delete
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      <table className="min-w-full bg-white border border-gray-300 text-center">
+  <thead>
+    <tr>
+      <th className="py-4 border-b bg-gray-100 px-4 whitespace-nowrap text-sm font-medium text-gray-700">
+        ID
+      </th>
+      <th className="py-4 border-b bg-gray-100 px-4 whitespace-nowrap text-sm font-medium text-gray-700">
+        Name
+      </th>
+      <th className="py-4 border-b bg-gray-100 px-4 whitespace-nowrap text-sm font-medium text-gray-700">
+        Actions
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {occasions
+      .filter(
+        (occasion) =>
+          (!filters.id || occasion.id.includes(filters.id)) &&
+          (!filters.name || occasion.name.includes(filters.name))
+      )
+      .map((occasion) => (
+        <tr key={occasion.id} className="hover:bg-gray-50">
+          <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+            {occasion.id}
+          </td>
+          <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+            {occasion.name}
+          </td>
+          <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
+            <CreateIcon 
+              onClick={() => handleUpdateClick(occasion)} 
+              className="cursor-pointer text-blue-500 hover:text-blue-700"
+            />
+            {/* <Button
+              color="secondary"
+              onClick={() => handleDelete(occasion.id)}
+              style={{ marginLeft: '8px' }}
+              size="small"
+            >
+              Delete
+            </Button> */}
+            <DeleteIcon style={{ marginLeft: '8px' }} className="cursor-pointer text-black-500 hover:text-black-700"  onClick={() => handleDelete(occasion.id)} />
+          </td>
+        </tr>
+      ))}
+  </tbody>
+</table>
+
       </div>
 
       {/* Update Dialog */}

@@ -10,6 +10,7 @@ import {
   CREATE_EXECUTIVE,
   CREATE_FARMS,
   CREATE_FORM,
+  CREATE_OCCASION,
   CREATE_ROUTE,
   DASHBOARD_ROUTE,
   INVOICE_ROUTE,
@@ -25,6 +26,7 @@ import CreateFarm from './pages/CreateFarm'
 import AllExecutive from './pages/AllExecutive'
 import CreateExecutive from './pages/CreateExecutive'
 import OccasionList from './pages/OccasionList'
+import CreateOccasion from './pages/CreateOccasion'
 const App = () => {
   return (
     <div>
@@ -36,6 +38,7 @@ const App = () => {
           <Route path={ALL_EXECUTIVE} element={<AllExecutive />} />
           <Route path={CREATE_FARMS} element={<CreateFarm />} />
           <Route path={ALL_OCCASION} element={<OccasionList/>} />
+          <Route path={CREATE_OCCASION} element={<CreateOccasion/>} />
           <Route path={CREATE_EXECUTIVE} element={<CreateExecutive />} />
           <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
           <Route path={CREATE_ROUTE} element={<CreateEvent />} />
