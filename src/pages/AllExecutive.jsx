@@ -49,7 +49,7 @@ const ExecutiveList = () => {
 
   const handleUpdate = async () => {
     try {
-      await axios.patch(`http://localhost:3000/executives/${selectedExecutive.id}`, selectedExecutive);
+      await axios.patch(`http://localhost:3000/executives/${selectedExecutive._id}`, selectedExecutive);
       toast.success('Executive updated successfully!');
       fetchExecutives();
       setOpen(false);
@@ -61,6 +61,7 @@ const ExecutiveList = () => {
 
   const handleDelete = async (executiveId) => {
     try {
+      console.log(`http://localhost:3000/executives/${executiveId}`);
       await axios.delete(`http://localhost:3000/executives/${executiveId}`);
       toast.success('Executive deleted successfully!');
       fetchExecutives(); // Refresh the list after deletion
@@ -181,7 +182,7 @@ const ExecutiveList = () => {
                     <CreateIcon onClick={() => handleUpdateClick(executive)} />
                     <Button 
                       color="secondary" 
-                      onClick={() => handleDelete(executive.id)} 
+                      onClick={() => handleDelete(executive._id)} 
                       style={{ marginLeft: '8px' }} 
                       size="small"
                     >
