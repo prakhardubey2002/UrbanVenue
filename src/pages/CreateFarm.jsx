@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { Toaster, toast } from 'react-hot-toast';
+import React, { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
+import { Toaster, toast } from 'react-hot-toast'
 
 const CreateFarm = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // State to manage form values
   const [formData, setFormData] = useState({
@@ -19,11 +19,11 @@ const CreateFarm = () => {
     suburb: '',
     zipCode: '',
     phoneNumber: '',
-    checkInDate: '',
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
-    maxPeople: '',
+    numberOfAdults: '', // Updated
+    numberOfKids: '', // Updated
     occasion: '',
     hostOwnerName: '',
     hostNumber: '',
@@ -31,62 +31,87 @@ const CreateFarm = () => {
     advance: '',
     balancePayment: '',
     securityAmount: '',
-    status: 'Available',
-  });
+    advanceCollectedBy: 'Not Assigned',
+    pendingCollectedBy: 'Not Assigned',
+    advanceMode: '',
+    email: '',
+    otherServices: '',
+    urbanvenuecommission: '',
+    termsConditions: '',
+    eventAddOns: '',
+    farmTref: '', // Added field
+    status: 'Upcoming',
+  })
 
   // Generate unique farmId based on stateName and placeName
   const generateFarmId = (stateName, placeName) => {
-    const cleanedStateName = stateName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
-    const cleanedPlaceName = placeName.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '');
-    const timestamp = Date.now();
-    return `${cleanedStateName}-${cleanedPlaceName}-${timestamp}`;
-  };
+    const cleanedStateName = stateName
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[^a-z0-9]/g, '')
+    const cleanedPlaceName = placeName
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[^a-z0-9]/g, '')
+    const timestamp = Date.now()
+    return `${cleanedStateName}-${cleanedPlaceName}-${timestamp}`
+  }
 
   // Handle input change
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     setFormData((prevData) => {
-      const updatedData = { ...prevData, [name]: value };
+      const updatedData = { ...prevData, [name]: value }
 
       // If stateName or placeName is changed, update farmId
       if (name === 'stateName' || name === 'placeName') {
-        updatedData.farmId = generateFarmId(updatedData.stateName, updatedData.placeName);
+        updatedData.farmId = generateFarmId(
+          updatedData.stateName,
+          updatedData.placeName
+        )
       }
 
       // If stateName is changed, update state to the same value
       if (name === 'stateName') {
-        updatedData.state = value;
+        updatedData.state = value
       }
       // If placeName is changed, update suburb to the same value
       if (name === 'placeName') {
-        updatedData.suburb = value;
+        updatedData.suburb = value
       }
       // If suburb is changed, update placeName to the same value
       if (name === 'suburb') {
-        updatedData.placeName = value;
+        updatedData.placeName = value
       }
 
-      return updatedData;
-    });
-  };
+      // Update balancePayment if totalBooking and advance are changed
+      if (name === 'totalBooking' || name === 'advance') {
+        updatedData.balancePayment =
+          parseInt(updatedData.totalBooking) - parseInt(updatedData.advance) ||
+          0
+      }
+
+      return updatedData
+    })
+  }
 
   // Handle form submission
   const handleSubmit = () => {
     const requiredFields = [
-      'stateName',
-      'placeName',
+      'farmId',
       'name',
       'addressLine1',
+      'addressLine2',
       'country',
       'state',
       'suburb',
       'zipCode',
       'phoneNumber',
-      'checkInDate',
       'checkInTime',
       'checkOutDate',
       'checkOutTime',
-      'maxPeople',
+      'numberOfAdults',
+      'numberOfKids',
       'occasion',
       'hostOwnerName',
       'hostNumber',
@@ -94,19 +119,28 @@ const CreateFarm = () => {
       'advance',
       'balancePayment',
       'securityAmount',
+      'advanceCollectedBy',
+      'pendingCollectedBy',
+      'advanceMode',
+      'email',
+      'otherServices',
+      'urbanvenuecommission',
+      'termsConditions',
+      'eventAddOns',
       'status',
-    ];
-    const missingFields = requiredFields.filter((field) => !formData[field]);
+    ]
+
+    const missingFields = requiredFields.filter((field) => !formData[field])
 
     if (missingFields.length > 0) {
       toast.error(
         `Please fill in the following fields: ${missingFields.join(', ')}`
-      );
+      )
     } else {
-      // Structure the data as per the API requirements
+      // Structure the data as per the updated API requirements
       const apiData = {
-        stateName: formData.stateName,
-        placeName: formData.placeName,
+        stateName: formData.stateName, // Assuming this is included in the form data
+        placeName: formData.placeName, // Assuming this is included in the form data
         farmDetails: {
           farmId: formData.farmId,
           name: formData.name,
@@ -119,11 +153,11 @@ const CreateFarm = () => {
             zipCode: formData.zipCode,
           },
           phoneNumber: formData.phoneNumber,
-          checkInDate: formData.checkInDate,
           checkInTime: formData.checkInTime,
           checkOutDate: formData.checkOutDate,
           checkOutTime: formData.checkOutTime,
-          maxPeople: formData.maxPeople,
+          numberOfAdults: formData.numberOfAdults,
+          numberOfKids: formData.numberOfKids,
           occasion: formData.occasion,
           hostOwnerName: formData.hostOwnerName,
           hostNumber: formData.hostNumber,
@@ -131,22 +165,32 @@ const CreateFarm = () => {
           advance: formData.advance,
           balancePayment: formData.balancePayment,
           securityAmount: formData.securityAmount,
+          advanceCollectedBy: formData.advanceCollectedBy,
+          pendingCollectedBy: formData.pendingCollectedBy,
+          advanceMode: formData.advanceMode,
+          email: formData.email,
+          otherServices: formData.otherServices,
+          urbanvenuecommission: formData.urbanvenuecommission,
+          termsConditions: formData.termsConditions,
+          eventAddOns: formData.eventAddOns,
           status: formData.status,
+          farmTref: formData.farmTref, // Added in the API data
         },
-      };
+      }
 
+      console.log(apiData)
       axios
         .post('http://localhost:3000/api/calender/add-farm', apiData)
         .then((response) => {
-          toast.success('Farm created successfully!');
-          navigate('/farms');
+          toast.success('Farm created successfully!')
+          navigate('/farms')
         })
         .catch((error) => {
-          toast.error('Error creating farm!');
-          console.error('Error:', error);
-        });
+          toast.error('Error creating farm!')
+          console.error('Error:', error)
+        })
     }
-  };
+  }
 
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
@@ -248,7 +292,6 @@ const CreateFarm = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">State</label>
           <input
-            readOnly
             name="state"
             value={formData.state}
             onChange={handleChange}
@@ -262,7 +305,6 @@ const CreateFarm = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Suburb</label>
           <input
-            readOnly
             name="suburb"
             value={formData.suburb}
             onChange={handleChange}
@@ -272,16 +314,16 @@ const CreateFarm = () => {
           />
         </div>
 
-        {/* ZIP Code */}
+        {/* Zip Code */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">ZIP Code</label>
+          <label className="font-semibold">Zip Code</label>
           <input
             name="zipCode"
             value={formData.zipCode}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="text"
-            placeholder="Enter ZIP Code"
+            placeholder="Enter Zip Code"
           />
         </div>
 
@@ -298,84 +340,87 @@ const CreateFarm = () => {
           />
         </div>
 
-        {/* Check-In Date & Time */}
-        <div className="flex border-b">
-          <div className="flex-1 flex flex-col mr-2">
-            <label className="font-semibold">Check-In Date</label>
-            <input
-              name="checkInDate"
-              value={formData.checkInDate}
-              onChange={handleChange}
-              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-              type="date"
-            />
-          </div>
-          <div className="flex-1 flex flex-col ml-2">
-            <label className="font-semibold">Check-In Time</label>
-            <input
-              name="checkInTime"
-              value={formData.checkInTime}
-              onChange={handleChange}
-              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-              type="time"
-            />
-          </div>
-        </div>
-
-        {/* Check-Out Date & Time */}
-        <div className="flex border-b">
-          <div className="flex-1 flex flex-col mr-2">
-            <label className="font-semibold">Check-Out Date</label>
-            <input
-              name="checkOutDate"
-              value={formData.checkOutDate}
-              onChange={handleChange}
-              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-              type="date"
-            />
-          </div>
-          <div className="flex-1 flex flex-col ml-2">
-            <label className="font-semibold">Check-Out Time</label>
-            <input
-              name="checkOutTime"
-              value={formData.checkOutTime}
-              onChange={handleChange}
-              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-              type="time"
-            />
-          </div>
-        </div>
-
-        {/* Max People */}
+        {/* Check-in Time */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Max People</label>
+          <label className="font-semibold">Check-in Time</label>
           <input
-            name="maxPeople"
-            value={formData.maxPeople}
+            name="checkInTime"
+            value={formData.checkInTime}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="time"
+            placeholder="Enter Check-in Time"
+          />
+        </div>
+
+        {/* Check-out Date */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Check-out Date</label>
+          <input
+            name="checkOutDate"
+            value={formData.checkOutDate}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="date"
+          />
+        </div>
+
+        {/* Check-out Time */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Check-out Time</label>
+          <input
+            name="checkOutTime"
+            value={formData.checkOutTime}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="time"
+            placeholder="Enter Check-out Time"
+          />
+        </div>
+
+        {/* Number of Adults */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Number of Adults</label>
+          <input
+            name="numberOfAdults"
+            value={formData.numberOfAdults}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Max People"
+            placeholder="Enter Number of Adults"
+          />
+        </div>
+
+        {/* Number of Kids */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Number of Kids</label>
+          <input
+            name="numberOfKids"
+            value={formData.numberOfKids}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Number of Kids"
           />
         </div>
 
         {/* Occasion */}
         <div className="flex flex-col border-b">
-  <label className="font-semibold">Occasion</label>
-  <select
-    name="occasion"
-    value={formData.occasion}
-    onChange={handleChange}
-    className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-  >
-    <option value="">Select Occasion</option>
-    <option value="Wedding">Wedding</option>
-    <option value="Engagement">Engagement</option>
-    <option value="Office Party">Office Party</option>
-    <option value="Haldi Ceremony">Haldi Ceremony</option>
-    <option value="Mehndi Ceremony">Mehndi Ceremony</option>
-  </select>
-</div>
+          <label className="font-semibold">Occasion</label>
+          <select
+            name="occasion"
+            value={formData.occasion}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            <option value="">Select Occasion</option>
+            <option value="Wedding">Wedding</option>
+            <option value="Engagement">Engagement</option>
+            <option value="Office Party">Office Party</option>
+            <option value="Haldi Ceremony">Haldi Ceremony</option>
+            <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+          </select>
+        </div>
 
         {/* Host Owner Name */}
         <div className="flex flex-col border-b">
@@ -425,20 +470,20 @@ const CreateFarm = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Advance Payment"
+            placeholder="Enter Advance Amount"
           />
         </div>
 
-        {/* Balance Payment */}
+        {/* Balance Payment (calculated automatically based on Total Booking and Advance) */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Balance Payment</label>
           <input
             name="balancePayment"
             value={formData.balancePayment}
-            onChange={handleChange}
+            readOnly
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Balance Payment"
+            placeholder="Balance Payment"
           />
         </div>
 
@@ -455,33 +500,155 @@ const CreateFarm = () => {
           />
         </div>
 
-        {/* Status */}
+        {/* Advance Collected By */}
         <div className="flex flex-col border-b">
-  <label className="font-semibold">Status</label>
-  <select
-    name="status"
-    value={formData.status}
-    onChange={handleChange}
-    className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-  >
-    <option value="">Select Status</option>
-    <option value="confirmed">Confirmed</option>
-    <option value="pending">Pending</option>
-    <option value="cancelled">Cancelled</option>
-  </select>
-</div>
+          <label className="font-semibold">Advance Collected By</label>
+          <select
+            name="advanceCollectedBy"
+            value={formData.advanceCollectedBy}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            <option value="">Select Person</option>
+            <option value="Not Assigned">Not Assigned</option>
+            <option value="Farm Owner">Farm Owner</option>
+            <option value="Organiser">Organiser</option>
+          </select>
+        </div>
 
+        {/* Pending Collected By */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Pending Collected By</label>
+          <select
+            name="pendingCollectedBy"
+            value={formData.pendingCollectedBy}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            {/* <option value="">Select Person</option> */}
+            <option value="Not Assigned">Not Assigned</option>
+            <option value="Farm Owner">Farm Owner</option>
+            <option value="Organiser">Organiser</option>
+          </select>
+        </div>
+
+        {/* Advance Mode */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Advance Mode</label>
+          <select
+            name="advanceMode"
+            value={formData.advanceMode}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            <option value="">Select Mode of Advance Payment</option>
+            <option value="Cash">Cash</option>
+            <option value="Online">Online</option>
+          </select>
+        </div>
+
+        {/* Email */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Email</label>
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="email"
+            placeholder="Enter Email"
+          />
+        </div>
+
+        {/* Other Services */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Other Services</label>
+          <input
+            name="otherServices"
+            value={formData.otherServices}
+            onChange={handleChange}
+            type="number"
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            placeholder="Enter Other Services"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+
+        {/* Farm Tref */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Farm Tref</label>
+          <input
+            name="farmTref"
+            value={formData.farmTref}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Farm Tref"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+        {/* Urban Venue Commission */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Urban Venue Commission</label>
+          <input
+            name="urbanvenuecommission"
+            value={formData.urbanvenuecommission}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Urban Venue Commission"
+          />
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Event status</label>
+          <select
+            name="status"
+            value={formData.status}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+          >
+            <option value="Upcoming">Upcoming</option>
+            <option value="Completed">Completed</option>
+            <option value="Paid">Paid</option>
+            <option value="Canceled">Canceled</option>
+          </select>
+        </div>
+        {/* Terms and Conditions */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Terms and Conditions</label>
+          <textarea
+            name="termsConditions"
+            value={formData.termsConditions}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            placeholder="Enter Terms and Conditions"
+          />
+        </div>
+
+        {/* Event Add-Ons */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Event Add-Ons</label>
+          <textarea
+            name="eventAddOns"
+            value={formData.eventAddOns}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            placeholder="Enter Event Add-Ons"
+          />
+        </div>
 
         {/* Submit Button */}
-        <button
-          className="bg-blue-500 text-white p-2 rounded mt-4"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
+        <div className="mt-6">
+          <button
+            onClick={handleSubmit}
+            className="bg-blue-500 text-white px-6 py-3 rounded-md"
+          >
+            Create Farm
+          </button>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default CreateFarm;
+export default CreateFarm

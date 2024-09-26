@@ -70,7 +70,7 @@ const AllFarms = () => {
 
         setFarms(farmData)
         setFilteredFarms(farmData) // Update filtered farms too
-
+        console.log(farmData)
         // Extract unique values for filter options
         setStates([...new Set(farmData.map((farm) => farm.state))])
         setPlaces([...new Set(farmData.map((farm) => farm.place))])
@@ -156,13 +156,14 @@ const AllFarms = () => {
 
   const handleSubmitUpdate = async () => {
     try {
+      console.log(`http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`)
       await axios.patch(
         `http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`,
         updatedFields
       )
       setDialogOpen(false)
       setDialogOpen(false)
-      window.location.reload();
+      window.location.reload()
       // await fetchFarms()
     } catch (error) {
       console.error('Error updating farm:', error.message)
