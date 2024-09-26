@@ -31,23 +31,29 @@ const CreateVenueEvent = () => {
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
-    maxPeople: '',
+    email:'',
+    // maxPeople: '',
+    numberOfKids:'',
+    numberOfAdults:'',
     occasion: '',
     hostOwnerName: '',
     hostNumber: '',
     totalBooking: '',
+    bookingPartnerName : '', 
+    bookingPartnerPhoneNumber: '',
     farmTref: '',
     otherServices: '',
     advance: '',
     advanceCollectedBy: 'Not Assigned',
     pendingCollectedBy: 'Not Assigned',
-    showAdvanceDetails: '',
+    // showAdvanceDetails: '',
     advanceMode: 'Cash',
     balancePayment: '',
     securityAmount: '',
 
-    // termsConditions: '',
+    termsConditions: '',
     status: 'Upcoming',
+    eventAddOns:'', 
     venue: venue,
     addressLine1: data.addressLine1,
     addressLine2: data.addressLine2,
@@ -86,7 +92,7 @@ const CreateVenueEvent = () => {
       'checkInTime',
       'checkOutDate',
       'checkOutTime',
-      'maxPeople',
+      // 'maxPeople',
       'occasion',
       'hostOwnerName',
       'hostNumber',
@@ -178,6 +184,42 @@ const CreateVenueEvent = () => {
           />
         </div>
         <div className="flex flex-col border-b">
+          <label className="font-semibold">Email</label>
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="email"
+            placeholder="xyz@gmail.com"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Booking Partner Name</label>
+          <input
+            name="bookingPartnerName"
+            value={formData.bookingPartnerName}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="text"
+            placeholder="Name"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Booking Partner Phone No.</label>
+          <input
+            name="bookingPartnerPhoneNumber"
+            value={formData.bookingPartnerPhoneNumber}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="tel"
+            placeholder="9847777780"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+        <div className="flex flex-col border-b">
           <div className="my-2">
             <h2 className="font-semibold">When is your event?</h2>
             <p>
@@ -231,7 +273,7 @@ const CreateVenueEvent = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col border-b">
+        {/* <div className="flex flex-col border-b">
           <label className="font-semibold">Maximum Number of People</label>
           <input
             name="maxPeople"
@@ -242,7 +284,32 @@ const CreateVenueEvent = () => {
             placeholder="150"
             onWheel={(e) => e.target.blur()}
           />
+        </div> */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Number of Adults</label>
+          <input
+            name="numberOfAdults"
+            value={formData.numberOfAdults}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="150"
+            onWheel={(e) => e.target.blur()}
+          />
         </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Number of Kids</label>
+          <input
+            name="numberOfKids"
+            value={formData.numberOfKids}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="10"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+
         <div className="flex flex-col border-b">
           <label className="font-semibold">Occasion</label>
           <select
@@ -261,7 +328,7 @@ const CreateVenueEvent = () => {
         </div>
 
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Host Owner Name</label>
+          <label className="font-semibold">Property Owner Name</label>
           <input
             name="hostOwnerName"
             value={formData.hostOwnerName}
@@ -272,7 +339,7 @@ const CreateVenueEvent = () => {
           />
         </div>
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Host Number</label>
+          <label className="font-semibold">Property Number</label>
           <input
             name="hostNumber"
             value={formData.hostNumber}
@@ -357,7 +424,7 @@ const CreateVenueEvent = () => {
             <option value="Organiser">Organiser</option>
           </select>
         </div>
-        <div className="flex flex-col border-b">
+        {/* <div className="flex flex-col border-b">
           <label className="font-semibold">
             Show advance collect, farm tref, other services to client invoice
           </label>
@@ -370,7 +437,7 @@ const CreateVenueEvent = () => {
             <option value="yes">Yes</option>
             <option value="no">No</option>
           </select>
-        </div>
+        </div> */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Event status</label>
           <select
@@ -441,7 +508,22 @@ const CreateVenueEvent = () => {
 
           <textarea
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm "
-            name=""
+            name="termsConditions"
+            value={formData.termsConditions}
+            onChange={handleChange}
+            id=""
+            cols="30"
+            rows="5"
+          ></textarea>
+        </div>
+        <div className="flex flex-col  border-b ">
+          <label className="font-semibold">Events Add-ons</label>
+
+          <textarea
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm "
+            name="eventAddOns"
+            value={formData.eventAddOns}
+            onChange={handleChange}
             id=""
             cols="30"
             rows="5"
@@ -599,12 +681,12 @@ const CreateVenueEvent = () => {
                 </td>
                 <td className="p-2">{formData.checkOutTime}</td>
               </tr>
-              <tr className="border-b border-gray-300">
+              {/* <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
                   Maximum People:
                 </td>
                 <td className="p-2">{formData.maxPeople}</td>
-              </tr>
+              </tr> */}
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
                   Occasion:
@@ -653,12 +735,12 @@ const CreateVenueEvent = () => {
                 </td>
                 <td className="p-2">{formData.advanceCollectedBy}</td>
               </tr>
-              <tr className="border-b border-gray-300">
+              {/* <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
                   Show Advance Details:
                 </td>
                 <td className="p-2">{formData.showAdvanceDetails}</td>
-              </tr>
+              </tr> */}
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
                   Advance Mode:
