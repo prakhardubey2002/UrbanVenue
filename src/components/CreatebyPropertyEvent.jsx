@@ -169,7 +169,7 @@ const CreatebyPropertyEvent = () => {
       const fetchAddress = async () => {
         try {
           const addressResponse = await axios.get(
-            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/address`
+            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
           )
           setAddress(addressResponse.data)
         } catch (error) {

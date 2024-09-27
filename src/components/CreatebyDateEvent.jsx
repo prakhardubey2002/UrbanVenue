@@ -104,7 +104,7 @@ const CreatebyDateEvent = () => {
     try {
       // Fetch the address
       const addressResponse = await axios.get(
-        `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/address`
+        `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
       )
 
       // Set the address state

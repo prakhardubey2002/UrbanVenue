@@ -50,7 +50,9 @@ const AllFarms = () => {
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
-    maxPeople: '',
+    email: '',
+    eventAddOns: '',
+    termsConditions: '',
     occasion: '',
     hostOwnerName: '',
     hostNumber: '',
@@ -59,6 +61,11 @@ const AllFarms = () => {
     balancePayment: '',
     securityAmount: '',
     status: '',
+    advanceCollectedBy: '', // New field
+    pendingCollectedBy: '', // New field
+    advanceMode: 'cash', // New field, default value
+    otherServices: '', // New field
+    urbanvenuecommission: '', // New field
   })
 
   useEffect(() => {
@@ -128,7 +135,7 @@ const AllFarms = () => {
       checkInTime: farm.checkInTime,
       checkOutDate: farm.checkOutDate,
       checkOutTime: farm.checkOutTime,
-      maxPeople: farm.maxPeople,
+      // Removed maxPeople as it is no longer part of updatedFields
       occasion: farm.occasion,
       hostOwnerName: farm.hostOwnerName,
       hostNumber: farm.hostNumber,
@@ -137,6 +144,17 @@ const AllFarms = () => {
       balancePayment: farm.balancePayment,
       securityAmount: farm.securityAmount,
       status: farm.status,
+      numberOfAdults: farm.numberOfAdults, // Include this if required
+      numberOfKids: farm.numberOfKids,
+      email:farm.email,
+      
+      advanceCollectedBy: farm.advanceCollectedBy || '', // New field
+      pendingCollectedBy: farm.pendingCollectedBy || '', // New field
+      advanceMode: farm.advanceMode || 'cash', // Default to 'cash'
+      otherServices: farm.otherServices || '', // New field
+      urbanvenuecommission: farm.urbanvenuecommission || '', // New field
+      termsConditions: farm.termsConditions,
+      eventAddOns: farm.eventAddOns,
     })
     setDialogOpen(true)
   }
@@ -157,26 +175,38 @@ const AllFarms = () => {
 
   const handleSubmitUpdate = async () => {
     try {
-      console.log(`http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`)
-      await axios.patch(
+      console.log(
+        `Submitting update to: http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`
+      )
+      console.log('Updated Fields:', updatedFields) // Log the updated fields
+
+      const response = await axios.patch(
         `http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`,
         updatedFields
       )
+
+      console.log('Update response:', response.data) // Log the response data
       setDialogOpen(false)
-      setDialogOpen(false)
-      window.location.reload()
-      // await fetchFarms()
+      // window.location.reload() // Reload the page or you may call fetchFarms()
     } catch (error) {
-      console.error('Error updating farm:', error.message)
+      console.error(
+        'Error updating farm:',
+        error.response?.data || error.message
+      ) // Improved error logging
     }
   }
-  const handleDeleteFarm = async (state,place,farmId) => {
-    const confirmDelete = window.confirm("Are you sure you want to delete this farm?")
+
+  const handleDeleteFarm = async (state, place, farmId) => {
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this farm?'
+    )
     if (confirmDelete) {
       try {
-        await axios.delete(`http://localhost:3000/api/calender/farms/${state}/${place}/${farmId}`)
-        setFarms(farms.filter(farm => farm.farmId !== farmId))
-        setFilteredFarms(filteredFarms.filter(farm => farm.farmId !== farmId))
+        await axios.delete(
+          `http://localhost:3000/api/calender/farms/${state}/${place}/${farmId}`
+        )
+        setFarms(farms.filter((farm) => farm.farmId !== farmId))
+        setFilteredFarms(filteredFarms.filter((farm) => farm.farmId !== farmId))
       } catch (error) {
         console.error('Error deleting farm:', error.message)
       }
@@ -245,7 +275,7 @@ const AllFarms = () => {
             </div>
 
             {/* Address Filter */}
-            <div className="relative flex items-center bg-white py-2 px-4 border border-gray-300 rounded-md">
+            {/* <div className="relative flex items-center bg-white py-2 px-4 border border-gray-300 rounded-md">
               <SearchIcon className="text-gray-400 mr-2" />
               <input
                 type="text"
@@ -254,7 +284,7 @@ const AllFarms = () => {
                 className="outline-none border-none w-full"
                 placeholder="Enter Address"
               />
-            </div>
+            </div> */}
           </div>
 
           {/* Action Buttons */}
@@ -319,72 +349,106 @@ const AllFarms = () => {
                     Advance
                   </th>
                   <th className="py-3 px-6 text-left border border-gray-300">
+                    AdvanceCollectedBy
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    PendingCollectedBy
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Events & Addons
+                  </th>
+                  <th className="py-3 px-6 text-left border border-gray-300">
+                    Terms & Conditions
+                  </th>
+
+                  <th className="py-3 px-6 text-left border border-gray-300">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {filteredFarms.slice().reverse().map((farm, index) => {
-                  const address = farm.address || {}
+                {filteredFarms
+                  .slice()
+                  .reverse()
+                  .map((farm, index) => {
+                    const address = farm.address || {}
 
-                  return (
-                    <tr key={index}>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.farmId}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.state}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.place}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.name}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.phoneNumber}
-                      </td>
-                      {/* <td className="py-3 px-6 border border-gray-300">
+                    return (
+                      <tr key={index}>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.farmId}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.state}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.place}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.name}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.phoneNumber}
+                        </td>
+                        {/* <td className="py-3 px-6 border border-gray-300">
                         {new Date(farm.checkInDate).toLocaleDateString()}
                       </td> */}
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.checkInTime}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {new Date(farm.checkOutDate).toLocaleDateString()}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.checkOutTime}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.hostOwnerName}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.totalBooking}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.securityAmount}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        {farm.advance}
-                      </td>
-                      <td className="py-3 px-6 border border-gray-300">
-                        <button
-                          onClick={() => handleUpdateFarm(farm)}
-                          className="text-blue-500 hover:text-blue-700"
-                        >
-                          <EditIcon />
-                        </button>
-                        <button
-                      onClick={() => handleDeleteFarm(farm.state,farm.place,farm.farmId)} // Add delete button
-                      className="text-red-500"
-                    >
-                      <DeleteIcon />
-                    </button>
-                      </td>
-                    </tr>
-                  )
-                })}
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.checkInTime}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {new Date(farm.checkOutDate).toLocaleDateString()}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.checkOutTime}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.hostOwnerName}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.totalBooking}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.securityAmount}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.advance}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.advanceCollectedBy}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.pendingCollectedBy}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.eventAddOns}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          {farm.termsConditions}
+                        </td>
+                        <td className="py-3 px-6 border border-gray-300">
+                          <button
+                            onClick={() => handleUpdateFarm(farm)}
+                            className="text-blue-500 hover:text-blue-700"
+                          >
+                            <EditIcon />
+                          </button>
+                          <button
+                            onClick={() =>
+                              handleDeleteFarm(
+                                farm.state,
+                                farm.place,
+                                farm.farmId
+                              )
+                            } // Add delete button
+                            className="text-red-500"
+                          >
+                            <DeleteIcon />
+                          </button>
+                        </td>
+                      </tr>
+                    )
+                  })}
               </tbody>
             </table>
           </div>
@@ -400,18 +464,6 @@ const AllFarms = () => {
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
-              />
-              <TextField
-                name="checkInDate"
-                label="Check-In Date"
-                type="date"
-                value={updatedFields.checkInDate?.slice(0, 10) || ''}
-                onChange={handleFieldChange}
-                fullWidth
-                margin="normal"
-                InputLabelProps={{
-                  shrink: true,
-                }}
               />
               <TextField
                 name="checkInTime"
@@ -485,18 +537,98 @@ const AllFarms = () => {
                 margin="normal"
               />
               <TextField
-                name="place"
-                label="Place"
-                value={updatedFields.place}
+                name="advanceCollectedBy"
+                label="Advance Collected By"
+                value={updatedFields.advanceCollectedBy || ''}
                 onChange={handleFieldChange}
                 fullWidth
                 margin="normal"
               />
+              <TextField
+                name="pendingCollectedBy"
+                label="Pending Collected By"
+                value={updatedFields.pendingCollectedBy || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="advanceMode"
+                label="Advance Mode"
+                value={updatedFields.advanceMode || 'cash'} // Defaulting to 'cash'
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="email"
+                label="Email"
+                type="email"
+                value={updatedFields.email || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="otherServices"
+                label="Other Services"
+                type="number"
+                value={updatedFields.otherServices || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="urbanvenuecommission"
+                label="Urban Venue Commission"
+                type="number"
+                value={updatedFields.urbanvenuecommission || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="termsConditions"
+                label="Terms and Conditions"
+                value={updatedFields.termsConditions || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="eventAddOns"
+                label="Event Add-Ons"
+                value={updatedFields.eventAddOns || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+              />
+              <TextField
+                name="status"
+                label="Status"
+                select
+                value={updatedFields.status || ''}
+                onChange={handleFieldChange}
+                fullWidth
+                margin="normal"
+                SelectProps={{
+                  native: true,
+                }}
+              >
+                <option value="" disabled>
+                  Select Status
+                </option>
+                <option value="Canceled">Canceled</option>
+                <option value="Paid">Paid</option>
+                <option value="Upcoming">Upcoming</option>
+                <option value="Completed">Completed</option>
+                <option value="confirmed">Confirmed</option>
+              </TextField>
               {/* Address Fields */}
               <TextField
                 name="addressLine1"
                 label="Address Line 1"
-                value={updatedFields.address.addressLine1}
+                value={updatedFields.address?.addressLine1 || ''}
                 onChange={handleAddressChange}
                 fullWidth
                 margin="normal"
@@ -504,7 +636,7 @@ const AllFarms = () => {
               <TextField
                 name="addressLine2"
                 label="Address Line 2"
-                value={updatedFields.address.addressLine2}
+                value={updatedFields.address?.addressLine2 || ''}
                 onChange={handleAddressChange}
                 fullWidth
                 margin="normal"
@@ -512,7 +644,7 @@ const AllFarms = () => {
               <TextField
                 name="suburb"
                 label="Suburb"
-                value={updatedFields.address.suburb}
+                value={updatedFields.address?.suburb || ''}
                 onChange={handleAddressChange}
                 fullWidth
                 margin="normal"
@@ -520,7 +652,7 @@ const AllFarms = () => {
               <TextField
                 name="zipCode"
                 label="Zip Code"
-                value={updatedFields.address.zipCode}
+                value={updatedFields.address?.zipCode || ''}
                 onChange={handleAddressChange}
                 fullWidth
                 margin="normal"
@@ -528,7 +660,7 @@ const AllFarms = () => {
               <TextField
                 name="country"
                 label="Country"
-                value={updatedFields.address.country}
+                value={updatedFields.address?.country || ''}
                 onChange={handleAddressChange}
                 fullWidth
                 margin="normal"

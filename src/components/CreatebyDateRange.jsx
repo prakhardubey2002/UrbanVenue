@@ -93,7 +93,7 @@ const CreatebyDateRange = () => {
   
       // Fetch the address
       const addressResponse = await axios.get(
-        `http://localhost:3000/api/calender/${data.city}/${selectedProperty}/address`
+        `http://localhost:3000/api/calender/${data.city}/${selectedProperty}/details`
       );
   
       const address = addressResponse.data;
