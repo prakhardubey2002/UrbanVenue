@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import { Toaster, toast } from 'react-hot-toast';
-import CustomNavTopbar from '../components/CustomNavTopbar';
-import { CREATE_EXECUTIVE } from '../routes/Routes';
+import React, { useEffect, useState } from 'react'
+import axios from 'axios'
+import { Toaster, toast } from 'react-hot-toast'
+import CustomNavTopbar from '../components/CustomNavTopbar'
+import { CREATE_EXECUTIVE } from '../routes/Routes'
 import {
   Dialog,
   DialogActions,
@@ -14,84 +14,92 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-} from '@mui/material';
-import CreateIcon from '@mui/icons-material/Create';
+} from '@mui/material'
+import CreateIcon from '@mui/icons-material/Create'
 
 const ExecutiveList = () => {
-  const [executives, setExecutives] = useState([]);
+  const [executives, setExecutives] = useState([])
   const [filters, setFilters] = useState({
     name: '',
     userId: '',
     status: '',
-  });
-  const [open, setOpen] = useState(false);
-  const [selectedExecutive, setSelectedExecutive] = useState(null);
+  })
+  const [open, setOpen] = useState(false)
+  const [selectedExecutive, setSelectedExecutive] = useState(null)
 
   const fetchExecutives = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/executives');
-      setExecutives(response.data);
+      const response = await axios.get('http://localhost:3000/executives')
+      setExecutives(response.data)
     } catch (error) {
-      console.error('Error fetching executives:', error);
-      toast.error('Failed to fetch executives');
+      console.error('Error fetching executives:', error)
+      toast.error('Failed to fetch executives')
     }
-  };
+  }
 
   const handleFilterChange = (e) => {
-    const { name, value } = e.target;
-    setFilters((prev) => ({ ...prev, [name]: value }));
-  };
+    const { name, value } = e.target
+    setFilters((prev) => ({ ...prev, [name]: value }))
+  }
 
   const handleUpdateClick = (executive) => {
-    setSelectedExecutive(executive);
-    setOpen(true);
-  };
+    setSelectedExecutive(executive)
+    setOpen(true)
+  }
 
   const handleUpdate = async () => {
     try {
-      await axios.patch(`http://localhost:3000/executives/${selectedExecutive._id}`, selectedExecutive);
-      toast.success('Executive updated successfully!');
-      fetchExecutives();
-      setOpen(false);
+      await axios.patch(
+        `http://localhost:3000/executives/${selectedExecutive._id}`,
+        selectedExecutive
+      )
+      toast.success('Executive updated successfully!')
+      fetchExecutives()
+      setOpen(false)
     } catch (error) {
-      console.error('Error updating executive:', error);
-      toast.error('Failed to update executive');
+      console.error('Error updating executive:', error)
+      toast.error('Failed to update executive')
     }
-  };
+  }
 
   const handleDelete = async (executiveId) => {
-    try {
-      console.log(`http://localhost:3000/executives/${executiveId}`);
-      await axios.delete(`http://localhost:3000/executives/${executiveId}`);
-      toast.success('Executive deleted successfully!');
-      fetchExecutives(); // Refresh the list after deletion
-    } catch (error) {
-      console.error('Error deleting executive:', error);
-      toast.error('Failed to delete executive');
+    const confirmDelete = window.confirm(
+      'Are you sure you want to delete this Executive?'
+    )
+    if (confirmDelete) {
+      try {
+        console.log(`http://localhost:3000/executives/${executiveId}`)
+        await axios.delete(`http://localhost:3000/executives/${executiveId}`)
+        toast.success('Executive deleted successfully!')
+        fetchExecutives() // Refresh the list after deletion
+      } catch (error) {
+        console.error('Error deleting executive:', error)
+        toast.error('Failed to delete executive')
+      }
     }
-  };
+  }
 
   const handleClose = () => {
-    setOpen(false);
-    setSelectedExecutive(null);
-  };
+    setOpen(false)
+    setSelectedExecutive(null)
+  }
 
   useEffect(() => {
-    fetchExecutives();
-  }, []);
+    fetchExecutives()
+  }, [])
 
   const getStatusStyle = (status) => {
     switch (status) {
       case 'Resigned':
-        return { color: 'red', dotColor: 'red' };
+        return { color: 'red', dotColor: 'red' }
       case 'Working':
-        return { color: 'green', dotColor: 'green' };
+        return { color: 'green', dotColor: 'green' }
       case 'Terminated':
-        return { color: 'purple', dotColor: 'purple' };
+        return { color: 'purple', dotColor: 'purple' }
       default:
-        return { color: 'black', dotColor: 'black' };
+        return { color: 'black', dotColor: 'black' }
     }
-  };
+  }
 
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
@@ -127,7 +135,9 @@ const ExecutiveList = () => {
               onChange={handleFilterChange}
               label="Filter by Status"
             >
-              <MenuItem value=""><em>None</em></MenuItem>
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
               <MenuItem value="Working">Working</MenuItem>
               <MenuItem value="Resigned">Resigned</MenuItem>
               <MenuItem value="Terminated">Terminated</MenuItem>
@@ -141,57 +151,100 @@ const ExecutiveList = () => {
         <table className="min-w-full bg-white border-b border-b-gray-300">
           <thead>
             <tr>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">ID</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Name</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">User ID</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Phone Number</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Joining Date</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">End Date</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Status</th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">Actions</th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                ID
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                Name
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                User ID
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                Phone Number
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                Joining Date
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                End Date
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                Status
+              </th>
+              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+                Actions
+              </th>
             </tr>
           </thead>
           <tbody>
-            {executives.filter(executive => (
-              (!filters.name || executive.name.includes(filters.name)) &&
-              (!filters.userId || executive.userId.includes(filters.userId)) &&
-              (!filters.status || executive.status === filters.status)
-            )).slice().reverse().map((executive) => {
-              const statusStyle = getStatusStyle(executive.status);
-              return (
-                <tr key={executive.id}>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">{executive.id}</td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">{executive.name}</td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">{executive.userId}</td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">{executive.phoneNumber}</td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">{new Date(executive.joiningDate).toLocaleDateString('en-US')}</td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">{new Date(executive.endDate).toLocaleDateString('en-US')}</td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">
-                    <div className="flex items-center" style={{ color: statusStyle.color }}>
-                      <span style={{
-                        width: '10px',
-                        height: '10px',
-                        borderRadius: '50%',
-                        backgroundColor: statusStyle.dotColor,
-                        marginRight: '5px'
-                      }} />
-                      {executive.status}
-                    </div>
-                  </td>
-                  <td className="border-b px-4 py-4 whitespace-nowrap">
-                    <CreateIcon onClick={() => handleUpdateClick(executive)} />
-                    <Button 
-                      color="secondary" 
-                      onClick={() => handleDelete(executive._id)} 
-                      style={{ marginLeft: '8px' }} 
-                      size="small"
-                    >
-                      Delete
-                    </Button>
-                  </td>
-                </tr>
-              );
-            })}
+            {executives
+              .filter(
+                (executive) =>
+                  (!filters.name || executive.name.includes(filters.name)) &&
+                  (!filters.userId ||
+                    executive.userId.includes(filters.userId)) &&
+                  (!filters.status || executive.status === filters.status)
+              )
+              .slice()
+              .reverse()
+              .map((executive) => {
+                const statusStyle = getStatusStyle(executive.status)
+                return (
+                  <tr key={executive.id}>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      {executive.id}
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      {executive.name}
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      {executive.userId}
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      {executive.phoneNumber}
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      {new Date(executive.joiningDate).toLocaleDateString(
+                        'en-US'
+                      )}
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      {new Date(executive.endDate).toLocaleDateString('en-US')}
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      <div
+                        className="flex items-center"
+                        style={{ color: statusStyle.color }}
+                      >
+                        <span
+                          style={{
+                            width: '10px',
+                            height: '10px',
+                            borderRadius: '50%',
+                            backgroundColor: statusStyle.dotColor,
+                            marginRight: '5px',
+                          }}
+                        />
+                        {executive.status}
+                      </div>
+                    </td>
+                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                      <CreateIcon
+                        onClick={() => handleUpdateClick(executive)}
+                      />
+                      <Button
+                        color="secondary"
+                        onClick={() => handleDelete(executive._id)}
+                        style={{ marginLeft: '8px' }}
+                        size="small"
+                      >
+                        Delete
+                      </Button>
+                    </td>
+                  </tr>
+                )
+              })}
           </tbody>
         </table>
       </div>
@@ -209,7 +262,12 @@ const ExecutiveList = () => {
                 fullWidth
                 variant="outlined"
                 value={selectedExecutive.name}
-                onChange={(e) => setSelectedExecutive({ ...selectedExecutive, name: e.target.value })}
+                onChange={(e) =>
+                  setSelectedExecutive({
+                    ...selectedExecutive,
+                    name: e.target.value,
+                  })
+                }
               />
               <TextField
                 margin="dense"
@@ -218,7 +276,12 @@ const ExecutiveList = () => {
                 fullWidth
                 variant="outlined"
                 value={selectedExecutive.userId}
-                onChange={(e) => setSelectedExecutive({ ...selectedExecutive, userId: e.target.value })}
+                onChange={(e) =>
+                  setSelectedExecutive({
+                    ...selectedExecutive,
+                    userId: e.target.value,
+                  })
+                }
               />
               <TextField
                 margin="dense"
@@ -227,7 +290,12 @@ const ExecutiveList = () => {
                 fullWidth
                 variant="outlined"
                 value={selectedExecutive.phoneNumber}
-                onChange={(e) => setSelectedExecutive({ ...selectedExecutive, phoneNumber: e.target.value })}
+                onChange={(e) =>
+                  setSelectedExecutive({
+                    ...selectedExecutive,
+                    phoneNumber: e.target.value,
+                  })
+                }
               />
               <TextField
                 margin="dense"
@@ -236,7 +304,12 @@ const ExecutiveList = () => {
                 fullWidth
                 variant="outlined"
                 value={selectedExecutive.joiningDate.split('T')[0]}
-                onChange={(e) => setSelectedExecutive({ ...selectedExecutive, joiningDate: e.target.value })}
+                onChange={(e) =>
+                  setSelectedExecutive({
+                    ...selectedExecutive,
+                    joiningDate: e.target.value,
+                  })
+                }
               />
               <TextField
                 margin="dense"
@@ -245,13 +318,23 @@ const ExecutiveList = () => {
                 fullWidth
                 variant="outlined"
                 value={selectedExecutive.endDate.split('T')[0]}
-                onChange={(e) => setSelectedExecutive({ ...selectedExecutive, endDate: e.target.value })}
+                onChange={(e) =>
+                  setSelectedExecutive({
+                    ...selectedExecutive,
+                    endDate: e.target.value,
+                  })
+                }
               />
               <FormControl fullWidth variant="outlined" margin="dense">
                 <InputLabel>Status</InputLabel>
                 <Select
                   value={selectedExecutive.status}
-                  onChange={(e) => setSelectedExecutive({ ...selectedExecutive, status: e.target.value })}
+                  onChange={(e) =>
+                    setSelectedExecutive({
+                      ...selectedExecutive,
+                      status: e.target.value,
+                    })
+                  }
                 >
                   <MenuItem value="Working">Working</MenuItem>
                   <MenuItem value="Resigned">Resigned</MenuItem>
@@ -271,7 +354,7 @@ const ExecutiveList = () => {
         </DialogActions>
       </Dialog>
     </div>
-  );
-};
+  )
+}
 
-export default ExecutiveList;
+export default ExecutiveList

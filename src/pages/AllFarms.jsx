@@ -5,6 +5,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn'
 import axios from 'axios'
 import RefreshIcon from '@mui/icons-material/Refresh'
 import EditIcon from '@mui/icons-material/Edit'
+import DeleteIcon from '@mui/icons-material/Delete'
 import CustomNavTopbar from '../components/CustomNavTopbar'
 import { CREATE_FARMS } from '../routes/Routes'
 import {
@@ -167,6 +168,18 @@ const AllFarms = () => {
       // await fetchFarms()
     } catch (error) {
       console.error('Error updating farm:', error.message)
+    }
+  }
+  const handleDeleteFarm = async (state,place,farmId) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this farm?")
+    if (confirmDelete) {
+      try {
+        await axios.delete(`http://localhost:3000/api/calender/farms/${state}/${place}/${farmId}`)
+        setFarms(farms.filter(farm => farm.farmId !== farmId))
+        setFilteredFarms(filteredFarms.filter(farm => farm.farmId !== farmId))
+      } catch (error) {
+        console.error('Error deleting farm:', error.message)
+      }
     }
   }
 
@@ -362,6 +375,12 @@ const AllFarms = () => {
                         >
                           <EditIcon />
                         </button>
+                        <button
+                      onClick={() => handleDeleteFarm(farm.state,farm.place,farm.farmId)} // Add delete button
+                      className="text-red-500"
+                    >
+                      <DeleteIcon />
+                    </button>
                       </td>
                     </tr>
                   )
