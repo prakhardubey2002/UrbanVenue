@@ -17,7 +17,7 @@ const SignIn = () => {
   const [password, setPassword] = useState('')
   const [userType, setUserType] = useState('Executive') // Default userType
   const [error, setError] = useState('')
-  const { setToken , setUsertype} = useContext(AuthContext) // Use AuthContext for token management
+  const { setToken , setUsertype ,setname,setnumber } = useContext(AuthContext) // Use AuthContext for token management
   const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
@@ -37,6 +37,8 @@ const SignIn = () => {
       toast.success('Login Successful')
       setToken(response.data.token) 
       setUsertype(response.data.userType)
+      setname(response.data.name)
+      setnumber(response.data.phoneNumber)
       setError('')
 
       if (response.data.userType === 'Admin') {

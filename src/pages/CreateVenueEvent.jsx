@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useLocation, useNavigate, useParams } from 'react-router-dom'
 import NavTopBar from '../components/NavTopBar'
 import BreadCrumbBar from '../components/BreadCrumbBar'
@@ -13,7 +13,9 @@ import {
 import { INVOICE_ROUTE } from '../routes/Routes'
 import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
+import AuthContext from '../context/context'
 const CreateVenueEvent = () => {
+  const { name,number } = useContext(AuthContext)
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
@@ -41,8 +43,8 @@ const CreateVenueEvent = () => {
     hostOwnerName: data.details.hostOwnerName,
     hostNumber: data.details.hostNumber,
     totalBooking: data.details.totalBooking,
-    bookingPartnerName: '',
-    bookingPartnerPhoneNumber: '',
+    bookingPartnerName: name,
+    bookingPartnerPhoneNumber: number,
     farmTref: data.farmTref,
     otherServices: data.details.otherServices,
     advance: data.details.advance,
