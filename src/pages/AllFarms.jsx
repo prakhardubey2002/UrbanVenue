@@ -281,9 +281,9 @@ const AllFarms = () => {
                   <th className="py-3 px-6 text-left border border-gray-300">
                     Phone Number
                   </th>
-                  <th className="py-3 px-6 text-left border border-gray-300">
+                  {/* <th className="py-3 px-6 text-left border border-gray-300">
                     Check-In Date
-                  </th>
+                  </th> */}
                   <th className="py-3 px-6 text-left border border-gray-300">
                     Check-In Time
                   </th>
@@ -311,7 +311,7 @@ const AllFarms = () => {
                 </tr>
               </thead>
               <tbody className="text-gray-600 text-sm font-light">
-                {filteredFarms.map((farm, index) => {
+                {filteredFarms.slice().reverse().map((farm, index) => {
                   const address = farm.address || {}
 
                   return (
@@ -331,9 +331,9 @@ const AllFarms = () => {
                       <td className="py-3 px-6 border border-gray-300">
                         {farm.phoneNumber}
                       </td>
-                      <td className="py-3 px-6 border border-gray-300">
+                      {/* <td className="py-3 px-6 border border-gray-300">
                         {new Date(farm.checkInDate).toLocaleDateString()}
-                      </td>
+                      </td> */}
                       <td className="py-3 px-6 border border-gray-300">
                         {farm.checkInTime}
                       </td>

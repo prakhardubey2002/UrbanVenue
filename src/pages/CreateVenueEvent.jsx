@@ -17,6 +17,8 @@ const CreateVenueEvent = () => {
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
+
+  const [photo, setPhoto] = useState(null)
   const navigate = useNavigate()
   // const history = useHistory();
   useEffect(() => {
@@ -31,15 +33,15 @@ const CreateVenueEvent = () => {
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
-    email:'',
+    email: '',
     // maxPeople: '',
-    numberOfKids:'',
-    numberOfAdults:'',
+    numberOfKids: '',
+    numberOfAdults: '',
     occasion: '',
     hostOwnerName: '',
     hostNumber: '',
     totalBooking: '',
-    bookingPartnerName : '', 
+    bookingPartnerName: '',
     bookingPartnerPhoneNumber: '',
     farmTref: '',
     otherServices: '',
@@ -53,7 +55,7 @@ const CreateVenueEvent = () => {
 
     termsConditions: '',
     status: 'Upcoming',
-    eventAddOns:'', 
+    eventAddOns: '',
     venue: venue,
     addressLine1: data.addressLine1,
     addressLine2: data.addressLine2,
@@ -61,12 +63,16 @@ const CreateVenueEvent = () => {
     state: data.state,
     citySuburb: data.suburb,
     zipCode: data.zipCode,
-    urbanvenuecommission: 5000,//total amount 10%
+    urbanvenuecommission: 5000, //total amount 10%
+    // photo: photo,
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
-    let a= `BOOK-${venue}-${date}-${timestamp}`
+    let a = `BOOK-${venue}-${date}-${timestamp}`
     return a.replace(/\s+/g, '-')
+  }
+  const handleFileChange = (e) => {
+    setPhoto(e.target.files[0]) // Set the selected file
   }
   useEffect(() => {
     setFormData((prevFormData) => ({
@@ -100,18 +106,24 @@ const CreateVenueEvent = () => {
       'advance',
       'balancePayment',
       'securityAmount',
-      'status'
+      'status',
     ]
-    const missing = requiredFields.filter(field => !formData[field] || formData[field] === 'Not Assigned')
+    const missing = requiredFields.filter(
+      (field) => !formData[field] || formData[field] === 'Not Assigned'
+    )
     if (missing.length > 0) {
-      alert(`Please fill in the following fields:\n${missing.map(field => field.replace(/([A-Z])/g, ' $1').trim()).join('\n')}`)
+      alert(
+        `Please fill in the following fields:\n${missing
+          .map((field) => field.replace(/([A-Z])/g, ' $1').trim())
+          .join('\n')}`
+      )
     } else {
       // Proceed to submit
       console.log(formData)
       setOpenDialog(true)
     }
   }
-  
+
   // Handle dialog close
   const handleCloseDialog = () => {
     setOpenDialog(false)
@@ -119,22 +131,35 @@ const CreateVenueEvent = () => {
 
   // Handle redirect to invoice page
   const handleSubmit = () => {
-    // Redirect to invoice page or perform any action
-    // history.push('/invoice-page');
-    // navigate();
+    const formDataToSend = new FormData()
+
+    // Append all the form data to the FormData object
+    for (let key in formData) {
+      formDataToSend.append(key, formData[key])
+    }
+
+    // Append the photo file
+    if (photo) {
+      formDataToSend.append('photo', photo)
+    }
+
     axios
-      .post('http://localhost:3000/api/invoices/invoices', formData)
+      .post('http://localhost:3000/api/invoices/invoices', formDataToSend, {
+        headers: {
+          'Content-Type': 'multipart/form-data', // Required for file uploads
+        },
+      })
       .then((response) => {
         console.log('Form submitted successfully:', response.data)
         toast.success('Successfully Saved data!')
         navigate(INVOICE_ROUTE, { state: formData })
-        // Handle success (e.g., redirect or show a success message)
       })
       .catch((error) => {
         console.error('Error submitting form:', error)
-        // Handle error (e.g., show an error message)
+        toast.error(`Failed to save data! ${error} `)
       })
   }
+
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <NavTopBar />
@@ -551,6 +576,16 @@ const CreateVenueEvent = () => {
               placeholder="Enter Venue Name"
             />
           </div>
+          <div className=" my-8 flex flex-col border-b" >
+            <label className="font-semibold" >Upload File:</label>
+            <input
+              type="file"
+              name="photo"
+              accept="image/*"
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              onChange={handleFileChange}
+            />
+          </div>
           <div className=" my-4 flex flex-wrap justify-between ">
             <div className=" flex-1 flex flex-col">
               <label className="font-semibold">Address Line 1</label>
@@ -629,6 +664,7 @@ const CreateVenueEvent = () => {
               />
             </div>
           </div>
+          
         </div>
       </div>
       <button onClick={handleNext} className="button my-8 ">
@@ -836,7 +872,6 @@ const CreateVenueEvent = () => {
           </button>
         </DialogActions>
       </Dialog>
-      
     </div>
   )
 }

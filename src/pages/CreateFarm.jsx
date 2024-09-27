@@ -197,32 +197,6 @@ const CreateFarm = () => {
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl">Create Farm</h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm">
-        {/* State Name */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">State Name</label>
-          <input
-            name="stateName"
-            value={formData.stateName}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter State Name"
-          />
-        </div>
-
-        {/* Place Name */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Place Name</label>
-          <input
-            name="placeName"
-            value={formData.placeName}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Place Name"
-          />
-        </div>
-
         {/* Farm ID */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Farm ID</label>
@@ -235,7 +209,30 @@ const CreateFarm = () => {
             placeholder="Farm ID will be auto-generated"
           />
         </div>
-
+        {/* State Name */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">State Name</label>
+          <input
+            name="stateName"
+            value={formData.stateName}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="text"
+            placeholder="Enter State Name"
+          />
+        </div>
+        {/* Place Name */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Place Name</label>
+          <input
+            name="placeName"
+            value={formData.placeName}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="text"
+            placeholder="Enter Place Name"
+          />
+        </div>
         {/* Farm Name */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Farm Name</label>
@@ -248,85 +245,6 @@ const CreateFarm = () => {
             placeholder="Enter Farm Name"
           />
         </div>
-
-        {/* Address Line 1 */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Address Line 1</label>
-          <input
-            name="addressLine1"
-            value={formData.addressLine1}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Address Line 1"
-          />
-        </div>
-
-        {/* Address Line 2 */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Address Line 2</label>
-          <input
-            name="addressLine2"
-            value={formData.addressLine2}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Address Line 2"
-          />
-        </div>
-
-        {/* Country */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Country</label>
-          <input
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Country"
-          />
-        </div>
-
-        {/* State */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">State</label>
-          <input
-            name="state"
-            value={formData.state}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter State"
-          />
-        </div>
-
-        {/* Suburb */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Suburb</label>
-          <input
-            name="suburb"
-            value={formData.suburb}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Suburb"
-          />
-        </div>
-
-        {/* Zip Code */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Zip Code</label>
-          <input
-            name="zipCode"
-            value={formData.zipCode}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Zip Code"
-          />
-        </div>
-
         {/* Phone Number */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Phone Number</label>
@@ -339,7 +257,19 @@ const CreateFarm = () => {
             placeholder="Enter Phone Number"
           />
         </div>
-
+        {/* Email */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Email</label>
+          <input
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="email"
+            placeholder="Enter Email"
+          />
+        </div>
+       
         {/* Check-in Time */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Check-in Time</label>
@@ -352,7 +282,6 @@ const CreateFarm = () => {
             placeholder="Enter Check-in Time"
           />
         </div>
-
         {/* Check-out Date */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Check-out Date</label>
@@ -364,7 +293,6 @@ const CreateFarm = () => {
             type="date"
           />
         </div>
-
         {/* Check-out Time */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Check-out Time</label>
@@ -377,7 +305,6 @@ const CreateFarm = () => {
             placeholder="Enter Check-out Time"
           />
         </div>
-
         {/* Number of Adults */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Number of Adults</label>
@@ -390,7 +317,6 @@ const CreateFarm = () => {
             placeholder="Enter Number of Adults"
           />
         </div>
-
         {/* Number of Kids */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Number of Kids</label>
@@ -403,7 +329,6 @@ const CreateFarm = () => {
             placeholder="Enter Number of Kids"
           />
         </div>
-
         {/* Occasion */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Occasion</label>
@@ -421,7 +346,6 @@ const CreateFarm = () => {
             <option value="Mehndi Ceremony">Mehndi Ceremony</option>
           </select>
         </div>
-
         {/* Host Owner Name */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Host Owner Name</label>
@@ -434,7 +358,6 @@ const CreateFarm = () => {
             placeholder="Enter Host Owner Name"
           />
         </div>
-
         {/* Host Number */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Host Number</label>
@@ -447,7 +370,6 @@ const CreateFarm = () => {
             placeholder="Enter Host Number"
           />
         </div>
-
         {/* Total Booking */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Total Booking</label>
@@ -460,7 +382,32 @@ const CreateFarm = () => {
             placeholder="Enter Total Booking"
           />
         </div>
-
+        {/* Farm Tref */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Farm Tref</label>
+          <input
+            name="farmTref"
+            value={formData.farmTref}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Farm Tref"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+        {/* Farm Tref */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Farm Tref</label>
+          <input
+            name="farmTref"
+            value={formData.farmTref}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Farm Tref"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
         {/* Advance */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Advance</label>
@@ -473,33 +420,20 @@ const CreateFarm = () => {
             placeholder="Enter Advance Amount"
           />
         </div>
-
-        {/* Balance Payment (calculated automatically based on Total Booking and Advance) */}
+        {/* Advance Mode */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Balance Payment</label>
-          <input
-            name="balancePayment"
-            value={formData.balancePayment}
-            readOnly
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="number"
-            placeholder="Balance Payment"
-          />
-        </div>
-
-        {/* Security Amount */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Security Amount</label>
-          <input
-            name="securityAmount"
-            value={formData.securityAmount}
+          <label className="font-semibold">Advance Mode</label>
+          <select
+            name="advanceMode"
+            value={formData.advanceMode}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="number"
-            placeholder="Enter Security Amount"
-          />
+          >
+            <option value="">Select Mode of Advance Payment</option>
+            <option value="Cash">Cash</option>
+            <option value="Online">Online</option>
+          </select>
         </div>
-
         {/* Advance Collected By */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Advance Collected By</label>
@@ -515,7 +449,18 @@ const CreateFarm = () => {
             <option value="Organiser">Organiser</option>
           </select>
         </div>
-
+        {/* Balance Payment (calculated automatically based on Total Booking and Advance) */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Balance Payment</label>
+          <input
+            name="balancePayment"
+            value={formData.balancePayment}
+            readOnly
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Balance Payment"
+          />
+        </div>
         {/* Pending Collected By */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Pending Collected By</label>
@@ -531,60 +476,16 @@ const CreateFarm = () => {
             <option value="Organiser">Organiser</option>
           </select>
         </div>
-
-        {/* Advance Mode */}
+        {/* Security Amount */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Advance Mode</label>
-          <select
-            name="advanceMode"
-            value={formData.advanceMode}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-          >
-            <option value="">Select Mode of Advance Payment</option>
-            <option value="Cash">Cash</option>
-            <option value="Online">Online</option>
-          </select>
-        </div>
-
-        {/* Email */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Email</label>
+          <label className="font-semibold">Security Amount</label>
           <input
-            name="email"
-            value={formData.email}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="email"
-            placeholder="Enter Email"
-          />
-        </div>
-
-        {/* Other Services */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Other Services</label>
-          <input
-            name="otherServices"
-            value={formData.otherServices}
-            onChange={handleChange}
-            type="number"
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            placeholder="Enter Other Services"
-            onWheel={(e) => e.target.blur()}
-          />
-        </div>
-
-        {/* Farm Tref */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Farm Tref</label>
-          <input
-            name="farmTref"
-            value={formData.farmTref}
+            name="securityAmount"
+            value={formData.securityAmount}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Farm Tref"
-            onWheel={(e) => e.target.blur()}
+            placeholder="Enter Security Amount"
           />
         </div>
         {/* Urban Venue Commission */}
@@ -624,7 +525,6 @@ const CreateFarm = () => {
             placeholder="Enter Terms and Conditions"
           />
         </div>
-
         {/* Event Add-Ons */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Event Add-Ons</label>
@@ -636,7 +536,91 @@ const CreateFarm = () => {
             placeholder="Enter Event Add-Ons"
           />
         </div>
+        <div className="flex flex-col  my-4 ">
+            <h2 className="font-semibold text-xl">
+              Where is your event taking place? *
+            </h2>
+            
+          </div>
+        <div className="grid grid-cols-2 gap-4">
+          {/* Address Line 1 */}
+          <div className="flex flex-col border-b">
+            <label className="font-semibold">Address Line 1</label>
+            <input
+              name="addressLine1"
+              value={formData.addressLine1}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="text"
+              placeholder="Enter Address Line 1"
+            />
+          </div>
 
+          {/* Address Line 2 */}
+          <div className="flex flex-col border-b">
+            <label className="font-semibold">Address Line 2</label>
+            <input
+              name="addressLine2"
+              value={formData.addressLine2}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="text"
+              placeholder="Enter Address Line 2"
+            />
+          </div>
+
+          {/* Country */}
+          <div className="flex flex-col border-b">
+            <label className="font-semibold">Country</label>
+            <input
+              name="country"
+              value={formData.country}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="text"
+              placeholder="Enter Country"
+            />
+          </div>
+
+          {/* State */}
+          <div className="flex flex-col border-b">
+            <label className="font-semibold">State</label>
+            <input
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="text"
+              placeholder="Enter State"
+            />
+          </div>
+
+          {/* Suburb */}
+          <div className="flex flex-col border-b">
+            <label className="font-semibold">Suburb</label>
+            <input
+              name="suburb"
+              value={formData.suburb}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="text"
+              placeholder="Enter Suburb"
+            />
+          </div>
+
+          {/* Zip Code */}
+          <div className="flex flex-col border-b">
+            <label className="font-semibold">Zip Code</label>
+            <input
+              name="zipCode"
+              value={formData.zipCode}
+              onChange={handleChange}
+              className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              type="text"
+              placeholder="Enter Zip Code"
+            />
+          </div>
+        </div>
         {/* Submit Button */}
         <div className="mt-6">
           <button

@@ -156,7 +156,7 @@ const ExecutiveList = () => {
               (!filters.name || executive.name.includes(filters.name)) &&
               (!filters.userId || executive.userId.includes(filters.userId)) &&
               (!filters.status || executive.status === filters.status)
-            )).map((executive) => {
+            )).slice().reverse().map((executive) => {
               const statusStyle = getStatusStyle(executive.status);
               return (
                 <tr key={executive.id}>

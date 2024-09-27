@@ -127,7 +127,7 @@ const OccasionList = () => {
           (!filters.id || occasion.id.includes(filters.id)) &&
           (!filters.name || occasion.name.includes(filters.name))
       )
-      .map((occasion) => (
+      .slice().reverse().map((occasion) => (
         <tr key={occasion.id} className="hover:bg-gray-50">
           <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
             {occasion.id}
