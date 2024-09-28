@@ -29,7 +29,7 @@ const CreateVenueEvent = () => {
   // State to manage form values
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
-    guestName: data.details.name,
+    guestName: "",
     phoneNumber: data.details.phoneNumber,
     checkInDate: date,
     checkInTime: data.details.checkInTime,
@@ -225,6 +225,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking Partner Name</label>
           <input
+          readOnly
             name="bookingPartnerName"
             value={formData.bookingPartnerName}
             onChange={handleChange}
@@ -237,6 +238,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking Partner Phone No.</label>
           <input
+          readOnly
             name="bookingPartnerPhoneNumber"
             value={formData.bookingPartnerPhoneNumber}
             onChange={handleChange}

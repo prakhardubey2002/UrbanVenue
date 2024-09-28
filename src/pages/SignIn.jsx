@@ -71,15 +71,31 @@ const SignIn = () => {
             </h2>
             {error && <div className="text-red-600 mb-4">{error}</div>}
             <div className="flex flex-col">
+              {/* User Type Select */}
+            <div className="flex flex-col mb-5">
+              <label htmlFor="userType" className="text-sm font-semibold">
+                User Type*
+              </label>
+              <select
+                id="userType"
+                value={userType}
+                onChange={(e) => setUserType(e.target.value)}
+                className="outline-none h-[48px] px-4 border-[1px] bg-[#F9F9F9] rounded-tl-[3px]"
+              >
+                <option value="Executive">Executive</option>
+                <option value="Admin">Admin</option>
+                <option value="SuperAdmin">SuperAdmin</option>
+              </select>
+            </div>
               <label htmlFor="email" className="mb-1 text-sm font-semibold">
-                Your Email*
+                Login Id*
               </label>
               <input
                 id="email"
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Enter Your email"
+                placeholder="Enter Your Login Id"
                 className="outline-none h-[48px] px-4 border-[1px] bg-[#F9F9F9] rounded-tl-[3px]"
               />
             </div>
@@ -88,12 +104,12 @@ const SignIn = () => {
                 <label htmlFor="password" className="text-sm font-semibold">
                   Password*
                 </label>
-                <Link
+                {/* <Link
                   to="/"
                   className="transition-all duration-400 ease text-Primary hover:underline"
                 >
                   Forget Password?
-                </Link>
+                </Link> */}
               </div>
               <div className="relative bg-[#F9F9F9]">
                 <Grid
@@ -125,22 +141,7 @@ const SignIn = () => {
                 </Grid>
               </div>
             </div>
-            {/* User Type Select */}
-            <div className="flex flex-col mt-5">
-              <label htmlFor="userType" className="text-sm font-semibold">
-                User Type*
-              </label>
-              <select
-                id="userType"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-                className="outline-none h-[48px] px-4 border-[1px] bg-[#F9F9F9] rounded-tl-[3px]"
-              >
-                <option value="Executive">Executive</option>
-                <option value="Admin">Admin</option>
-                <option value="SuperAdmin">SuperAdmin</option>
-              </select>
-            </div>
+            
             <button
               onClick={handleSubmit}
               className="w-full mt-5 bg-Primary text-white h-[50px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-6 py-1"
@@ -150,7 +151,7 @@ const SignIn = () => {
             </button>
           </div>
           <p className="text-[14px] font-normal leading-[21px] text-center mt-4 sm:text-xs">
-            © 2024, Barren. All rights reserved. Powered by Gambolthemes
+            © 2024, Urban Venue. All rights reserved . 
           </p>
         </div>
       </div>

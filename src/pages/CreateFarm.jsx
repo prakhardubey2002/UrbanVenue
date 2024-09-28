@@ -97,46 +97,46 @@ const CreateFarm = () => {
 
   // Handle form submission
   const handleSubmit = () => {
-    const requiredFields = [
-      'farmId',
-      'name',
-      'addressLine1',
-      'addressLine2',
-      'country',
-      'state',
-      'suburb',
-      'zipCode',
-      'phoneNumber',
-      'checkInTime',
-      'checkOutDate',
-      'checkOutTime',
-      'numberOfAdults',
-      'numberOfKids',
-      'occasion',
-      'hostOwnerName',
-      'hostNumber',
-      'totalBooking',
-      'advance',
-      'balancePayment',
-      'securityAmount',
-      'advanceCollectedBy',
-      'pendingCollectedBy',
-      'advanceMode',
-      'email',
-      'otherServices',
-      'urbanvenuecommission',
-      'termsConditions',
-      'eventAddOns',
-      'status',
-    ]
+    // const requiredFields = [
+    //   'farmId',
+    //   'name',
+    //   'addressLine1',
+    //   'addressLine2',
+    //   'country',
+    //   'state',
+    //   'suburb',
+    //   'zipCode',
+    //   'phoneNumber',
+    //   'checkInTime',
+    //   'checkOutDate',
+    //   'checkOutTime',
+    //   'numberOfAdults',
+    //   'numberOfKids',
+    //   'occasion',
+    //   'hostOwnerName',
+    //   'hostNumber',
+    //   'totalBooking',
+    //   'advance',
+    //   'balancePayment',
+    //   'securityAmount',
+    //   'advanceCollectedBy',
+    //   'pendingCollectedBy',
+    //   'advanceMode',
+    //   'email',
+    //   'otherServices',
+    //   'urbanvenuecommission',
+    //   'termsConditions',
+    //   'eventAddOns',
+    //   'status',
+    // ]
 
-    const missingFields = requiredFields.filter((field) => !formData[field])
+    // const missingFields = requiredFields.filter((field) => !formData[field])
 
-    if (missingFields.length > 0) {
-      toast.error(
-        `Please fill in the following fields: ${missingFields.join(', ')}`
-      )
-    } else {
+    // if (missingFields.length > 0) {
+    //   toast.error(
+    //     `Please fill in the following fields: ${missingFields.join(', ')}`
+    //   )
+    // } else {
       // Structure the data as per the updated API requirements
       const apiData = {
         stateName: formData.stateName, // Assuming this is included in the form data
@@ -189,7 +189,7 @@ const CreateFarm = () => {
           toast.error('Error creating farm!')
           console.error('Error:', error)
         })
-    }
+    // }
   }
 
   return (
@@ -269,7 +269,7 @@ const CreateFarm = () => {
             placeholder="Enter Email"
           />
         </div>
-       
+
         {/* Check-in Time */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Check-in Time</label>
@@ -315,6 +315,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Number of Adults"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Number of Kids */}
@@ -327,6 +328,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Number of Kids"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Occasion */}
@@ -380,6 +382,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Total Booking"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Farm Tref */}
@@ -418,6 +421,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Advance Amount"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Advance Mode */}
@@ -498,6 +502,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Urban Venue Commission"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -537,11 +542,10 @@ const CreateFarm = () => {
           />
         </div>
         <div className="flex flex-col  my-4 ">
-            <h2 className="font-semibold text-xl">
-              Where is your event taking place? *
-            </h2>
-            
-          </div>
+          <h2 className="font-semibold text-xl">
+            Where is your event taking place? *
+          </h2>
+        </div>
         <div className="grid grid-cols-2 gap-4">
           {/* Address Line 1 */}
           <div className="flex flex-col border-b">

@@ -762,6 +762,12 @@ const Invoice = () => {
                 readOnly
               />
             </div>
+            {formData.photo && (
+              <div className="">
+                Refrence Doc : 
+                <img className="w-full h-[50vh] object-contain" src={formData.photo} alt="Passed Image" />
+              </div>
+            )}
           </form>
 
           {/* Footer with Contact Info */}

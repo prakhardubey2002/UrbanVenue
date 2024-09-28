@@ -30,7 +30,7 @@ const CreateExecutive = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requiredFields = ['id', 'name', 'userId', 'password', 'phoneNumber', 'joiningDate', 'endDate'];
+    const requiredFields = ['id', 'name', 'userId', 'password', 'phoneNumber', 'joiningDate', ];
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
@@ -81,14 +81,14 @@ const CreateExecutive = () => {
 
         {/* User ID */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">User ID</label>
+          <label className="font-semibold">Login ID</label>
           <input
             name="userId"
             value={formData.userId}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="text"
-            placeholder="Enter User ID"
+            placeholder="Enter Login ID"
           />
         </div>
 
