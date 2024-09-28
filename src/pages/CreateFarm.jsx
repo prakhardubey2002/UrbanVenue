@@ -397,14 +397,14 @@ const CreateFarm = () => {
         </div>
         {/* Farm Tref */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Farm Tref</label>
+          <label className="font-semibold">Other Service</label>
           <input
-            name="farmTref"
-            value={formData.farmTref}
+            name="otherServices"
+            value={formData.otherServices}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Farm Tref"
+            placeholder="Enter otherServices"
             onWheel={(e) => e.target.blur()}
           />
         </div>
