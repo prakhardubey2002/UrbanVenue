@@ -267,11 +267,12 @@ const Table = ({ data, setData }) => {
       {/* Dialog Popup */}
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Details</DialogTitle>
-        <DialogContent className="w-min-[80vw] h-min-[50vh] px-5 py-5 ">
+        <DialogContent className="w-min-[80vw] h-min-[50vh] px-5 py-5">
           <div className="grid grid-cols-2 gap-4">
+            {/* Booking ID (disabled) */}
             <TextField
               disabled
-              label="bookingId"
+              label="Booking ID"
               fullWidth
               margin="dense"
               value={selectedRow?.bookingId || ''}
@@ -282,6 +283,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Guest Name */}
             <TextField
               label="Guest Name"
               fullWidth
@@ -294,6 +296,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Phone Number */}
             <TextField
               label="Phone Number"
               fullWidth
@@ -306,6 +309,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Property Name (Venue) */}
             <TextField
               label="Property Name"
               fullWidth
@@ -318,8 +322,9 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Check-In Date */}
             <TextField
-              label="Booking Date"
+              label="Check-In Date"
               fullWidth
               margin="dense"
               type="date"
@@ -338,6 +343,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Check-In Time */}
             <TextField
               label="Check-In Time"
               fullWidth
@@ -352,7 +358,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
-
+            {/* Check-Out Date */}
             <TextField
               label="Check-Out Date"
               fullWidth
@@ -361,7 +367,7 @@ const Table = ({ data, setData }) => {
               InputLabelProps={{ shrink: true }}
               value={
                 selectedRow?.checkOutDate
-                  ? new Date(selectedRow?.checkOutDate)
+                  ? new Date(selectedRow.checkOutDate)
                       .toISOString()
                       .split('T')[0]
                   : ''
@@ -373,6 +379,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Check-Out Time */}
             <TextField
               label="Check-Out Time"
               fullWidth
@@ -387,20 +394,35 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
-
+            {/* Number of Adults */}
             <TextField
-              label="Maximum People"
+              label="Number of Adults"
               fullWidth
               margin="dense"
               type="number"
-              value={selectedRow?.maxPeople || ''}
+              value={selectedRow?.numberOfAdults || ''}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  maxPeople: e.target.value,
+                  numberOfAdults: e.target.value,
                 })
               }
             />
+            {/* Number of Kids */}
+            <TextField
+              label="Number of Kids"
+              fullWidth
+              margin="dense"
+              type="number"
+              value={selectedRow?.numberOfKids || ''}
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  numberOfKids: e.target.value,
+                })
+              }
+            />
+            {/* Occasion */}
             <FormControl fullWidth margin="dense">
               <InputLabel>Occasion</InputLabel>
               <Select
@@ -421,6 +443,7 @@ const Table = ({ data, setData }) => {
                 <MenuItem value="Mehndi Ceremony">Mehndi Ceremony</MenuItem>
               </Select>
             </FormControl>
+            {/* Status */}
             <FormControl fullWidth margin="dense">
               <InputLabel>Status</InputLabel>
               <Select
@@ -439,28 +462,9 @@ const Table = ({ data, setData }) => {
                 <MenuItem value="Canceled">Canceled</MenuItem>
               </Select>
             </FormControl>
-            {/* <TextField
-              disabled
-              label="Total"
-              type="number"
-              fullWidth
-              margin="dense"
-              // value={selectedRow?.Total || ''}
-              value={(
-                (parseInt(selectedRow?.advance) || 0) +
-                (parseInt(selectedRow?.securityAmount) || 0) +
-                (parseInt(selectedRow?.balancePayment) || 0)
-              ).toString()}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  Total: e.target.value,
-                })
-              }
-            /> */}
+            {/* Total Booking */}
             <TextField
-              // disabled
-              label="Total"
+              label="Total Booking"
               type="number"
               fullWidth
               margin="dense"
@@ -475,6 +479,7 @@ const Table = ({ data, setData }) => {
                 })
               }
             />
+            {/* Advance Amount */}
             <TextField
               label="Advance Amount"
               type="number"
@@ -490,6 +495,7 @@ const Table = ({ data, setData }) => {
                 })
               }}
             />
+            {/* Advance Collected By */}
             <FormControl fullWidth margin="dense">
               <InputLabel>Advance Collected By</InputLabel>
               <Select
@@ -507,6 +513,7 @@ const Table = ({ data, setData }) => {
                 <MenuItem value="Organiser">Organiser</MenuItem>
               </Select>
             </FormControl>
+            {/* Balance Payment (disabled) */}
             <TextField
               disabled
               label="Balance Payment"
@@ -515,6 +522,7 @@ const Table = ({ data, setData }) => {
               margin="dense"
               value={selectedRow?.balancePayment || 0} // Safely handle null values
             />
+            {/* Pending Collected By */}
             <FormControl fullWidth margin="dense">
               <InputLabel>Pending Collected By</InputLabel>
               <Select
@@ -532,6 +540,7 @@ const Table = ({ data, setData }) => {
                 <MenuItem value="Organiser">Organiser</MenuItem>
               </Select>
             </FormControl>
+            {/* Security Amount */}
             <TextField
               label="Security"
               type="number"
@@ -547,6 +556,68 @@ const Table = ({ data, setData }) => {
                 })
               }}
             />
+             {/* Farm Tref */}
+      <TextField
+        label="Farm Tref"
+        fullWidth
+        margin="dense"
+        value={selectedRow?.farmTref || ''}
+        onChange={(e) =>
+          setSelectedRow({
+            ...selectedRow,
+            farmTref: e.target.value,
+          })
+        }
+      />
+
+      {/* Terms and Conditions */}
+      <TextField
+        label="Terms and Conditions"
+        fullWidth
+        margin="dense"
+        multiline
+        rows={3}
+        value={selectedRow?.termsConditions || ''}
+        onChange={(e) =>
+          setSelectedRow({
+            ...selectedRow,
+            termsConditions: e.target.value,
+          })
+        }
+      />
+
+      {/* Event Add-Ons */}
+      <TextField
+        label="Event Add-Ons"
+        fullWidth
+        margin="dense"
+        multiline
+        rows={3}
+        value={selectedRow?.eventAddOns || ''}
+        onChange={(e) =>
+          setSelectedRow({
+            ...selectedRow,
+            eventAddOns: e.target.value,
+          })
+        }
+      />
+
+      {/* Urban Venue Commission */}
+      <TextField
+        label="Urban Venue Commission"
+        type="number"
+        fullWidth
+        margin="dense"
+        value={selectedRow?.urbanvenuecommission || ''}
+        onChange={(e) => {
+          const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
+          setSelectedRow({
+            ...selectedRow,
+            urbanvenuecommission: value,
+          });
+        }}
+      />
+            {/* Advance Mode */}
             <FormControl fullWidth margin="dense">
               <InputLabel>Advance Mode</InputLabel>
               <Select
@@ -563,29 +634,13 @@ const Table = ({ data, setData }) => {
                 <MenuItem value="Online">Online</MenuItem>
               </Select>
             </FormControl>
-            {/* <TextField
-              label="Organiser"
-              fullWidth
-              margin="dense"
-              value={selectedRow?.Organiser || ''}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  Organiser: e.target.value,
-                })
-              }
-            /> */}
           </div>
         </DialogContent>
         <DialogActions>
-          <button
-            onClick={handleClose}
-            className=" button2
-            "
-          >
+          <button onClick={handleClose} className="button2">
             Cancel
           </button>
-          <button onClick={() => handleFormSubmit()} className="button ">
+          <button onClick={() => handleFormSubmit()} className="button">
             Submit
           </button>
         </DialogActions>
