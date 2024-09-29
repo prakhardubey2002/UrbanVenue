@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { Toaster, toast } from 'react-hot-toast';
+import { ALL_OCCASION } from '../routes/Routes';
 
 const CreateOccasion = () => {
   const navigate = useNavigate();
@@ -35,7 +36,7 @@ const CreateOccasion = () => {
     try {
       const response = await axios.post('http://localhost:3000/occasion/occasions', formData);
       toast.success('Occasion created successfully!');
-    //   navigate('/occasions'); // Redirect to the occasions list page
+      navigate(ALL_OCCASION); // Redirect to the occasions list page
     } catch (error) {
       toast.error('Error creating occasion!');
       console.error('Error:', error);

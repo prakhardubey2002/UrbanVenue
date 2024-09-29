@@ -603,6 +603,7 @@ const CreateFarm = () => {
           <div className="flex flex-col border-b">
             <label className="font-semibold">State</label>
             <input
+            readOnly
               name="state"
               value={formData.state}
               onChange={handleChange}
@@ -616,6 +617,7 @@ const CreateFarm = () => {
           <div className="flex flex-col border-b">
             <label className="font-semibold">Suburb</label>
             <input
+            readOnly
               name="suburb"
               value={formData.suburb}
               onChange={handleChange}

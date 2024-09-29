@@ -16,7 +16,7 @@ import {
   FormControl,
 } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
-
+import DeleteIcon from '@mui/icons-material/Delete'
 const ExecutiveList = () => {
   const [executives, setExecutives] = useState([])
   const [filters, setFilters] = useState({
@@ -36,7 +36,13 @@ const ExecutiveList = () => {
       toast.error('Failed to fetch executives')
     }
   }
-
+  const handleRefresh = () => {
+    setFilters({
+      name: '',
+      userId: '',
+      status: '',
+    })
+  }
   const handleFilterChange = (e) => {
     const { name, value } = e.target
     setFilters((prev) => ({ ...prev, [name]: value }))
@@ -104,7 +110,11 @@ const ExecutiveList = () => {
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <Toaster position="top-right" reverseOrder={true} />
-      <CustomNavTopbar path={ADMIN_DASHBOARD}  text={'Create Executive'} route={CREATE_EXECUTIVE} />
+      <CustomNavTopbar
+        path={ADMIN_DASHBOARD}
+        text={'Create Executive'}
+        route={CREATE_EXECUTIVE}
+      />
       <h2 className="my-8 font-bold text-3xl">All Executives</h2>
 
       {/* Filter Section */}
@@ -143,7 +153,11 @@ const ExecutiveList = () => {
               <MenuItem value="Terminated">Terminated</MenuItem>
             </Select>
           </FormControl>
+          <div variant="outlined" onClick={handleRefresh} className=" m-2 button cursor-pointer ">
+          Refresh Filters
         </div>
+        </div>
+       
       </div>
 
       {/* Executives Table */}
@@ -151,28 +165,28 @@ const ExecutiveList = () => {
         <table className="min-w-full bg-white border-b border-b-gray-300">
           <thead>
             <tr>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 ID
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 Name
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 User ID
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 Phone Number
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 Joining Date
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 End Date
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 Status
               </th>
-              <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              <th className="py-4 border border-gray-300 bg-Bordgrey px-4 whitespace-nowrap">
                 Actions
               </th>
             </tr>
@@ -192,27 +206,27 @@ const ExecutiveList = () => {
                 const statusStyle = getStatusStyle(executive.status)
                 return (
                   <tr key={executive.id}>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 border-gray-300 whitespace-nowrap">
                       {executive.id}
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       {executive.name}
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       {executive.userId}
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       {executive.phoneNumber}
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       {new Date(executive.joiningDate).toLocaleDateString(
                         'en-US'
                       )}
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       {new Date(executive.endDate).toLocaleDateString('en-US')}
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       <div
                         className="flex items-center"
                         style={{ color: statusStyle.color }}
@@ -229,18 +243,17 @@ const ExecutiveList = () => {
                         {executive.status}
                       </div>
                     </td>
-                    <td className="border-b px-4 py-4 whitespace-nowrap">
+                    <td className="border px-4 border-gray-300 py-4 whitespace-nowrap">
                       <CreateIcon
+                        className="text-blue-500"
                         onClick={() => handleUpdateClick(executive)}
                       />
-                      <Button
-                        color="secondary"
+
+                      <DeleteIcon
+                        className="text-red-600"
                         onClick={() => handleDelete(executive._id)}
                         style={{ marginLeft: '8px' }}
-                        size="small"
-                      >
-                        Delete
-                      </Button>
+                      />
                     </td>
                   </tr>
                 )
