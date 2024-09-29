@@ -765,7 +765,7 @@ const Invoice = () => {
             {formData.photo && (
               <div className="">
                 Refrence Doc : 
-                <img className="w-full h-[50vh] object-contain" src={formData.photo} alt="Passed Image" />
+                <img className="w-full h-[50vh] object-contain" src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`} alt="Passed Image" />
               </div>
             )}
           </form>

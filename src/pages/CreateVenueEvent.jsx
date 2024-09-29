@@ -66,7 +66,7 @@ const CreateVenueEvent = () => {
     citySuburb: data.address.suburb,
     zipCode: data.address.zipCode,
     urbanvenuecommission: data.details.urbanvenuecommission, //total amount 10%
-    // photo: photo,
+    photo: photo,
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
@@ -75,6 +75,10 @@ const CreateVenueEvent = () => {
   }
   const handleFileChange = (e) => {
     setPhoto(e.target.files[0]) // Set the selected file
+    setFormData((prevformData)=>({
+      ...prevformData,
+      photo:e.target.files[0].name
+    }),)
   }
   useEffect(() => {
     setFormData((prevFormData) => ({
@@ -859,6 +863,12 @@ const CreateVenueEvent = () => {
                   ZIP Code:
                 </td>
                 <td className="p-2">{formData.zipCode}</td>
+              </tr>
+              <tr>
+                <td className="font-bold p-2 border-r border-gray-300">
+                  Photo:
+                </td>
+                <td className="p-2">{formData.photo}</td>
               </tr>
             </tbody>
           </table>
