@@ -15,7 +15,7 @@ import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
 import AuthContext from '../context/context'
 const CreateVenueEvent = () => {
-  const { name,number } = useContext(AuthContext)
+  const { name, number } = useContext(AuthContext)
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
@@ -29,11 +29,13 @@ const CreateVenueEvent = () => {
   // State to manage form values
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
-    guestName: "",
+    guestName: '',
     phoneNumber: data.details.phoneNumber,
     checkInDate: date,
     checkInTime: data.details.checkInTime,
-    checkOutDate: new Date(data.details.checkOutDate).toISOString().split('T')[0],
+    checkOutDate: new Date(data.details.checkOutDate)
+      .toISOString()
+      .split('T')[0],
     checkOutTime: data.details.checkOutTime,
     email: data.details.email,
     // maxPeople: '',
@@ -75,10 +77,10 @@ const CreateVenueEvent = () => {
   }
   const handleFileChange = (e) => {
     setPhoto(e.target.files[0]) // Set the selected file
-    setFormData((prevformData)=>({
+    setFormData((prevformData) => ({
       ...prevformData,
-      photo:e.target.files[0].name
-    }),)
+      photo: e.target.files[0].name,
+    }))
   }
   useEffect(() => {
     setFormData((prevFormData) => ({
@@ -86,6 +88,19 @@ const CreateVenueEvent = () => {
       balancePayment: prevFormData.totalBooking - prevFormData.advance,
     }))
   }, [formData.totalBooking, formData.advance])
+  useEffect(() => {
+    setFormData((prevFormData) => {
+      const otherServices = prevFormData.totalBooking - prevFormData.farmTref
+      const farmTref = prevFormData.totalBooking - otherServices
+
+      return {
+        ...prevFormData,
+        balancePayment: prevFormData.totalBooking - prevFormData.advance,
+        otherServices,
+        farmTref,
+      }
+    })
+  }, [formData.totalBooking, formData.advance, formData.farmTref])
   // State to manage dialog visibility
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -229,7 +244,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking Partner Name</label>
           <input
-          readOnly
+            readOnly
             name="bookingPartnerName"
             value={formData.bookingPartnerName}
             onChange={handleChange}
@@ -242,7 +257,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking Partner Phone No.</label>
           <input
-          readOnly
+            readOnly
             name="bookingPartnerPhoneNumber"
             value={formData.bookingPartnerPhoneNumber}
             onChange={handleChange}
@@ -398,6 +413,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Farm Tref</label>
           <input
+            
             name="farmTref"
             value={formData.farmTref}
             onChange={handleChange}
@@ -410,6 +426,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col  border-b ">
           <label className="font-semibold"> other Services </label>
           <input
+          readOnly
             name="otherServices"
             value={formData.otherServices}
             onChange={handleChange}
@@ -584,8 +601,8 @@ const CreateVenueEvent = () => {
               placeholder="Enter Venue Name"
             />
           </div>
-          <div className=" my-8 flex flex-col border-b" >
-            <label className="font-semibold" >Upload File:</label>
+          <div className=" my-8 flex flex-col border-b">
+            <label className="font-semibold">Upload File:</label>
             <input
               type="file"
               name="photo"
@@ -672,7 +689,6 @@ const CreateVenueEvent = () => {
               />
             </div>
           </div>
-          
         </div>
       </div>
       <button onClick={handleNext} className="button my-8 ">

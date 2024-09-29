@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'react-hot-toast'
@@ -56,7 +56,19 @@ const CreateFarm = () => {
     const timestamp = Date.now()
     return `${cleanedStateName}-${cleanedPlaceName}-${timestamp}`
   }
+  useEffect(() => {
+    setFormData((prevFormData) => {
+      const otherServices = prevFormData.totalBooking - prevFormData.farmTref
+      const farmTref = prevFormData.totalBooking - otherServices
 
+      return {
+        ...prevFormData,
+        balancePayment: prevFormData.totalBooking - prevFormData.advance,
+        otherServices,
+        farmTref,
+      }
+    })
+  }, [formData.totalBooking, formData.advance, formData.farmTref])
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -402,6 +414,7 @@ const CreateFarm = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Other Service</label>
           <input
+          readOnly
             name="otherServices"
             value={formData.otherServices}
             onChange={handleChange}

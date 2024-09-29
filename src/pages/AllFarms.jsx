@@ -7,7 +7,7 @@ import RefreshIcon from '@mui/icons-material/Refresh'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import CustomNavTopbar from '../components/CustomNavTopbar'
-import { CREATE_FARMS } from '../routes/Routes'
+import { ADMIN_DASHBOARD, CREATE_FARMS } from '../routes/Routes'
 import {
   Dialog,
   DialogTitle,
@@ -215,10 +215,16 @@ const AllFarms = () => {
 
   if (loading) return <div>Loading...</div>
   if (error) return <div>Error: {error}</div>
-
+  function convertTo12HourFormat(time) {
+    const [hours, minutes] = time.split(':').map(Number);
+    const isPM = hours >= 12;
+    const formattedHours = hours % 12 || 12; // Convert 0 hours to 12
+    const formattedTime = `${formattedHours}:${String(minutes).padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`;
+    return formattedTime;
+}
   return (
     <div className="w-full h-screen flex flex-col">
-      <CustomNavTopbar text={'Create Property'} route={CREATE_FARMS} />
+      <CustomNavTopbar path={ADMIN_DASHBOARD} text={'Create Property'} route={CREATE_FARMS} />
       <div className="flex-1 flex justify-center items-center">
         <div className="px-4 w-[90%] min-h-[60%]">
           <h2 className="text-2xl font-semibold my-4">Filter Farms</h2>
@@ -375,58 +381,58 @@ const AllFarms = () => {
 
                     return (
                       <tr key={index}>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.farmId}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.state}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.place}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap">
                           {farm.name}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap">
                           {farm.phoneNumber}
                         </td>
                         {/* <td className="py-3 px-6 border border-gray-300">
                         {new Date(farm.checkInDate).toLocaleDateString()}
                       </td> */}
-                        <td className="py-3 px-6 border border-gray-300">
-                          {farm.checkInTime}
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
+                          {convertTo12HourFormat(farm.checkInTime)}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {new Date(farm.checkOutDate).toLocaleDateString()}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
-                          {farm.checkOutTime}
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
+                          {convertTo12HourFormat(farm.checkOutTime)}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap  ">
                           {farm.hostOwnerName}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.totalBooking}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.securityAmount}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.advance}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.advanceCollectedBy}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.pendingCollectedBy}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {farm.eventAddOns}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300whitespace-nowrap ">
                           {farm.termsConditions}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300">
+                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           <button
                             onClick={() => handleUpdateFarm(farm)}
                             className="text-blue-500 hover:text-blue-700"

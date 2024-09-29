@@ -12,6 +12,7 @@ import {
 } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
+import { ADMIN_DASHBOARD } from '../routes/Routes'
 const OccasionList = () => {
   const [occasions, setOccasions] = useState([])
   const [filters, setFilters] = useState({
@@ -92,7 +93,7 @@ const OccasionList = () => {
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <Toaster position="top-right" reverseOrder={true} />
-      <CustomNavTopbar text={'Create Occasion'} route={'/create-occasion'} />
+      <CustomNavTopbar path={ADMIN_DASHBOARD}  text={'Create Occasion'} route={'/create-occasion'} />
       <h2 className="my-8 font-bold text-3xl">All Occasions</h2>
 
       {/* Filter Section */}
