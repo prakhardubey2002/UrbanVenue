@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../assets/Logo.png'
 import { usePDF } from 'react-to-pdf'
@@ -343,6 +343,29 @@ const Invoice = () => {
   const Home = () => {
     navigate(DASHBOARD_ROUTE)
   }
+  const [imageExists, setImageExists] = useState(false);
+
+  useEffect(() => {
+    // Construct the image URL
+    const imageUrl = `${import.meta.env.VITE_BACKEND_URL}${formData.photo}`;
+
+    // Only check if formData.photo is defined
+    if (formData.photo) {
+      // Make a request to see if the image exists
+      fetch(imageUrl, { method: "HEAD" })
+        .then((response) => {
+          if (response.ok) {
+            setImageExists(true); // Image exists
+          } else {
+            setImageExists(false); // Image does not exist
+          }
+        })
+        .catch((error) => {
+          console.error("Error checking image:", error);
+          setImageExists(false); // Handle error, assume image doesn't exist
+        });
+    }
+  }, [formData.photo]);
   return (
     <div className="flex flex-col items-center bg-red-50 py-8">
       {/* Header with Logo */}
@@ -404,7 +427,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.bookingId}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="INV12345"
+                  // defaultValue="INV12345"
                   readOnly
                 />
               </div>
@@ -416,7 +439,7 @@ const Invoice = () => {
                   value={formData.guestName}
                   type="text"
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="John Doe"
+                  // defaultValue="John Doe"
                   readOnly
                 />
               </div>
@@ -433,7 +456,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.bookingPartnerName}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="Urban Partner"
+                  // defaultValue="Urban Partner"
                   readOnly
                 />
               </div>
@@ -445,7 +468,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.bookingPartnerPhoneNumber}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="+91-9987656876"
+                  // defaultValue="+91-9987656876"
                   readOnly
                 />
               </div>
@@ -460,7 +483,7 @@ const Invoice = () => {
                 type="text"
                 value={formData.addressLine1}
                 className="border border-gray-300 w-full p-2 rounded"
-                defaultValue="123, Street Name"
+                // defaultValue="123, Street Name"
                 readOnly
               />
             </div>
@@ -473,7 +496,7 @@ const Invoice = () => {
                 type="text"
                 value={formData.addressLine2}
                 className="border border-gray-300 w-full p-2 rounded"
-                defaultValue="Apt 123"
+                // defaultValue="Apt 123"
                 readOnly
               />
             </div>
@@ -485,7 +508,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.citySuburb}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="City Name"
+                  // defaultValue="City Name"
                   readOnly
                 />
               </div>
@@ -497,7 +520,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.state}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="State Name"
+                  // defaultValue="State Name"
                   readOnly
                 />
               </div>
@@ -510,7 +533,7 @@ const Invoice = () => {
                 type="text"
                 value={formData.zipCode}
                 className="border border-gray-300 w-full p-2 rounded"
-                defaultValue="110001"
+                // defaultValue="110001"
                 readOnly
               />
             </div>
@@ -534,7 +557,7 @@ const Invoice = () => {
                   type="email"
                   value={formData.email}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="example@example.com"
+                  // defaultValue="example@example.com"
                   readOnly
                 />
               </div>
@@ -552,7 +575,7 @@ const Invoice = () => {
                     new Date(formData.checkInDate).toISOString().split('T')[0]
                   }
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="10/01/2024, 10:00 AM"
+                  // defaultValue="10/01/2024, 10:00 AM"
                   readOnly
                 />
               </div>
@@ -609,7 +632,7 @@ const Invoice = () => {
                   type="number"
                   value={formData.numberOfAdults}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue={2}
+                  // defaultValue={2}
                   readOnly
                 />
               </div>
@@ -621,7 +644,7 @@ const Invoice = () => {
                   type="number"
                   value={formData.numberOfKids}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue={1}
+                  // defaultValue={1}
                   readOnly
                 />
               </div>
@@ -635,7 +658,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.hostOwnerName}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="980000000"
+                  // defaultValue="980000000"
                   readOnly
                 />
               </div>
@@ -648,7 +671,7 @@ const Invoice = () => {
                     type="text"
                     value={formData.hostNumber}
                     className="border border-gray-300 w-full p-2 rounded"
-                    defaultValue="Akshat"
+                    // defaultValue="Akshat"
                     readOnly
                   />
                 </div>
@@ -665,7 +688,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.totalBooking}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="1,00,000"
+                  // defaultValue="1,00,000"
                   readOnly
                 />
               </div>
@@ -675,7 +698,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.farmTref}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="10,000"
+                  // defaultValue="10,000"
                   readOnly
                 />
               </div>
@@ -688,7 +711,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.advance}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="50,000"
+                  // defaultValue="50,000"
                   readOnly
                 />
               </div>
@@ -700,7 +723,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.advanceCollectedBy}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="50,000"
+                  // defaultValue="50,000"
                   readOnly
                 />
               </div>
@@ -712,7 +735,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.balancePayment}
                   className="border border-gray-300 w-full p-2 rounded"
-                  defaultValue="50,000"
+                  // defaultValue="50,000"
                   readOnly
                 />
               </div>
@@ -746,7 +769,7 @@ const Invoice = () => {
               <textarea
                 value={formData.eventAddOns}
                 className="border border-gray-300 w-full p-2 rounded h-24"
-                defaultValue="Terms and Conditions will apply."
+                // defaultValue="Terms and Conditions will apply."
                 readOnly
               />
             </div>
@@ -758,11 +781,11 @@ const Invoice = () => {
               <textarea
                 value={formData.termsConditions}
                 className="border border-gray-300 w-full p-2 rounded h-24"
-                defaultValue="Terms and Conditions will apply."
+                // defaultValue="Terms and Conditions will apply."
                 readOnly
               />
             </div>
-            {formData.photo && (
+            {imageExists && (
               <div className="">
                 Refrence Doc : 
                 <img className="w-full h-[50vh] object-contain" src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`} alt="Passed Image" />
