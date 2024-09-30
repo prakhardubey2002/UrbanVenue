@@ -9,7 +9,6 @@ const CreateOccasion = () => {
 
   // State to manage form values
   const [formData, setFormData] = useState({
-    id: '',
     name: '',
   });
 
@@ -22,19 +21,47 @@ const CreateOccasion = () => {
     }));
   };
 
+  // Function to generate a unique ID
+  const generateUniqueId = () => {
+    const now = new Date();
+    return `OCC-${now.getFullYear()}${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}${now
+      .getDate()
+      .toString()
+      .padStart(2, '0')}${now
+      .getHours()
+      .toString()
+      .padStart(2, '0')}${now
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}${now
+      .getSeconds()
+      .toString()
+      .padStart(2, '0')}`;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requiredFields = ['id', 'name'];
-    const missingFields = requiredFields.filter((field) => !formData[field]);
 
-    if (missingFields.length > 0) {
-      toast.error(`Please fill in the following fields: ${missingFields.join(', ')}`);
+    // Generate unique ID for the occasion
+    const occasionId = generateUniqueId();
+    
+    // Ensure name is provided
+    if (!formData.name) {
+      toast.error('Please enter the occasion name');
       return;
     }
 
+    // Prepare data with generated ID
+    const dataToSend = {
+      id: occasionId,
+      name: formData.name,
+    };
+
     try {
-      const response = await axios.post('http://localhost:3000/occasion/occasions', formData);
+      const response = await axios.post('http://localhost:3000/occasion/occasions', dataToSend);
       toast.success('Occasion created successfully!');
       navigate(ALL_OCCASION); // Redirect to the occasions list page
     } catch (error) {
@@ -48,19 +75,6 @@ const CreateOccasion = () => {
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl">Create Occasion</h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm">
-        {/* ID */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">ID</label>
-          <input
-            name="id"
-            value={formData.id}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter Occasion ID"
-          />
-        </div>
-
         {/* Name */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Name</label>

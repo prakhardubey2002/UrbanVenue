@@ -8,7 +8,6 @@ const CreateExecutive = () => {
 
   // State to manage form values
   const [formData, setFormData] = useState({
-    id: '',
     name: '',
     userId: '',
     password: '',
@@ -27,10 +26,27 @@ const CreateExecutive = () => {
     }));
   };
 
+  // Function to generate a unique ID using date, time, and name
+  const generateUniqueId = () => {
+    const now = new Date();
+    const formattedDate = `${now.getFullYear()}${(now.getMonth() + 1)
+      .toString()
+      .padStart(2, '0')}${now.getDate().toString().padStart(2, '0')}`;
+    const formattedTime = `${now.getHours().toString().padStart(2, '0')}${now
+      .getMinutes()
+      .toString()
+      .padStart(2, '0')}${now.getSeconds().toString().padStart(2, '0')}`;
+
+    const employeeName = formData.name.replace(/\s+/g, '').toUpperCase();
+    return `${employeeName}-${formattedDate}-${formattedTime}`;
+  };
+
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const requiredFields = ['id', 'name', 'userId', 'password', 'phoneNumber', 'joiningDate', ];
+
+    // Ensure required fields are filled
+    const requiredFields = ['name', 'userId', 'password', 'phoneNumber', 'joiningDate'];
     const missingFields = requiredFields.filter((field) => !formData[field]);
 
     if (missingFields.length > 0) {
@@ -38,8 +54,17 @@ const CreateExecutive = () => {
       return;
     }
 
+    // Generate unique ID for the executive
+    const executiveId = generateUniqueId();
+
+    // Prepare data with generated ID
+    const dataToSend = {
+      id: executiveId,
+      ...formData,
+    };
+
     try {
-      const response = await axios.post('http://localhost:3000/register-executive', formData);
+      const response = await axios.post('http://localhost:3000/register-executive', dataToSend);
       toast.success('Executive created successfully!');
       navigate('/executives'); // Change this to your desired redirect route
     } catch (error) {
@@ -53,19 +78,7 @@ const CreateExecutive = () => {
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl">Create Executive</h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm">
-        {/* ID */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">ID</label>
-          <input
-            name="id"
-            value={formData.id}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
-            placeholder="Enter ID"
-          />
-        </div>
-
+        
         {/* Name */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Name</label>
@@ -113,8 +126,10 @@ const CreateExecutive = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="tel"
             placeholder="Enter Phone Number"
+            pattern="[0-9]{10}"
+            maxLength={10}
           />
         </div>
 

@@ -125,7 +125,7 @@ const OccasionList = () => {
           <thead>
             <tr>
               <th className="py-4 border-b bg-gray-100 px-4 whitespace-nowrap text-sm font-medium text-gray-700">
-                ID
+                S.no
               </th>
               <th className="py-4 border-b bg-gray-100 px-4 whitespace-nowrap text-sm font-medium text-gray-700">
                 Name
@@ -144,10 +144,10 @@ const OccasionList = () => {
               )
               .slice()
               .reverse()
-              .map((occasion) => (
+              .map((occasion,index) => (
                 <tr key={occasion.id} className="hover:bg-gray-50">
                   <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {occasion.id}
+                    {index+1}
                   </td>
                   <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
                     {occasion.name}

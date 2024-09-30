@@ -265,8 +265,11 @@ const CreateFarm = () => {
             value={formData.phoneNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="tel"
             placeholder="Enter Phone Number"
+            pattern="[0-9]{10}"
+            maxLength={10}
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Email */}
@@ -380,8 +383,11 @@ const CreateFarm = () => {
             value={formData.hostNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="text"
+            type="tel"
             placeholder="Enter Host Number"
+            pattern="[0-9]{10}"
+            maxLength={10}
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Total Booking */}
@@ -503,6 +509,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
             placeholder="Enter Security Amount"
+            onWheel={(e) => e.target.blur()}
           />
         </div>
         {/* Urban Venue Commission */}
@@ -615,7 +622,7 @@ const CreateFarm = () => {
 
           {/* Suburb */}
           <div className="flex flex-col border-b">
-            <label className="font-semibold">Suburb</label>
+            <label className="font-semibold">City/Suburb</label>
             <input
             readOnly
               name="suburb"

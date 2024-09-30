@@ -30,7 +30,7 @@ const CreateVenueEvent = () => {
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
     guestName: '',
-    phoneNumber: data.details.phoneNumber,
+    phoneNumber: '',
     checkInDate: date,
     checkInTime: data.details.checkInTime,
     checkOutDate: new Date(data.details.checkOutDate)
@@ -227,6 +227,8 @@ const CreateVenueEvent = () => {
             type="tel"
             placeholder="9847777780"
             onWheel={(e) => e.target.blur()}
+            pattern="[0-9]{10}"
+            maxLength={10}
           />
         </div>
         <div className="flex flex-col border-b">
@@ -413,7 +415,6 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Farm Tref</label>
           <input
-            
             name="farmTref"
             value={formData.farmTref}
             onChange={handleChange}
@@ -426,7 +427,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col  border-b ">
           <label className="font-semibold"> other Services </label>
           <input
-          readOnly
+            readOnly
             name="otherServices"
             value={formData.otherServices}
             onChange={handleChange}

@@ -130,7 +130,10 @@ const Table = ({ data, setData }) => {
               Check-Out
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
-              Maximum People
+              Number of Adults
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Number of Kids
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Category
@@ -193,8 +196,11 @@ const Table = ({ data, setData }) => {
                 {new Date(row.checkOutDate).toLocaleDateString('en-GB')} -{' '}
                 {convertTo12HourFormat(row.checkOutTime)}{' '}
               </td>
+              <td className="border-b px-4 py-4  whitespace-nowrap">
+                {row.numberOfAdults}
+              </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
-                {row.maxPeople}
+                {row.numberOfKids}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
                 {row.occasion}

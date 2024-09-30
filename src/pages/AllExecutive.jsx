@@ -224,7 +224,7 @@ const ExecutiveList = () => {
                       )}
                     </td>
                     <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
-                      {new Date(executive.endDate).toLocaleDateString('en-US')}
+                      { executive.endDate != null &&  new Date(executive.endDate).toLocaleDateString('en-US')}
                     </td>
                     <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       <div
@@ -316,7 +316,7 @@ const ExecutiveList = () => {
                 type="date"
                 fullWidth
                 variant="outlined"
-                value={selectedExecutive.joiningDate.split('T')[0]}
+                value={selectedExecutive?.joiningDate?.split('T')[0]}
                 onChange={(e) =>
                   setSelectedExecutive({
                     ...selectedExecutive,
@@ -330,7 +330,7 @@ const ExecutiveList = () => {
                 type="date"
                 fullWidth
                 variant="outlined"
-                value={selectedExecutive.endDate.split('T')[0]}
+                value={selectedExecutive?.endDate?.split('T')[0]}
                 onChange={(e) =>
                   setSelectedExecutive({
                     ...selectedExecutive,
