@@ -5,6 +5,7 @@ import { Toaster, toast } from 'react-hot-toast'
 
 const CreateFarm = () => {
   const navigate = useNavigate()
+  const [occasions, setOccasions] = useState([]);
 
   // State to manage form values
   const [formData, setFormData] = useState({
@@ -106,7 +107,19 @@ const CreateFarm = () => {
       return updatedData
     })
   }
+  useEffect(() => {
+    // Fetch occasions from the API
+    const fetchOccasions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/occasion/occasions");
+        setOccasions(response.data); // Assuming response.data is an array of occasion objects
+      } catch (error) {
+        console.error("Error fetching occasions:", error);
+      }
+    };
 
+    fetchOccasions();
+  }, []);
   // Handle form submission
   const handleSubmit = () => {
     // const requiredFields = [
@@ -355,12 +368,17 @@ const CreateFarm = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
-            <option value="">Select Occasion</option>
-            <option value="Wedding">Wedding</option>
+            {
+              occasions.map((occasion,index)=>(
+
+                <option key={index} value={occasion.name}>{occasion.name}</option>
+                ))
+            }
+            {/* <option value="Wedding">Wedding</option>
             <option value="Engagement">Engagement</option>
             <option value="Office Party">Office Party</option>
             <option value="Haldi Ceremony">Haldi Ceremony</option>
-            <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+            <option value="Mehndi Ceremony">Mehndi Ceremony</option> */}
           </select>
         </div>
         {/* Host Owner Name */}

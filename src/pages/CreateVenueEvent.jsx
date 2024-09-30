@@ -24,16 +24,31 @@ const CreateVenueEvent = () => {
   const navigate = useNavigate()
   // const history = useHistory();
   useEffect(() => {
-    console.log(data)
+    // console.log(data)
   }, [])
+  const [occasions, setOccasions] = useState([]);
+
+  useEffect(() => {
+    // Fetch occasions from the API
+    const fetchOccasions = async () => {
+      try {
+        const response = await axios.get("http://localhost:3000/occasion/occasions");
+        setOccasions(response.data); // Assuming response.data is an array of occasion objects
+      } catch (error) {
+        console.error("Error fetching occasions:", error);
+      }
+    };
+
+    fetchOccasions();
+  }, []);
   // State to manage form values
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
     guestName: '',
     phoneNumber: '',
     checkInDate: date,
-    checkInTime: data.details.checkInTime,
-    checkOutDate: new Date(data.details.checkOutDate)
+    checkInTime: data?.details?.checkInTime,
+    checkOutDate: new Date(data?.details?.checkOutDate)
       .toISOString()
       .split('T')[0],
     checkOutTime: data.details.checkOutTime,
@@ -368,12 +383,11 @@ const CreateVenueEvent = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
-            <option value="">Select Occasion</option>
-            <option value="Wedding">Wedding</option>
-            <option value="Engagement">Engagement</option>
-            <option value="Office Party">Office Party</option>
-            <option value="Haldi Ceremony">Haldi Ceremony</option>
-            <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+            {occasions.map((occasion,index)=>(
+
+            <option key={index} value={occasion.name}>{occasion.name}</option>
+            ))}
+           
           </select>
         </div>
 
@@ -389,15 +403,17 @@ const CreateVenueEvent = () => {
           />
         </div>
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Property Number</label>
+          <label className="font-semibold">Property Owner Number</label>
           <input
             name="hostNumber"
             value={formData.hostNumber}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="number"
+            type="tel"
             placeholder="Enter Host number here"
             onWheel={(e) => e.target.blur()}
+            pattern="[0-9]{10}"
+            maxLength={10}
           />
         </div>
         <div className="flex flex-col border-b">

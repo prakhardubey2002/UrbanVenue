@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast'
 import { INVOICE_ROUTE } from '../routes/Routes'
 import { useNavigate } from 'react-router-dom'
 import DownloadIcon from '@mui/icons-material/Download'
-const Table = ({ data, setData }) => {
+const Table = ({ data, setData, occasions }) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [selectedRow, setSelectedRow] = useState({})
@@ -441,12 +441,11 @@ const Table = ({ data, setData }) => {
                   })
                 }
               >
-                <MenuItem value="">Select Occasion</MenuItem>
-                <MenuItem value="Wedding">Wedding</MenuItem>
-                <MenuItem value="Engagement">Engagement</MenuItem>
-                <MenuItem value="Office Party">Office Party</MenuItem>
-                <MenuItem value="Haldi Ceremony">Haldi Ceremony</MenuItem>
-                <MenuItem value="Mehndi Ceremony">Mehndi Ceremony</MenuItem>
+                {occasions?.map((occasion) => (
+                  <MenuItem key={occasion._id} value={occasion.name}>
+                    {occasion.name}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
             {/* Status */}
@@ -562,67 +561,67 @@ const Table = ({ data, setData }) => {
                 })
               }}
             />
-             {/* Farm Tref */}
-      <TextField
-        label="Farm Tref"
-        fullWidth
-        margin="dense"
-        value={selectedRow?.farmTref || ''}
-        onChange={(e) =>
-          setSelectedRow({
-            ...selectedRow,
-            farmTref: e.target.value,
-          })
-        }
-      />
+            {/* Farm Tref */}
+            <TextField
+              label="Farm Tref"
+              fullWidth
+              margin="dense"
+              value={selectedRow?.farmTref || ''}
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  farmTref: e.target.value,
+                })
+              }
+            />
+            {/* Urban Venue Commission */}
+            <TextField
+              label="Urban Venue Commission"
+              type="number"
+              fullWidth
+              margin="dense"
+              value={selectedRow?.urbanvenuecommission || ''}
+              onChange={(e) => {
+                const value =
+                  e.target.value === '' ? 0 : parseFloat(e.target.value)
+                setSelectedRow({
+                  ...selectedRow,
+                  urbanvenuecommission: value,
+                })
+              }}
+            />
+            {/* Terms and Conditions */}
+            <TextField
+              label="Terms and Conditions"
+              fullWidth
+              margin="dense"
+              multiline
+              rows={3}
+              value={selectedRow?.termsConditions || ''}
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  termsConditions: e.target.value,
+                })
+              }
+            />
 
-      {/* Terms and Conditions */}
-      <TextField
-        label="Terms and Conditions"
-        fullWidth
-        margin="dense"
-        multiline
-        rows={3}
-        value={selectedRow?.termsConditions || ''}
-        onChange={(e) =>
-          setSelectedRow({
-            ...selectedRow,
-            termsConditions: e.target.value,
-          })
-        }
-      />
+            {/* Event Add-Ons */}
+            <TextField
+              label="Event Add-Ons"
+              fullWidth
+              margin="dense"
+              multiline
+              rows={3}
+              value={selectedRow?.eventAddOns || ''}
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  eventAddOns: e.target.value,
+                })
+              }
+            />
 
-      {/* Event Add-Ons */}
-      <TextField
-        label="Event Add-Ons"
-        fullWidth
-        margin="dense"
-        multiline
-        rows={3}
-        value={selectedRow?.eventAddOns || ''}
-        onChange={(e) =>
-          setSelectedRow({
-            ...selectedRow,
-            eventAddOns: e.target.value,
-          })
-        }
-      />
-
-      {/* Urban Venue Commission */}
-      <TextField
-        label="Urban Venue Commission"
-        type="number"
-        fullWidth
-        margin="dense"
-        value={selectedRow?.urbanvenuecommission || ''}
-        onChange={(e) => {
-          const value = e.target.value === '' ? 0 : parseFloat(e.target.value);
-          setSelectedRow({
-            ...selectedRow,
-            urbanvenuecommission: value,
-          });
-        }}
-      />
             {/* Advance Mode */}
             <FormControl fullWidth margin="dense">
               <InputLabel>Advance Mode</InputLabel>

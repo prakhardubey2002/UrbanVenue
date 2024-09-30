@@ -31,7 +31,7 @@ const Dashboard = () => {
   const [selectedCategory, setSelectedCategory] = useState('')
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogMessage, setDialogMessage] = useState('')
-
+  const [occasions, setOccasions] = useState([])
   const handleOpenDialog = (message) => {
     setDialogMessage(message)
     setDialogOpen(true)
@@ -94,6 +94,7 @@ const Dashboard = () => {
           axios.get('http://localhost:3000/api/invoices/owners'),
           axios.get('http://localhost:3000/api/invoices/venues'),
           axios.get('http://localhost:3000/api/invoices/unique-phone-numbers'),
+          axios.get('http://localhost:3000/occasion/occasions'),
         ])
 
         setData(response[0].data)
@@ -101,6 +102,7 @@ const Dashboard = () => {
         setOwners(response[2].data)
         setProperties(response[3].data)
         setPhonenumber(response[4].data)
+        setOccasions(response[5].data)
 
         setLoading(false)
       } catch (error) {
@@ -156,7 +158,7 @@ const Dashboard = () => {
                       placeholder="Select Guest"
                       list="guestList"
                     />
-                    <datalist id="guestList"  >
+                    <datalist id="guestList">
                       {guests.map((guest, index) => (
                         <option key={index} value={guest}>
                           {guest}
@@ -280,11 +282,11 @@ const Dashboard = () => {
                       <option value="" disabled>
                         Select Category
                       </option>
-                      <option value="Wedding">Wedding</option>
-                      <option value="Engagement">Engagement</option>
-                      <option value="Office Party">Office Party</option>
-                      <option value="Haldi Ceremony">Haldi Ceremony</option>
-                      <option value="Mehndi Ceremony">Mehndi Ceremony</option>
+                      {occasions.map((occasion, index) => (
+                        <option key={occasion._id} value={occasion}>
+                          {occasion.name}
+                        </option>
+                      ))}
                     </select>
                   </div>
 
@@ -374,12 +376,12 @@ const Dashboard = () => {
                   </div>
                 </div> */}
               </div>
-              <DataTable data={[...data].reverse()} setData={setData} />
+              <DataTable occasions={occasions} data={[...data].reverse()} setData={setData} />
             </div>
           </div>
         </div>
       </div>
-      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+      <Dialog open={dialogOpen}  onClose={handleCloseDialog}>
         <DialogTitle>Date Boundary</DialogTitle>
         <DialogContent>
           <p>{dialogMessage}</p>
