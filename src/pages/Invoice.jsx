@@ -402,7 +402,7 @@ const Invoice = () => {
           <div className="flex-1 bg-black"></div>
         </div>
         <div className="p-8">
-          <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center my-2">
             <img
               src={invoLogo} // Replace this with your logo
               alt="Logo"
@@ -415,7 +415,7 @@ const Invoice = () => {
           </div>
 
           {/* Form Sections */}
-          <form className="space-y-6 mt-8">
+          <form className="space-y-6 mt-16">
             <h4 className="text-l font-bold ">Invoice Details</h4>
             {/* Invoice Details */}
             <div className="w-full grid grid-cols-2  gap-6">
@@ -786,7 +786,7 @@ const Invoice = () => {
               />
             </div>
             {imageExists && (
-              <div className="">
+              <div className="my-8">
                 Refrence Doc : 
                 <img className="w-full h-[50vh] object-contain" src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`} alt="Passed Image" />
               </div>
@@ -794,7 +794,7 @@ const Invoice = () => {
           </form>
 
           {/* Footer with Contact Info */}
-          <div className="w-full flex justify-between items-center ">
+          <div className="w-full flex justify-between items-center mt-8">
             <div className="flex flex-col justify-between items-center">
               <p className="font-semibold">Scan to visit our Site</p>
               <img

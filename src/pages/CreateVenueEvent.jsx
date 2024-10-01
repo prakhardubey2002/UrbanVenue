@@ -383,6 +383,7 @@ const CreateVenueEvent = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
+            <option  value="" >Select an occasion</option>
             {occasions.map((occasion,index)=>(
 
             <option key={index} value={occasion.name}>{occasion.name}</option>

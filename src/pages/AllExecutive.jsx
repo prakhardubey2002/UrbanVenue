@@ -336,7 +336,11 @@ const ExecutiveList = () => {
                     ...selectedExecutive,
                     endDate: e.target.value,
                   })
+                  
                 }
+                InputLabelProps={{
+                  shrink: true, // Force the label to always stay above the field
+                }}
               />
               <FormControl fullWidth variant="outlined" margin="dense">
                 <InputLabel>Status</InputLabel>

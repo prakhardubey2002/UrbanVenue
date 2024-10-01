@@ -640,7 +640,7 @@ const CreateFarm = () => {
 
           {/* Suburb */}
           <div className="flex flex-col border-b">
-            <label className="font-semibold">City/Suburb</label>
+            <label className="font-semibold">City</label>
             <input
             readOnly
               name="suburb"
