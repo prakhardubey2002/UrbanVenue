@@ -271,7 +271,7 @@ const CreateFarm = () => {
           />
         </div>
         {/* Phone Number */}
-        <div className="flex flex-col border-b">
+        {/* <div className="flex flex-col border-b">
           <label className="font-semibold">Phone Number</label>
           <input
             name="phoneNumber"
@@ -284,9 +284,9 @@ const CreateFarm = () => {
             maxLength={10}
             onWheel={(e) => e.target.blur()}
           />
-        </div>
+        </div> */}
         {/* Email */}
-        <div className="flex flex-col border-b">
+        {/* <div className="flex flex-col border-b">
           <label className="font-semibold">Email</label>
           <input
             name="email"
@@ -296,7 +296,7 @@ const CreateFarm = () => {
             type="email"
             placeholder="Enter Email"
           />
-        </div>
+        </div> */}
 
         {/* Check-in Time */}
         <div className="flex flex-col border-b">
@@ -368,6 +368,7 @@ const CreateFarm = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
+            <option value="" >Select an occasion</option>
             {
               occasions.map((occasion,index)=>(
 
