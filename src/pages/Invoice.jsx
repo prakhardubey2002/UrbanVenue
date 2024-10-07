@@ -343,29 +343,29 @@ const Invoice = () => {
   const Home = () => {
     navigate(DASHBOARD_ROUTE)
   }
-  const [imageExists, setImageExists] = useState(false);
+  const [imageExists, setImageExists] = useState(false)
 
   useEffect(() => {
     // Construct the image URL
-    const imageUrl = `${import.meta.env.VITE_BACKEND_URL}${formData.photo}`;
+    const imageUrl = `${import.meta.env.VITE_BACKEND_URL}${formData.photo}`
 
     // Only check if formData.photo is defined
     if (formData.photo) {
       // Make a request to see if the image exists
-      fetch(imageUrl, { method: "HEAD" })
+      fetch(imageUrl, { method: 'HEAD' })
         .then((response) => {
           if (response.ok) {
-            setImageExists(true); // Image exists
+            setImageExists(true) // Image exists
           } else {
-            setImageExists(false); // Image does not exist
+            setImageExists(false) // Image does not exist
           }
         })
         .catch((error) => {
-          console.error("Error checking image:", error);
-          setImageExists(false); // Handle error, assume image doesn't exist
-        });
+          console.error('Error checking image:', error)
+          setImageExists(false) // Handle error, assume image doesn't exist
+        })
     }
-  }, [formData.photo]);
+  }, [formData.photo])
   return (
     <div className="flex flex-col items-center bg-red-50 py-8">
       {/* Header with Logo */}
@@ -416,12 +416,12 @@ const Invoice = () => {
 
           {/* Form Sections */}
           <form className="space-y-6 mt-16">
-            <h4 className="text-l font-bold ">Invoice Details</h4>
+            <h4 className="text-l font-bold ">Booking Details</h4>
             {/* Invoice Details */}
             <div className="w-full grid grid-cols-2  gap-6">
               <div className="flex flex-col gap-2">
                 <label className="block text-gray-700 flex-shrink-0 mb-1 ">
-                  Invoice ID
+                  Booking ID
                 </label>
                 <input
                   type="text"
@@ -715,7 +715,7 @@ const Invoice = () => {
                   readOnly
                 />
               </div>
-              <div>
+              {/* <div>
                 <label className="block text-gray-700 mb-2">
                   Advance Collected By
                 </label>
@@ -726,7 +726,7 @@ const Invoice = () => {
                   // defaultValue="50,000"
                   readOnly
                 />
-              </div>
+              </div> */}
               <div>
                 <label className="block text-gray-700 mb-2">
                   Balance Payment
@@ -745,7 +745,7 @@ const Invoice = () => {
                   type="text"
                   value={formData.securityAmount}
                   className="border border-gray-300 w-full p-2 rounded"
-                  // defaultValue="organiser"
+                  // defaultValue="Urban venue"
                   readOnly
                 />
               </div>
@@ -787,8 +787,12 @@ const Invoice = () => {
             </div>
             {imageExists && (
               <div className="my-8">
-                Refrence Doc : 
-                <img className="w-full h-[50vh] object-contain" src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`} alt="Passed Image" />
+                Refrence Doc :
+                <img
+                  className="w-full h-[50vh] object-contain"
+                  src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`}
+                  alt="Passed Image"
+                />
               </div>
             )}
           </form>

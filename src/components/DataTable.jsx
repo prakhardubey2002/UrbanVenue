@@ -51,7 +51,18 @@ const Table = ({ data, setData, occasions }) => {
       }))
     }
   }, [selectedRow?.totalBooking, selectedRow?.advance])
-
+  useEffect(() => {
+    setSelectedRow((prev) => {
+      const farmTref = Number(prev?.farmTref) || 0; // Ensure farmTref is a number
+      const otherServices = Number(prev?.otherServices) || 0; // Ensure otherServices is a number
+      const totalBooking = farmTref + otherServices; // Calculate totalBooking
+  
+      return {
+        ...prev,
+        totalBooking, // Update totalBooking
+      };
+    });
+  }, [selectedRow?.farmTref, selectedRow?.otherServices]);
   const handleFormSubmit = async () => {
     try {
       console.log(selectedRow)
@@ -328,6 +339,7 @@ const Table = ({ data, setData, occasions }) => {
                 })
               }
             />
+            
             {/* Check-In Date */}
             <TextField
               label="Check-In Date"
@@ -469,13 +481,13 @@ const Table = ({ data, setData, occasions }) => {
             </FormControl>
             {/* Total Booking */}
             <TextField
+              disabled
               label="Total Booking"
               type="number"
               fullWidth
               margin="dense"
               value={
-                parseFloat(selectedRow?.totalBooking || 0) +
-                parseFloat(selectedRow?.securityAmount || 0)
+                parseFloat(selectedRow?.totalBooking || 0) 
               }
               onChange={(e) =>
                 setSelectedRow({
@@ -514,8 +526,8 @@ const Table = ({ data, setData, occasions }) => {
                 label="Advance Collected By"
               >
                 <MenuItem value="Not Assigned">Not Assigned</MenuItem>
-                <MenuItem value="Farm Owner">Farm Owner</MenuItem>
-                <MenuItem value="Organiser">Organiser</MenuItem>
+                <MenuItem value="Property Owner">Property Owner</MenuItem>
+                <MenuItem value="Urban venue">Urban venue</MenuItem>
               </Select>
             </FormControl>
             {/* Balance Payment (disabled) */}
@@ -541,8 +553,8 @@ const Table = ({ data, setData, occasions }) => {
                 label="Pending Collected By"
               >
                 <MenuItem value="Not Assigned">Not Assigned</MenuItem>
-                <MenuItem value="Farm Owner">Farm Owner</MenuItem>
-                <MenuItem value="Organiser">Organiser</MenuItem>
+                <MenuItem value="Property Owner">Property Owner</MenuItem>
+                <MenuItem value="Urban venue">Urban venue</MenuItem>
               </Select>
             </FormControl>
             {/* Security Amount */}
@@ -574,21 +586,18 @@ const Table = ({ data, setData, occasions }) => {
                 })
               }
             />
-            {/* Urban Venue Commission */}
+            {/* otherServices */}
             <TextField
-              label="Urban Venue Commission"
-              type="number"
+              label="Other Services"
               fullWidth
               margin="dense"
-              value={selectedRow?.urbanvenuecommission || ''}
-              onChange={(e) => {
-                const value =
-                  e.target.value === '' ? 0 : parseFloat(e.target.value)
+              value={selectedRow?.otherServices || ''}
+              onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,
-                  urbanvenuecommission: value,
+                  otherServices: e.target.value,
                 })
-              }}
+              }
             />
             {/* Terms and Conditions */}
             <TextField

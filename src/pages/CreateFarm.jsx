@@ -5,7 +5,7 @@ import { Toaster, toast } from 'react-hot-toast'
 
 const CreateFarm = () => {
   const navigate = useNavigate()
-  const [occasions, setOccasions] = useState([]);
+  const [occasions, setOccasions] = useState([])
 
   // State to manage form values
   const [formData, setFormData] = useState({
@@ -59,17 +59,18 @@ const CreateFarm = () => {
   }
   useEffect(() => {
     setFormData((prevFormData) => {
-      const otherServices = prevFormData.totalBooking - prevFormData.farmTref
-      const farmTref = prevFormData.totalBooking - otherServices
+      // Ensure totalBooking is the sum of otherServices and farmTref
+      const otherServices = Number(prevFormData.otherServices) || 0 // Convert to number or default to 0
+      const farmTref = Number(prevFormData.farmTref) || 0 // Convert to number or default to 0
+      const totalBooking = otherServices + farmTref // Perform addition
 
       return {
         ...prevFormData,
-        balancePayment: prevFormData.totalBooking - prevFormData.advance,
-        otherServices,
-        farmTref,
+        totalBooking, // Ensure totalBooking remains consistent
+        balancePayment: totalBooking - Number(prevFormData.advance || 0), // Calculate balancePayment
       }
     })
-  }, [formData.totalBooking, formData.advance, formData.farmTref])
+  }, [formData.advance, formData.farmTref, formData.otherServices]) // Adjusted dependencies
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target
@@ -111,15 +112,17 @@ const CreateFarm = () => {
     // Fetch occasions from the API
     const fetchOccasions = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/occasion/occasions");
-        setOccasions(response.data); // Assuming response.data is an array of occasion objects
+        const response = await axios.get(
+          'http://localhost:3000/occasion/occasions'
+        )
+        setOccasions(response.data) // Assuming response.data is an array of occasion objects
       } catch (error) {
-        console.error("Error fetching occasions:", error);
+        console.error('Error fetching occasions:', error)
       }
-    };
+    }
 
-    fetchOccasions();
-  }, []);
+    fetchOccasions()
+  }, [])
   // Handle form submission
   const handleSubmit = () => {
     // const requiredFields = [
@@ -162,58 +165,58 @@ const CreateFarm = () => {
     //     `Please fill in the following fields: ${missingFields.join(', ')}`
     //   )
     // } else {
-      // Structure the data as per the updated API requirements
-      const apiData = {
-        stateName: formData.stateName, // Assuming this is included in the form data
-        placeName: formData.placeName, // Assuming this is included in the form data
-        farmDetails: {
-          farmId: formData.farmId,
-          name: formData.name,
-          address: {
-            addressLine1: formData.addressLine1,
-            addressLine2: formData.addressLine2,
-            country: formData.country,
-            state: formData.state,
-            suburb: formData.suburb,
-            zipCode: formData.zipCode,
-          },
-          phoneNumber: formData.phoneNumber,
-          checkInTime: formData.checkInTime,
-          checkOutDate: formData.checkOutDate,
-          checkOutTime: formData.checkOutTime,
-          numberOfAdults: formData.numberOfAdults,
-          numberOfKids: formData.numberOfKids,
-          occasion: formData.occasion,
-          hostOwnerName: formData.hostOwnerName,
-          hostNumber: formData.hostNumber,
-          totalBooking: formData.totalBooking,
-          advance: formData.advance,
-          balancePayment: formData.balancePayment,
-          securityAmount: formData.securityAmount,
-          advanceCollectedBy: formData.advanceCollectedBy,
-          pendingCollectedBy: formData.pendingCollectedBy,
-          advanceMode: formData.advanceMode,
-          email: formData.email,
-          otherServices: formData.otherServices,
-          urbanvenuecommission: formData.urbanvenuecommission,
-          termsConditions: formData.termsConditions,
-          eventAddOns: formData.eventAddOns,
-          status: formData.status,
-          farmTref: formData.farmTref, // Added in the API data
+    // Structure the data as per the updated API requirements
+    const apiData = {
+      stateName: formData.stateName, // Assuming this is included in the form data
+      placeName: formData.placeName, // Assuming this is included in the form data
+      farmDetails: {
+        farmId: formData.farmId,
+        name: formData.name,
+        address: {
+          addressLine1: formData.addressLine1,
+          addressLine2: formData.addressLine2,
+          country: formData.country,
+          state: formData.state,
+          suburb: formData.suburb,
+          zipCode: formData.zipCode,
         },
-      }
+        phoneNumber: formData.phoneNumber,
+        checkInTime: formData.checkInTime,
+        checkOutDate: formData.checkOutDate,
+        checkOutTime: formData.checkOutTime,
+        numberOfAdults: formData.numberOfAdults,
+        numberOfKids: formData.numberOfKids,
+        occasion: formData.occasion,
+        hostOwnerName: formData.hostOwnerName,
+        hostNumber: formData.hostNumber,
+        totalBooking: formData.totalBooking,
+        advance: formData.advance,
+        balancePayment: formData.balancePayment,
+        securityAmount: formData.securityAmount,
+        advanceCollectedBy: formData.advanceCollectedBy,
+        pendingCollectedBy: formData.pendingCollectedBy,
+        advanceMode: formData.advanceMode,
+        email: formData.email,
+        otherServices: formData.otherServices,
+        urbanvenuecommission: formData.urbanvenuecommission,
+        termsConditions: formData.termsConditions,
+        eventAddOns: formData.eventAddOns,
+        status: formData.status,
+        farmTref: formData.farmTref, // Added in the API data
+      },
+    }
 
-      console.log(apiData)
-      axios
-        .post('http://localhost:3000/api/calender/add-farm', apiData)
-        .then((response) => {
-          toast.success('Farm created successfully!')
-          navigate('/farms')
-        })
-        .catch((error) => {
-          toast.error('Error creating farm!')
-          console.error('Error:', error)
-        })
+    console.log(apiData)
+    axios
+      .post('http://localhost:3000/api/calender/add-farm', apiData)
+      .then((response) => {
+        toast.success('Farm created successfully!')
+        navigate('/farms')
+      })
+      .catch((error) => {
+        toast.error('Error creating farm!')
+        console.error('Error:', error)
+      })
     // }
   }
 
@@ -368,13 +371,12 @@ const CreateFarm = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
-            <option value="" >Select an occasion</option>
-            {
-              occasions.map((occasion,index)=>(
-
-                <option key={index} value={occasion.name}>{occasion.name}</option>
-                ))
-            }
+            <option value="">Select an occasion</option>
+            {occasions.map((occasion, index) => (
+              <option key={index} value={occasion.name}>
+                {occasion.name}
+              </option>
+            ))}
             {/* <option value="Wedding">Wedding</option>
             <option value="Engagement">Engagement</option>
             <option value="Office Party">Office Party</option>
@@ -409,19 +411,6 @@ const CreateFarm = () => {
             onWheel={(e) => e.target.blur()}
           />
         </div>
-        {/* Total Booking */}
-        <div className="flex flex-col border-b">
-          <label className="font-semibold">Total Booking</label>
-          <input
-            name="totalBooking"
-            value={formData.totalBooking}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="number"
-            placeholder="Enter Total Booking"
-            onWheel={(e) => e.target.blur()}
-          />
-        </div>
         {/* Farm Tref */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Farm Tref</label>
@@ -439,7 +428,6 @@ const CreateFarm = () => {
         <div className="flex flex-col border-b">
           <label className="font-semibold">Other Service</label>
           <input
-          readOnly
             name="otherServices"
             value={formData.otherServices}
             onChange={handleChange}
@@ -449,6 +437,21 @@ const CreateFarm = () => {
             onWheel={(e) => e.target.blur()}
           />
         </div>
+        {/* Total Booking */}
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Total Booking</label>
+          <input
+            readOnly
+            name="totalBooking"
+            value={formData.totalBooking}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Total Booking"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+
         {/* Advance */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Advance</label>
@@ -487,8 +490,8 @@ const CreateFarm = () => {
           >
             <option value="">Select Person</option>
             <option value="Not Assigned">Not Assigned</option>
-            <option value="Farm Owner">Farm Owner</option>
-            <option value="Organiser">Organiser</option>
+            <option value="Property Owner">Property Owner</option>
+            <option value="Urban venue">Urban venue</option>
           </select>
         </div>
         {/* Balance Payment (calculated automatically based on Total Booking and Advance) */}
@@ -514,8 +517,8 @@ const CreateFarm = () => {
           >
             {/* <option value="">Select Person</option> */}
             <option value="Not Assigned">Not Assigned</option>
-            <option value="Farm Owner">Farm Owner</option>
-            <option value="Organiser">Organiser</option>
+            <option value="Property Owner">Property Owner</option>
+            <option value="Urban venue">Urban venue</option>
           </select>
         </div>
         {/* Security Amount */}
@@ -629,7 +632,7 @@ const CreateFarm = () => {
           <div className="flex flex-col border-b">
             <label className="font-semibold">State</label>
             <input
-            readOnly
+              readOnly
               name="state"
               value={formData.state}
               onChange={handleChange}
@@ -643,7 +646,7 @@ const CreateFarm = () => {
           <div className="flex flex-col border-b">
             <label className="font-semibold">City</label>
             <input
-            readOnly
+              readOnly
               name="suburb"
               value={formData.suburb}
               onChange={handleChange}

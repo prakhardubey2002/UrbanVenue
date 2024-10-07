@@ -15,7 +15,7 @@ import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
 import AuthContext from '../context/context'
 const CreateVenueEvent = () => {
-  const { name, number,id } = useContext(AuthContext)
+  const { name, number, id } = useContext(AuthContext)
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
@@ -26,21 +26,23 @@ const CreateVenueEvent = () => {
   useEffect(() => {
     // console.log(data)
   }, [])
-  const [occasions, setOccasions] = useState([]);
+  const [occasions, setOccasions] = useState([])
 
   useEffect(() => {
     // Fetch occasions from the API
     const fetchOccasions = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/occasion/occasions");
-        setOccasions(response.data); // Assuming response.data is an array of occasion objects
+        const response = await axios.get(
+          'http://localhost:3000/occasion/occasions'
+        )
+        setOccasions(response.data) // Assuming response.data is an array of occasion objects
       } catch (error) {
-        console.error("Error fetching occasions:", error);
+        console.error('Error fetching occasions:', error)
       }
-    };
+    }
 
-    fetchOccasions();
-  }, []);
+    fetchOccasions()
+  }, [])
   // State to manage form values
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
@@ -52,7 +54,7 @@ const CreateVenueEvent = () => {
       .toISOString()
       .split('T')[0],
     checkOutTime: data.details.checkOutTime,
-    email: "",
+    email: '',
     // maxPeople: '',
     numberOfKids: data.details.numberOfKids,
     numberOfAdults: data.details.numberOfAdults,
@@ -60,7 +62,7 @@ const CreateVenueEvent = () => {
     hostOwnerName: data.details.hostOwnerName,
     hostNumber: data.details.hostNumber,
     totalBooking: data.details.totalBooking,
-    bookingpartnerid:id,
+    bookingpartnerid: id,
     bookingPartnerName: name,
     bookingPartnerPhoneNumber: number,
     farmTref: data.farmTref,
@@ -74,7 +76,7 @@ const CreateVenueEvent = () => {
     securityAmount: data.details.securityAmount,
 
     termsConditions: data.details.termsConditions,
-    status: data.details.status  || 'Upcoming',
+    status: data.details.status || 'Upcoming',
     eventAddOns: data.details.eventAddOns,
     venue: venue,
     addressLine1: data.address.addressLine1,
@@ -106,17 +108,19 @@ const CreateVenueEvent = () => {
   }, [formData.totalBooking, formData.advance])
   useEffect(() => {
     setFormData((prevFormData) => {
-      const otherServices = prevFormData.totalBooking - prevFormData.farmTref
-      const farmTref = prevFormData.totalBooking - otherServices
+      // Ensure totalBooking is the sum of otherServices and farmTref
+      const otherServices = Number(prevFormData.otherServices) || 0 // Convert to number or default to 0
+      const farmTref = Number(prevFormData.farmTref) || 0 // Convert to number or default to 0
+      const totalBooking = otherServices + farmTref // Perform addition
 
       return {
         ...prevFormData,
-        balancePayment: prevFormData.totalBooking - prevFormData.advance,
-        otherServices,
-        farmTref,
+        totalBooking, // Ensure totalBooking remains consistent
+        balancePayment: totalBooking - Number(prevFormData.advance || 0), // Calculate balancePayment
       }
     })
-  }, [formData.totalBooking, formData.advance, formData.farmTref])
+  }, [formData.advance, formData.farmTref, formData.otherServices]) // Adjusted dependencies
+
   // State to manage dialog visibility
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -384,12 +388,12 @@ const CreateVenueEvent = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
-            <option  value="" >Select an occasion</option>
-            {occasions.map((occasion,index)=>(
-
-            <option key={index} value={occasion.name}>{occasion.name}</option>
+            <option value="">Select an occasion</option>
+            {occasions.map((occasion, index) => (
+              <option key={index} value={occasion.name}>
+                {occasion.name}
+              </option>
             ))}
-           
           </select>
         </div>
 
@@ -419,18 +423,6 @@ const CreateVenueEvent = () => {
           />
         </div>
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Total Booking</label>
-          <input
-            name="totalBooking"
-            value={formData.totalBooking}
-            onChange={handleChange}
-            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
-            type="number"
-            placeholder="Enter Total Booking"
-            onWheel={(e) => e.target.blur()}
-          />
-        </div>
-        <div className="flex flex-col border-b">
           <label className="font-semibold">Farm Tref</label>
           <input
             name="farmTref"
@@ -445,7 +437,7 @@ const CreateVenueEvent = () => {
         <div className="flex flex-col  border-b ">
           <label className="font-semibold"> other Services </label>
           <input
-            readOnly
+            // readOnly
             name="otherServices"
             value={formData.otherServices}
             onChange={handleChange}
@@ -455,6 +447,20 @@ const CreateVenueEvent = () => {
             onWheel={(e) => e.target.blur()}
           />
         </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Total Booking</label>
+          <input
+            readOnly
+            name="totalBooking"
+            value={formData.totalBooking}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            type="number"
+            placeholder="Enter Total Booking"
+            onWheel={(e) => e.target.blur()}
+          />
+        </div>
+
         <div className="flex flex-col border-b">
           <label className="font-semibold">Advance</label>
           <input
@@ -476,8 +482,8 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
             <option value="Not Assigned">Not Assigned</option>
-            <option value="Farm Owner">Farm Owner</option>
-            <option value="Organiser">Organiser</option>
+            <option value="Property Owner">Property Owner</option>
+            <option value="Urban venue">Urban venue</option>
           </select>
         </div>
         <div className="flex flex-col border-b">
@@ -489,8 +495,8 @@ const CreateVenueEvent = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
           >
             <option value="Not Assigned">Not Assigned</option>
-            <option value="Farm Owner">Farm Owner</option>
-            <option value="Organiser">Organiser</option>
+            <option value="Property Owner">Property Owner</option>
+            <option value="Urban venue">Urban venue</option>
           </select>
         </div>
         {/* <div className="flex flex-col border-b">
@@ -560,7 +566,7 @@ const CreateVenueEvent = () => {
             onWheel={(e) => e.target.blur()}
           />
         </div>
-        <div className="flex flex-col border-b">
+        {/* <div className="flex flex-col border-b">
           <label className="font-semibold">Urban Venue commission</label>
           <input
             name="urbanvenuecommission"
@@ -571,7 +577,7 @@ const CreateVenueEvent = () => {
             placeholder="Enter Commission"
             onWheel={(e) => e.target.blur()}
           />
-        </div>
+        </div> */}
         <div className="flex flex-col  border-b ">
           <label className="font-semibold"> Terms & Condition</label>
 
@@ -762,7 +768,7 @@ const CreateVenueEvent = () => {
               </tr>
               <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">
-                bookingpartnerid:
+                  bookingpartnerid:
                 </td>
                 <td className="p-2">{id}</td>
               </tr>
