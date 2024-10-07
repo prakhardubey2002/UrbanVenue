@@ -794,7 +794,7 @@ const Invoice = () => {
           </form>
 
           {/* Footer with Contact Info */}
-          <div className="w-full flex justify-between items-center mt-8">
+          <div className="w-full flex justify-between items-center mt-24">
             <div className="flex flex-col justify-between items-center">
               <p className="font-semibold">Scan to visit our Site</p>
               <img

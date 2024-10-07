@@ -17,7 +17,7 @@ const SignIn = () => {
   const [password, setPassword] = useState('')
   const [userType, setUserType] = useState('Executive') // Default userType
   const [error, setError] = useState('')
-  const { setToken , setUsertype ,setname,setnumber } = useContext(AuthContext) // Use AuthContext for token management
+  const { setToken , setUsertype ,setname,setnumber,setid } = useContext(AuthContext) // Use AuthContext for token management
   const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
@@ -39,6 +39,8 @@ const SignIn = () => {
       setUsertype(response.data.userType)
       setname(response.data.name)
       setnumber(response.data.phoneNumber)
+      setid(response.data.id)
+      console.log(response.data.id)
       setError('')
 
       if (response.data.userType === 'Admin') {

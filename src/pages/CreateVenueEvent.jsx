@@ -15,7 +15,7 @@ import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
 import AuthContext from '../context/context'
 const CreateVenueEvent = () => {
-  const { name, number } = useContext(AuthContext)
+  const { name, number,id } = useContext(AuthContext)
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
@@ -52,7 +52,7 @@ const CreateVenueEvent = () => {
       .toISOString()
       .split('T')[0],
     checkOutTime: data.details.checkOutTime,
-    email: data.details.email,
+    email: "",
     // maxPeople: '',
     numberOfKids: data.details.numberOfKids,
     numberOfAdults: data.details.numberOfAdults,
@@ -60,6 +60,7 @@ const CreateVenueEvent = () => {
     hostOwnerName: data.details.hostOwnerName,
     hostNumber: data.details.hostNumber,
     totalBooking: data.details.totalBooking,
+    bookingpartnerid:id,
     bookingPartnerName: name,
     bookingPartnerPhoneNumber: number,
     farmTref: data.farmTref,
@@ -68,12 +69,12 @@ const CreateVenueEvent = () => {
     advanceCollectedBy: data.details.advanceCollectedBy,
     pendingCollectedBy: data.details.pendingCollectedBy,
     // showAdvanceDetails: '',
-    advanceMode: data.details.advanceMode,
+    advanceMode: data.details.advanceMode || 'Cash',
     balancePayment: data.details.balancePayment,
     securityAmount: data.details.securityAmount,
 
     termsConditions: data.details.termsConditions,
-    status: data.details.status,
+    status: data.details.status  || 'Upcoming',
     eventAddOns: data.details.eventAddOns,
     venue: venue,
     addressLine1: data.address.addressLine1,
@@ -758,6 +759,12 @@ const CreateVenueEvent = () => {
                   Check-Out Time:
                 </td>
                 <td className="p-2">{formData.checkOutTime}</td>
+              </tr>
+              <tr className="border-b border-gray-300">
+                <td className="font-bold p-2 border-r border-gray-300">
+                bookingpartnerid:
+                </td>
+                <td className="p-2">{id}</td>
               </tr>
               {/* <tr className="border-b border-gray-300">
                 <td className="font-bold p-2 border-r border-gray-300">

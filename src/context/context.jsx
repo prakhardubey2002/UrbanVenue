@@ -7,6 +7,7 @@ export const AuthProvider = ({ children }) => {
   const [usertype, setUsertype] = useState(localStorage.getItem('usertype'));
   const [name, setname] = useState(localStorage.getItem('name'));
   const [number, setnumber] = useState(localStorage.getItem('number'));
+  const [id, setid] = useState(localStorage.getItem('id'));
 
   useEffect(() => {
     if (token) {
@@ -37,6 +38,13 @@ export const AuthProvider = ({ children }) => {
       localStorage.removeItem('usertype');
     }
   }, [usertype]);
+  useEffect(() => {
+    if (id) {
+      localStorage.setItem('id', id);
+    } else {
+      localStorage.removeItem('id');
+    }
+  }, [id]);
 
   const logout = () => {
     setToken(null);
@@ -45,10 +53,11 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('usertype');
     localStorage.removeItem('name');
     localStorage.removeItem('number');
+    localStorage.removeItem('id');
   };
 
   return (
-    <AuthContext.Provider value={{ token, setToken, logout, usertype, setUsertype,name, setname,number, setnumber }}>
+    <AuthContext.Provider value={{ token, setToken, logout, usertype, setUsertype,name, setname,number, setnumber,id,setid }}>
       {children}
     </AuthContext.Provider>
   );
