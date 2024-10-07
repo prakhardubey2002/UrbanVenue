@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import NavTopBar from '../components/NavTopBar'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import SearchIcon from '@mui/icons-material/Search'
@@ -12,6 +12,7 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
+import AuthContext from '../context/context'
 const Dashboard = () => {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -32,6 +33,7 @@ const Dashboard = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogMessage, setDialogMessage] = useState('')
   const [occasions, setOccasions] = useState([])
+  const { name, number,id } = useContext(AuthContext)
   const handleOpenDialog = (message) => {
     setDialogMessage(message)
     setDialogOpen(true)
@@ -54,7 +56,7 @@ const Dashboard = () => {
     }
     try {
       console.log(
-        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate}`
+        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate} od:${id}`
       )
 
       const queryParams = {
@@ -66,6 +68,7 @@ const Dashboard = () => {
         selectedCategory, // Include selected category in query params
         startDate,
         endDate,
+        bookingpartnerid: id,
       }
 
       // Convert the query params to a URL search string
@@ -89,11 +92,11 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await Promise.all([
-          axios.get('http://localhost:3000/api/invoices/invoices'),
-          axios.get('http://localhost:3000/api/invoices/guests'),
-          axios.get('http://localhost:3000/api/invoices/owners'),
-          axios.get('http://localhost:3000/api/invoices/venues'),
-          axios.get('http://localhost:3000/api/invoices/unique-phone-numbers'),
+          axios.get(`http://localhost:3000/api/invoices/invoicesbybookingid/${id}`),
+          axios.get(`http://localhost:3000/api/invoices/guestsbybookingid/${id}`),
+          axios.get(`http://localhost:3000/api/invoices/ownersbybookingid/${id}`),
+          axios.get(`http://localhost:3000/api/invoices/venuesbybookingid/${id}`),
+          axios.get(`http://localhost:3000/api/invoices/unique-phone-numbersbybookingid/${id}`),
           axios.get('http://localhost:3000/occasion/occasions'),
         ])
 
