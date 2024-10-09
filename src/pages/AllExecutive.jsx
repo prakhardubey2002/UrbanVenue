@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
 import CustomNavTopbar from '../components/CustomNavTopbar'
-import { ADMIN_DASHBOARD, CREATE_EXECUTIVE } from '../routes/Routes'
+import { ADMIN_DASHBOARD, CREATE_EXECUTIVE, SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
 import {
   Dialog,
   DialogActions,
@@ -17,7 +17,9 @@ import {
 } from '@mui/material'
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
+import AuthContext from '../context/context'
 const ExecutiveList = () => {
+  const { usertype} = useContext(AuthContext)
   const [executives, setExecutives] = useState([])
   const [filters, setFilters] = useState({
     name: '',
@@ -111,7 +113,7 @@ const ExecutiveList = () => {
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <Toaster position="top-right" reverseOrder={true} />
       <CustomNavTopbar
-        path={ADMIN_DASHBOARD}
+        path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD}
         text={'Create Executive'}
         route={CREATE_EXECUTIVE}
       />

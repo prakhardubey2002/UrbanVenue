@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import NavTopBar from '../components/NavTopBar'
 import SearchIcon from '@mui/icons-material/Search'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
@@ -16,8 +16,11 @@ import {
   TextField,
   Button,
 } from '@mui/material'
+import AuthContext from '../context/context'
+import { SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
 
 const AllFarms = () => {
+  const {usertype}= useContext(AuthContext);
   const [farms, setFarms] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -224,7 +227,7 @@ const AllFarms = () => {
 }
   return (
     <div className="w-full h-screen flex flex-col">
-      <CustomNavTopbar path={ADMIN_DASHBOARD} text={'Create Property'} route={CREATE_FARMS} />
+      <CustomNavTopbar path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD} text={'Create Property'} route={CREATE_FARMS} />
       <div className="flex-1 flex justify-center items-center">
         <div className="px-4 w-[90%] min-h-[60%]">
           <h2 className="text-2xl font-semibold my-4">Filter Farms</h2>
