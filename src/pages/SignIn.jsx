@@ -8,7 +8,11 @@ import Grid from '@mui/material/Grid'
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 import axios from 'axios'
 import AuthContext from '../context/context' // Import AuthContext
-import { DASHBOARD_ROUTE, ADMIN_DASHBOARD } from '../routes/Routes'
+import {
+  DASHBOARD_ROUTE,
+  ADMIN_DASHBOARD,
+  SUPER_ADMIN_DASHBOARD,
+} from '../routes/Routes'
 import { toast } from 'react-hot-toast'
 
 const SignIn = () => {
@@ -17,7 +21,8 @@ const SignIn = () => {
   const [password, setPassword] = useState('')
   const [userType, setUserType] = useState('Executive') // Default userType
   const [error, setError] = useState('')
-  const { setToken , setUsertype ,setname,setnumber,setid } = useContext(AuthContext) // Use AuthContext for token management
+  const { setToken, setUsertype, setname, setnumber, setid } =
+    useContext(AuthContext) // Use AuthContext for token management
   const navigate = useNavigate()
 
   const togglePasswordVisibility = () => {
@@ -35,7 +40,7 @@ const SignIn = () => {
       })
 
       toast.success('Login Successful')
-      setToken(response.data.token) 
+      setToken(response.data.token)
       setUsertype(response.data.userType)
       setname(response.data.name)
       setnumber(response.data.phoneNumber)
@@ -44,9 +49,11 @@ const SignIn = () => {
       setError('')
 
       if (response.data.userType === 'Admin') {
-        navigate(ADMIN_DASHBOARD) 
-      } else {
-        navigate(DASHBOARD_ROUTE) 
+        navigate(ADMIN_DASHBOARD)
+      } else if (response.data.userType === 'SuperAdmin') {
+        navigate(SUPER_ADMIN_DASHBOARD)
+      } else if (response.data.userType === 'Executive') {
+        navigate(DASHBOARD_ROUTE)
       }
     } catch (err) {
       setError('Invalid credentials')
@@ -74,21 +81,21 @@ const SignIn = () => {
             {error && <div className="text-red-600 mb-4">{error}</div>}
             <div className="flex flex-col">
               {/* User Type Select */}
-            <div className="flex flex-col mb-5">
-              <label htmlFor="userType" className="text-sm font-semibold">
-                User Type*
-              </label>
-              <select
-                id="userType"
-                value={userType}
-                onChange={(e) => setUserType(e.target.value)}
-                className="outline-none h-[48px] px-4 border-[1px] bg-[#F9F9F9] rounded-tl-[3px]"
-              >
-                <option value="Executive">Executive</option>
-                <option value="Admin">Admin</option>
-                <option value="SuperAdmin">SuperAdmin</option>
-              </select>
-            </div>
+              <div className="flex flex-col mb-5">
+                <label htmlFor="userType" className="text-sm font-semibold">
+                  User Type*
+                </label>
+                <select
+                  id="userType"
+                  value={userType}
+                  onChange={(e) => setUserType(e.target.value)}
+                  className="outline-none h-[48px] px-4 border-[1px] bg-[#F9F9F9] rounded-tl-[3px]"
+                >
+                  <option value="Executive">Executive</option>
+                  <option value="Admin">Admin</option>
+                  <option value="SuperAdmin">SuperAdmin</option>
+                </select>
+              </div>
               <label htmlFor="email" className="mb-1 text-sm font-semibold">
                 Login Id*
               </label>
@@ -143,7 +150,7 @@ const SignIn = () => {
                 </Grid>
               </div>
             </div>
-            
+
             <button
               onClick={handleSubmit}
               className="w-full mt-5 bg-Primary text-white h-[50px] flex justify-center items-center rounded-tl-[3px] border-t border-transparent px-6 py-1"
@@ -153,7 +160,7 @@ const SignIn = () => {
             </button>
           </div>
           <p className="text-[14px] font-normal leading-[21px] text-center mt-4 sm:text-xs">
-            © 2024, Urban Venue. All rights reserved . 
+            © 2024, Urban Venue. All rights reserved .
           </p>
         </div>
       </div>

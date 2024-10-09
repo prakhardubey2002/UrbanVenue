@@ -33,7 +33,14 @@ const Dashboard = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogMessage, setDialogMessage] = useState('')
   const [occasions, setOccasions] = useState([])
-  const { name, number,id } = useContext(AuthContext)
+  const { name, number, id } = useContext(AuthContext)
+  const handleTotalBookingChange = (e) => {
+    setTotalBooking(e.target.value)
+  }
+
+  const handleOperatorChange = (e) => {
+    setOperator(e.target.value)
+  }
   const handleOpenDialog = (message) => {
     setDialogMessage(message)
     setDialogOpen(true)
@@ -56,7 +63,7 @@ const Dashboard = () => {
     }
     try {
       console.log(
-        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate} od:${id}`
+        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate} od:${id} total booking: ${totalBooking} operator :${operator}  `
       )
 
       const queryParams = {
@@ -69,6 +76,8 @@ const Dashboard = () => {
         startDate,
         endDate,
         bookingpartnerid: id,
+        totalBooking, // Add totalBooking value from filter input
+        operator, // Add operator (equal, greaterThan, lessThan, etc.)
       }
 
       // Convert the query params to a URL search string
@@ -92,11 +101,21 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await Promise.all([
-          axios.get(`http://localhost:3000/api/invoices/invoicesbybookingid/${id}`),
-          axios.get(`http://localhost:3000/api/invoices/guestsbybookingid/${id}`),
-          axios.get(`http://localhost:3000/api/invoices/ownersbybookingid/${id}`),
-          axios.get(`http://localhost:3000/api/invoices/venuesbybookingid/${id}`),
-          axios.get(`http://localhost:3000/api/invoices/unique-phone-numbersbybookingid/${id}`),
+          axios.get(
+            `http://localhost:3000/api/invoices/invoicesbybookingid/${id}`
+          ),
+          axios.get(
+            `http://localhost:3000/api/invoices/guestsbybookingid/${id}`
+          ),
+          axios.get(
+            `http://localhost:3000/api/invoices/ownersbybookingid/${id}`
+          ),
+          axios.get(
+            `http://localhost:3000/api/invoices/venuesbybookingid/${id}`
+          ),
+          axios.get(
+            `http://localhost:3000/api/invoices/unique-phone-numbersbybookingid/${id}`
+          ),
           axios.get('http://localhost:3000/occasion/occasions'),
         ])
 
@@ -292,6 +311,7 @@ const Dashboard = () => {
                       ))}
                     </select>
                   </div>
+                
 
                   <div className="mt-2 md:mt-0">
                     <button
@@ -379,12 +399,16 @@ const Dashboard = () => {
                   </div>
                 </div> */}
               </div>
-              <DataTable occasions={occasions} data={[...data].reverse()} setData={setData} />
+              <DataTable
+                occasions={occasions}
+                data={[...data].reverse()}
+                setData={setData}
+              />
             </div>
           </div>
         </div>
       </div>
-      <Dialog open={dialogOpen}  onClose={handleCloseDialog}>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Date Boundary</DialogTitle>
         <DialogContent>
           <p>{dialogMessage}</p>

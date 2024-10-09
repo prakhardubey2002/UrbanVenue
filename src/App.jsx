@@ -15,6 +15,7 @@ import {
   DASHBOARD_ROUTE,
   INVOICE_ROUTE,
   SIGNIN_ROUTE,
+  SUPER_ADMIN_DASHBOARD,
 } from './routes/Routes'
 import CreateVenueEvent from './pages/CreateVenueEvent'
 import Invoice from './pages/Invoice'
@@ -27,6 +28,7 @@ import AllExecutive from './pages/AllExecutive'
 import CreateExecutive from './pages/CreateExecutive'
 import OccasionList from './pages/OccasionList'
 import CreateOccasion from './pages/CreateOccasion'
+import SuperAdmin from './pages/SuperAdmin'
 const App = () => {
   return (
     <div>
@@ -36,6 +38,7 @@ const App = () => {
           <Route path={ADMIN_DASHBOARD} element={<Admin />} />
           <Route path={ALL_FARMS} element={<AllFarms />} />
           <Route path={ALL_EXECUTIVE} element={<AllExecutive />} />
+          <Route path ={SUPER_ADMIN_DASHBOARD} element={<SuperAdmin/>}/>
           <Route path={CREATE_FARMS} element={<CreateFarm />} />
           <Route path={ALL_OCCASION} element={<OccasionList/>} />
           <Route path={CREATE_OCCASION} element={<CreateOccasion/>} />
