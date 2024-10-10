@@ -1,15 +1,7 @@
 import React, { useEffect, useState } from 'react'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
-import TextField from '@mui/material/TextField'
-import FilterListIcon from '@mui/icons-material/FilterList'
-import { MenuItem, Select, InputLabel, FormControl } from '@mui/material'
 import { toast } from 'react-hot-toast'
-import { INVOICE_ROUTE } from '../routes/Routes'
+import { ADMIN_CALCULATE, INVOICE_ROUTE } from '../routes/Routes'
 import { useNavigate } from 'react-router-dom'
-import DownloadIcon from '@mui/icons-material/Download'
 const AdminTable = ({ data, setData, occasions }) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
@@ -29,6 +21,10 @@ const AdminTable = ({ data, setData, occasions }) => {
       .padStart(2, '0')} ${period}`
 
     return formattedTime
+  }
+  const handleFilterNavigate=(guestName)=>{
+    navigate(ADMIN_CALCULATE, { state: guestName })
+
   }
   const handleClickOpen = (row) => {
     setSelectedRow(row)
@@ -53,56 +49,17 @@ const AdminTable = ({ data, setData, occasions }) => {
   }, [selectedRow?.totalBooking, selectedRow?.advance])
   useEffect(() => {
     setSelectedRow((prev) => {
-      const farmTref = Number(prev?.farmTref) || 0; // Ensure farmTref is a number
-      const otherServices = Number(prev?.otherServices) || 0; // Ensure otherServices is a number
-      const totalBooking = farmTref + otherServices; // Calculate totalBooking
-  
+      const farmTref = Number(prev?.farmTref) || 0 // Ensure farmTref is a number
+      const otherServices = Number(prev?.otherServices) || 0 // Ensure otherServices is a number
+      const totalBooking = farmTref + otherServices // Calculate totalBooking
+
       return {
         ...prev,
         totalBooking, // Update totalBooking
-      };
-    });
-  }, [selectedRow?.farmTref, selectedRow?.otherServices]);
-  const handleFormSubmit = async () => {
-    try {
-      console.log(selectedRow)
-      // Update API URL (use dynamic ID from selectedRow if needed)
-      const apiUrl = `http://localhost:3000/api/invoices/invoices/${selectedRow._id}`
-
-      // Send PUT request to update the invoice
-      const response = await fetch(apiUrl, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(selectedRow),
-      })
-
-      // Check if the response is ok
-      if (!response.ok) {
-        throw new Error('Failed to update the invoice')
       }
-      if (response.ok) {
-        toast.success('Updated Successfully')
-        setTimeout(() => {
-          window.location.reload()
-        }, 1000)
-      }
-
-      // Parse the response
-      const result = await response.json()
-      console.log('Form submitted:', result)
-
-      // Handle successful update (e.g., show a success message)
-      // For example, you might want to display a notification
-    } catch (error) {
-      console.error('Error updating the invoice:', error)
-      // Handle error (e.g., show an error message)
-    }
-
-    // Close the dialog
-    handleClose()
-  }
+    })
+  }, [selectedRow?.farmTref, selectedRow?.otherServices])
+  
 
   const handleFilterClick = (guestName) => {
     const filteredData = data.filter((row) =>
@@ -116,20 +73,17 @@ const AdminTable = ({ data, setData, occasions }) => {
       <table className="min-w-full bg-white border-b border-b-gray-300">
         <thead>
           <tr>
-            
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Guest Name
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Owner Name
             </th>
-           
+
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Property Name
             </th>
-           
-            
-            
+
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Category
             </th>
@@ -140,29 +94,27 @@ const AdminTable = ({ data, setData, occasions }) => {
               Total
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
-           Commisson
+              Commisson
             </th>
-           
-           
-          
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Action
+            </th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, index) => (
             <tr key={index}>
-             
               <td className="border px-4 py-4 whitespace-nowrap">
                 {row.guestName}
               </td>
               <td className="border px-4 py-4 whitespace-nowrap">
                 {row.hostOwnerName}
               </td>
-              
+
               <td className="border px-4 py-4 whitespace-nowrap">
                 {row.venue}
               </td>
-              
-             
+
               <td className="border px-4 py-4 whitespace-nowrap">
                 {row.occasion}
               </td>
@@ -196,17 +148,19 @@ const AdminTable = ({ data, setData, occasions }) => {
               <td className="border px-4 py-4 whitespace-nowrap">
                 ₹ {row.totalBooking}
               </td>
-            <td className="border px-4 py-4 whitespace-nowrap" >
-                { parseInt(row?.urbanvenuecommission/100 *row?.totalBooking) }% (₹ {row.urbanvenuecommission})
-
-            </td>
-              
+              <td className="border px-4 py-4 whitespace-nowrap">
+                {parseInt(
+                  (row?.urbanvenuecommission / 100) * row?.totalBooking
+                )}
+                % (₹ {row.urbanvenuecommission})
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+                <p onClick={() => handleFilterNavigate(row.guestName)} className='text-blue-500' >View Details</p>
+              </td>
             </tr>
           ))}
         </tbody>
       </table>
-
-      
     </div>
   )
 }

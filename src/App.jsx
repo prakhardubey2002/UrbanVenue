@@ -3,6 +3,7 @@ import SignIn from './pages/SignIn'
 import Dashboard from './pages/Dashboard'
 import CreateEvent from './pages/CreateEvent'
 import {
+  ADMIN_CALCULATE,
   ADMIN_DASHBOARD,
   ALL_EXECUTIVE,
   ALL_FARMS,
@@ -35,6 +36,7 @@ import SuperAdmin from './pages/SuperAdmin'
 import AllAdmin from './pages/AllAdmin'
 import CreateAdmin from './pages/CreateAdmin'
 import Report from './pages/Report'
+import AdminCalculate from './pages/AdminCalculate'
 const App = () => {
   return (
     <div>
@@ -47,6 +49,7 @@ const App = () => {
           <Route path={SUPER_ADMIN_DASHBOARD} element={<SuperAdmin />} />
           <Route path={All_ADMIN} element={<AllAdmin />} />
           <Route path={CREATE_ADMIN} element={<CreateAdmin />} />
+          <Route path={ADMIN_CALCULATE} element ={<AdminCalculate/>}/>
           <Route path={REPORT} element={<Report />} />
           <Route path={CREATE_FARMS} element={<CreateFarm />} />
           <Route path={ALL_OCCASION} element={<OccasionList />} />
