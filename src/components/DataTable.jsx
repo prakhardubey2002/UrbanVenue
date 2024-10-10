@@ -244,7 +244,7 @@ const Table = ({ data, setData, occasions }) => {
               </td>
 
               <td className="border-b px-4 py-4 whitespace-nowrap">
-                ₹ {row.advance + row.securityAmount + row.balancePayment}
+                ₹ {row.totalBooking}
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
                 ₹ {row.advance}

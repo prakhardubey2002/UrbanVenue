@@ -2,8 +2,14 @@ import React from 'react'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useNavigate } from 'react-router-dom'
-import { ALL_EXECUTIVE, ALL_FARMS, ALL_OCCASION, All_ADMIN } from '../routes/Routes'
-import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
+import {
+  ALL_EXECUTIVE,
+  ALL_FARMS,
+  ALL_OCCASION,
+  All_ADMIN,
+  REPORT,
+} from '../routes/Routes'
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount'
 const SuperAdmin = () => {
   const navigate = useNavigate()
   const redirect = (data) => {
@@ -12,10 +18,12 @@ const SuperAdmin = () => {
         return navigate(ALL_FARMS)
       case 'All Executive':
         return navigate(ALL_EXECUTIVE)
-        case 'All Occaions':
+      case 'All Occaions':
         return navigate(ALL_OCCASION)
       case 'All admins':
-      return navigate(All_ADMIN)
+        return navigate(All_ADMIN)
+      case 'Report':
+        return navigate(REPORT)
     }
   }
   return (
@@ -56,7 +64,13 @@ const SuperAdmin = () => {
             <p>All Admins</p>
             <ArrowForwardIosIcon />
           </div>
-
+          <div
+            onClick={() => redirect('Report')}
+            className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
+          >
+            <p>Report</p>
+            <ArrowForwardIosIcon />
+          </div>
         </div>
       </div>
     </div>
