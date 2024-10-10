@@ -16,6 +16,7 @@ import {
   CREATE_ROUTE,
   DASHBOARD_ROUTE,
   INVOICE_ROUTE,
+  REPORT,
   SIGNIN_ROUTE,
   SUPER_ADMIN_DASHBOARD,
 } from './routes/Routes'
@@ -33,6 +34,7 @@ import CreateOccasion from './pages/CreateOccasion'
 import SuperAdmin from './pages/SuperAdmin'
 import AllAdmin from './pages/AllAdmin'
 import CreateAdmin from './pages/CreateAdmin'
+import Report from './pages/Report'
 const App = () => {
   return (
     <div>
@@ -42,12 +44,13 @@ const App = () => {
           <Route path={ADMIN_DASHBOARD} element={<Admin />} />
           <Route path={ALL_FARMS} element={<AllFarms />} />
           <Route path={ALL_EXECUTIVE} element={<AllExecutive />} />
-          <Route path ={SUPER_ADMIN_DASHBOARD} element={<SuperAdmin/>}/>
-          <Route path ={All_ADMIN} element ={< AllAdmin />}/>
-          <Route path ={CREATE_ADMIN} element ={<CreateAdmin/>}/>
+          <Route path={SUPER_ADMIN_DASHBOARD} element={<SuperAdmin />} />
+          <Route path={All_ADMIN} element={<AllAdmin />} />
+          <Route path={CREATE_ADMIN} element={<CreateAdmin />} />
+          <Route path={REPORT} element={<Report />} />
           <Route path={CREATE_FARMS} element={<CreateFarm />} />
-          <Route path={ALL_OCCASION} element={<OccasionList/>} />
-          <Route path={CREATE_OCCASION} element={<CreateOccasion/>} />
+          <Route path={ALL_OCCASION} element={<OccasionList />} />
+          <Route path={CREATE_OCCASION} element={<CreateOccasion />} />
           <Route path={CREATE_EXECUTIVE} element={<CreateExecutive />} />
           <Route path={DASHBOARD_ROUTE} element={<Dashboard />} />
           <Route path={CREATE_ROUTE} element={<CreateEvent />} />

@@ -416,12 +416,12 @@ const Invoice = () => {
 
           {/* Form Sections */}
           <form className="space-y-6 mt-16">
-            <h4 className="text-l font-bold ">Booking Details</h4>
+            <h4 className="text-l font-bold ">Voucher Details</h4>
             {/* Invoice Details */}
             <div className="w-full grid grid-cols-2  gap-6">
               <div className="flex flex-col gap-2">
                 <label className="block text-gray-700 flex-shrink-0 mb-1 ">
-                  Booking ID
+                  Voucher ID
                 </label>
                 <input
                   type="text"
@@ -785,16 +785,7 @@ const Invoice = () => {
                 readOnly
               />
             </div>
-            {imageExists && (
-              <div className="my-8">
-                Refrence Doc :
-                <img
-                  className="w-full h-[50vh] object-contain"
-                  src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`}
-                  alt="Passed Image"
-                />
-              </div>
-            )}
+          
           </form>
 
           {/* Footer with Contact Info */}
@@ -849,6 +840,16 @@ const Invoice = () => {
               </div>
             </div>
           </div>
+          {imageExists && (
+              <div className="my-8">
+                Refrence Doc :
+                <img
+                  className="w-full h-[50vh] object-contain"
+                  src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`}
+                  alt="Passed Image"
+                />
+              </div>
+            )}
         </div>
         <div className="h-[2vh] flex">
           <div className="flex-1 bg-black"></div>

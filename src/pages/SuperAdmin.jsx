@@ -54,7 +54,7 @@ const SuperAdmin = () => {
             className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
           >
             <p>All Admins</p>
-            <SupervisorAccountIcon />
+            <ArrowForwardIosIcon />
           </div>
 
         </div>
