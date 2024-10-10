@@ -24,6 +24,7 @@ const AdminTable = ({ data, setData, occasions }) => {
   }
   const handleFilterNavigate=(guestName)=>{
     navigate(ADMIN_CALCULATE, { state: guestName })
+    console.log(guestName)
 
   }
   const handleClickOpen = (row) => {
