@@ -7,6 +7,8 @@ import {
   ALL_EXECUTIVE,
   ALL_FARMS,
   ALL_OCCASION,
+  All_ADMIN,
+  CREATE_ADMIN,
   CREATE_EXECUTIVE,
   CREATE_FARMS,
   CREATE_FORM,
@@ -29,6 +31,8 @@ import CreateExecutive from './pages/CreateExecutive'
 import OccasionList from './pages/OccasionList'
 import CreateOccasion from './pages/CreateOccasion'
 import SuperAdmin from './pages/SuperAdmin'
+import AllAdmin from './pages/AllAdmin'
+import CreateAdmin from './pages/CreateAdmin'
 const App = () => {
   return (
     <div>
@@ -39,6 +43,8 @@ const App = () => {
           <Route path={ALL_FARMS} element={<AllFarms />} />
           <Route path={ALL_EXECUTIVE} element={<AllExecutive />} />
           <Route path ={SUPER_ADMIN_DASHBOARD} element={<SuperAdmin/>}/>
+          <Route path ={All_ADMIN} element ={< AllAdmin />}/>
+          <Route path ={CREATE_ADMIN} element ={<CreateAdmin/>}/>
           <Route path={CREATE_FARMS} element={<CreateFarm />} />
           <Route path={ALL_OCCASION} element={<OccasionList/>} />
           <Route path={CREATE_OCCASION} element={<CreateOccasion/>} />

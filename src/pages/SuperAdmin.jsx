@@ -2,7 +2,8 @@ import React from 'react'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useNavigate } from 'react-router-dom'
-import { ALL_EXECUTIVE, ALL_FARMS, ALL_OCCASION } from '../routes/Routes'
+import { ALL_EXECUTIVE, ALL_FARMS, ALL_OCCASION, All_ADMIN } from '../routes/Routes'
+import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount';
 const SuperAdmin = () => {
   const navigate = useNavigate()
   const redirect = (data) => {
@@ -13,6 +14,8 @@ const SuperAdmin = () => {
         return navigate(ALL_EXECUTIVE)
         case 'All Occaions':
         return navigate(ALL_OCCASION)
+      case 'All admins':
+      return navigate(All_ADMIN)
     }
   }
   return (
@@ -46,6 +49,14 @@ const SuperAdmin = () => {
             <p>All Occasions</p>
             <ArrowForwardIosIcon />
           </div>
+          <div
+            onClick={() => redirect('All admins')}
+            className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
+          >
+            <p>All Admins</p>
+            <SupervisorAccountIcon />
+          </div>
+
         </div>
       </div>
     </div>

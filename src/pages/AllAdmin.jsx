@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react'
 import axios from 'axios'
 import { Toaster, toast } from 'react-hot-toast'
 import CustomNavTopbar from '../components/CustomNavTopbar'
-import { ADMIN_DASHBOARD, CREATE_EXECUTIVE, SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
+import { ADMIN_DASHBOARD, CREATE_EXECUTIVE, SUPER_ADMIN_DASHBOARD ,CREATE_ADMIN} from '../routes/Routes'
 import {
   Dialog,
   DialogActions,
@@ -18,12 +18,12 @@ import {
 import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AuthContext from '../context/context'
-const ExecutiveList = () => {
+const AllAdmin = () => {
   const { usertype} = useContext(AuthContext)
   const [executives, setExecutives] = useState([])
   const [filters, setFilters] = useState({
     name: '',
-    userId: '',
+    username: '',
     status: '',
   })
   const [open, setOpen] = useState(false)
@@ -31,17 +31,17 @@ const ExecutiveList = () => {
 
   const fetchExecutives = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/executives')
+      const response = await axios.get('http://localhost:3000/admin')
       setExecutives(response.data)
     } catch (error) {
-      console.error('Error fetching executives:', error)
-      toast.error('Failed to fetch executives')
+      console.error('Error fetching admin:', error)
+      toast.error('Failed to fetch admin')
     }
   }
   const handleRefresh = () => {
     setFilters({
       name: '',
-      userId: '',
+      username: '',
       status: '',
     })
   }
@@ -58,7 +58,7 @@ const ExecutiveList = () => {
   const handleUpdate = async () => {
     try {
       await axios.patch(
-        `http://localhost:3000/executives/${selectedExecutive._id}`,
+        `http://localhost:3000/admin/${selectedExecutive._id}`,
         selectedExecutive
       )
       toast.success('Executive updated successfully!')
@@ -76,8 +76,8 @@ const ExecutiveList = () => {
     )
     if (confirmDelete) {
       try {
-        console.log(`http://localhost:3000/executives/${executiveId}`)
-        await axios.delete(`http://localhost:3000/executives/${executiveId}`)
+        console.log(`http://localhost:3000/admin/${executiveId}`)
+        await axios.delete(`http://localhost:3000/admin/${executiveId}`)
         toast.success('Executive deleted successfully!')
         fetchExecutives() // Refresh the list after deletion
       } catch (error) {
@@ -114,10 +114,10 @@ const ExecutiveList = () => {
       <Toaster position="top-right" reverseOrder={true} />
       <CustomNavTopbar
         path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD}
-        text={'Create Executive'}
-        route={CREATE_EXECUTIVE}
+        text={'Create Admin'}
+        route={CREATE_ADMIN}
       />
-      <h2 className="my-8 font-bold text-3xl">All Executives</h2>
+      <h2 className="my-8 font-bold text-3xl">All Admins</h2>
 
       {/* Filter Section */}
       <div className="my-4 bg-white p-4 w-full rounded-md shadow-sm">
@@ -132,12 +132,12 @@ const ExecutiveList = () => {
             placeholder="Filter by Name"
           />
           <input
-            name="userId"
-            value={filters.userId}
+            name="username"
+            value={filters.username}
             onChange={handleFilterChange}
             className="outline-none bg-Bordgrey p-2 border border-Bordgrey rounded-sm"
             type="text"
-            placeholder="Filter by User ID"
+            placeholder="Filter by Username"
           />
           <FormControl variant="outlined" className="w-1/4">
             <InputLabel>Filter by Status</InputLabel>
@@ -198,8 +198,8 @@ const ExecutiveList = () => {
               .filter(
                 (executive) =>
                   (!filters.name || executive.name.includes(filters.name)) &&
-                  (!filters.userId ||
-                    executive.userId.includes(filters.userId)) &&
+                  (!filters.username ||
+                    executive.username.includes(filters.username)) &&
                   (!filters.status || executive.status === filters.status)
               )
               .slice()
@@ -215,7 +215,7 @@ const ExecutiveList = () => {
                       {executive.name}
                     </td>
                     <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
-                      {executive.userId}
+                      {executive.username}
                     </td>
                     <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       {executive.phoneNumber}
@@ -290,11 +290,11 @@ const ExecutiveList = () => {
                 type="text"
                 fullWidth
                 variant="outlined"
-                value={selectedExecutive.userId}
+                value={selectedExecutive.username}
                 onChange={(e) =>
                   setSelectedExecutive({
                     ...selectedExecutive,
-                    userId: e.target.value,
+                    username: e.target.value,
                   })
                 }
               />
@@ -376,4 +376,4 @@ const ExecutiveList = () => {
   )
 }
 
-export default ExecutiveList
+export default AllAdmin
