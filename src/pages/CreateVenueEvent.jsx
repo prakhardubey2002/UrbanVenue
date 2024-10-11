@@ -24,7 +24,7 @@ const CreateVenueEvent = () => {
   const navigate = useNavigate()
   // const history = useHistory();
   useEffect(() => {
-    // console.log(data)
+    console.log(data)
   }, [])
   const [occasions, setOccasions] = useState([])
 
@@ -44,6 +44,10 @@ const CreateVenueEvent = () => {
     fetchOccasions()
   }, [])
   // State to manage form values
+   const [calculatedResult, setCalculatedResult] = useState({
+    surplus: 0,
+    deficit: 0,
+  })
   const [formData, setFormData] = useState({
     bookingId: generateBookingId(),
     guestName: '',
@@ -86,13 +90,66 @@ const CreateVenueEvent = () => {
     citySuburb: data.address.suburb,
     zipCode: data.address.zipCode,
     urbanvenuecommission: data.details.urbanvenuecommission, //total amount 10%
+    surplus:'',
+    deficit:'',
     photo: photo,
+    fullcloser:'Pending',
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
     let a = `BOOK-${venue}-${date}-${timestamp}`
     return a.replace(/\s+/g, '-')
   }
+ 
+
+  useEffect(() => {
+    const {
+      advance,
+      urbanvenuecommission,
+      advanceCollectedBy,
+      pendingCollectedBy,
+      balancePayment,
+    } = formData
+
+    const advanceAmount = Number(advance)
+    const commission = Number(urbanvenuecommission)
+    const pendingAmount = Number(balancePayment)
+
+    let surplus = 0;
+    let deficit = 0;
+
+    if (advanceCollectedBy === 'Urban venue') {
+      if (pendingCollectedBy === 'Urban venue') {
+        surplus = advanceAmount + pendingAmount - commission
+      } else if (pendingCollectedBy === 'Property Owner') {
+        surplus = advanceAmount - commission
+      }
+    } else if (advanceCollectedBy === 'Property Owner') {
+      if (pendingCollectedBy === 'Urban venue') {
+        surplus = pendingAmount - commission
+      } else if (pendingCollectedBy === 'Property Owner') {
+        deficit = commission
+      }
+    }
+
+    if (surplus < 0) surplus = 0
+    if (deficit < 0) deficit = 0
+
+    console.log({ surplus, deficit })
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      surplus,
+      deficit,
+    }))
+  }, [
+    formData.totalBooking,
+    formData.advance,
+    formData.urbanvenuecommission,
+    formData.advanceCollectedBy,
+    formData.pendingCollectedBy,
+    formData.balancePayment,
+  ])
+
   const handleFileChange = (e) => {
     setPhoto(e.target.files[0]) // Set the selected file
     setFormData((prevformData) => ({
@@ -206,7 +263,10 @@ const CreateVenueEvent = () => {
       <NavTopBar />
       <BreadCrumbBar />
       <Toaster position="top-right" reverseOrder={true} />
-      <h2 className="my-8 font-bold text-3xl ">Create Venue Event</h2>
+      <h2 className="my-8 font-bold text-3xl ">
+        Create Venue Event Surplus: {calculatedResult.surplus} Deficiet:{' '}
+        {calculatedResult.deficit}{' '}
+      </h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm ">
         <div className="flex flex-col border-b">
           <label className="font-semibold">Booking ID</label>
