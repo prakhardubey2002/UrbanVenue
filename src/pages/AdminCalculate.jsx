@@ -19,9 +19,9 @@ import AdminTable from '../components/AdminTable'
 import CalculateTable from '../components/CalculateTable'
 import { useLocation } from 'react-router-dom'
 const Report = () => {
-  const location =useLocation();
-  const guestname = location?.state?.guestName;
-  const { usertype} =useContext(AuthContext)
+  const location = useLocation()
+  const hostOwnerName = location?.state?.hostOwnerName
+  const { usertype } = useContext(AuthContext)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -56,17 +56,32 @@ const Report = () => {
   //   )
   // }
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await Promise.all([
-          axios.get('http://localhost:3000/api/invoices/invoices'),
-          axios.get('http://localhost:3000/api/invoices/guests'),
-          axios.get('http://localhost:3000/api/invoices/owners'),
-          axios.get('http://localhost:3000/api/invoices/venues'),
-          axios.get('http://localhost:3000/api/invoices/unique-phone-numbers'),
-          axios.get('http://localhost:3000/occasion/occasions'),
+          axios.get(
+            `${
+              import.meta.env.VITE_BACKEND_API_URL
+            }api/invoices/owner/${hostOwnerName}`
+          ),
+          axios.get(
+            `${import.meta.env.VITE_BACKEND_API_URL}api/invoices/guests`
+          ),
+          axios.get(
+            `${import.meta.env.VITE_BACKEND_API_URL}api/invoices/owners`
+          ),
+          axios.get(
+            `${import.meta.env.VITE_BACKEND_API_URL}api/invoices/venues`
+          ),
+          axios.get(
+            `${
+              import.meta.env.VITE_BACKEND_API_URL
+            }api/invoices/unique-phone-numbers`
+          ),
+          axios.get(
+            `${import.meta.env.VITE_BACKEND_API_URL}occasion/occasions`
+          ),
         ])
 
         setData(response[0].data)
@@ -105,25 +120,31 @@ const Report = () => {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <CustomNavTopbar path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD} text={'Create Property'}  />
+      <CustomNavTopbar
+        path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD}
+        text={''}
+      />
       <div className="flex-1 flex justify-center items-center">
         <div className="px-4 w-[90%] min-h-[60%]">
           <div className="w-full">
             <div className="flex items-center">
               <PieChartIcon fontSize="large" className="mx-2" />
               <h2 className="font-roboto text-[24px] font-semibold leading-[28.8px] text-left my-2">
-                {guestname}Graiden Roy
+                {hostOwnerName}
               </h2>
             </div>
             <br />
             <div className="bg-white rounded border border-Bordgrey">
-             
-              <CalculateTable occasions={occasions} data={[...data].reverse()} setData={setData} />
+              <CalculateTable
+                occasions={occasions}
+                data={[...data].reverse()}
+                setData={setData}
+              />
             </div>
           </div>
         </div>
       </div>
-      <Dialog open={dialogOpen}  onClose={handleCloseDialog}>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Date Boundary</DialogTitle>
         <DialogContent>
           <p>{dialogMessage}</p>

@@ -43,6 +43,9 @@ const Table = ({ data, setData, occasions }) => {
     setOpen(false)
     setSelectedRow(null)
   }
+
+ 
+
   useEffect(() => {
     if (selectedRow?.totalBooking && selectedRow?.advance) {
       setSelectedRow((prev) => ({
@@ -53,16 +56,16 @@ const Table = ({ data, setData, occasions }) => {
   }, [selectedRow?.totalBooking, selectedRow?.advance])
   useEffect(() => {
     setSelectedRow((prev) => {
-      const farmTref = Number(prev?.farmTref) || 0; // Ensure farmTref is a number
-      const otherServices = Number(prev?.otherServices) || 0; // Ensure otherServices is a number
-      const totalBooking = farmTref + otherServices; // Calculate totalBooking
-  
+      const farmTref = Number(prev?.farmTref) || 0 // Ensure farmTref is a number
+      const otherServices = Number(prev?.otherServices) || 0 // Ensure otherServices is a number
+      const totalBooking = farmTref + otherServices // Calculate totalBooking
+
       return {
         ...prev,
         totalBooking, // Update totalBooking
-      };
-    });
-  }, [selectedRow?.farmTref, selectedRow?.otherServices]);
+      }
+    })
+  }, [selectedRow?.farmTref, selectedRow?.otherServices])
   const handleFormSubmit = async () => {
     try {
       console.log(selectedRow)
@@ -110,6 +113,52 @@ const Table = ({ data, setData, occasions }) => {
     )
     setData(filteredData)
   }
+  useEffect(() => {
+    const {
+      advance,
+      urbanvenuecommission,
+      advanceCollectedBy,
+      pendingCollectedBy,
+      balancePayment,
+    } = selectedRow || {};
+  
+    const advanceAmount = Number(advance) || 0;
+    const commission = Number(urbanvenuecommission) || 0;
+    const pendingAmount = Number(balancePayment) || 0;
+  
+    let surplus = 0;
+    let deficit = 0;
+  
+    if (advanceCollectedBy === 'Urban venue') {
+      if (pendingCollectedBy === 'Urban venue') {
+        surplus = advanceAmount + pendingAmount - commission;
+      } else if (pendingCollectedBy === 'Property Owner') {
+        surplus = advanceAmount - commission;
+      }
+    } else if (advanceCollectedBy === 'Property Owner') {
+      if (pendingCollectedBy === 'Urban venue') {
+        surplus = pendingAmount - commission;
+      } else if (pendingCollectedBy === 'Property Owner') {
+        deficit = commission;
+      }
+    }
+  
+    if (surplus < 0) surplus = 0;
+    if (deficit < 0) deficit = 0;
+  
+    setSelectedRow((prev) => ({
+      ...prev,
+      surplus,
+      deficit,
+    }));
+  }, [
+    selectedRow?.advance,
+    selectedRow?.urbanvenuecommission,
+    selectedRow?.advanceCollectedBy,
+    selectedRow?.pendingCollectedBy,
+    selectedRow?.balancePayment,
+  ]);
+  
 
   return (
     <div className="overflow-x-auto max-h-[44vh] my-4 text-sm">
@@ -339,7 +388,7 @@ const Table = ({ data, setData, occasions }) => {
                 })
               }
             />
-            
+
             {/* Check-In Date */}
             <TextField
               label="Check-In Date"
@@ -486,9 +535,7 @@ const Table = ({ data, setData, occasions }) => {
               type="number"
               fullWidth
               margin="dense"
-              value={
-                parseFloat(selectedRow?.totalBooking || 0) 
-              }
+              value={parseFloat(selectedRow?.totalBooking || 0)}
               onChange={(e) =>
                 setSelectedRow({
                   ...selectedRow,

@@ -22,9 +22,9 @@ const AdminTable = ({ data, setData, occasions }) => {
 
     return formattedTime
   }
-  const handleFilterNavigate=(guestName)=>{
-    navigate(ADMIN_CALCULATE, { state: guestName })
-    console.log(guestName)
+  const handleFilterNavigate=(hostOwnerName)=>{
+    console.log(hostOwnerName)
+    navigate(ADMIN_CALCULATE, { state: { hostOwnerName } })
 
   }
   const handleClickOpen = (row) => {
@@ -155,8 +155,8 @@ const AdminTable = ({ data, setData, occasions }) => {
                 )}
                 % (₹ {row.urbanvenuecommission})
               </td>
-              <td className="border px-4 py-4 whitespace-nowrap">
-                <p onClick={() => handleFilterNavigate(row.guestName)} className='text-blue-500' >View Details</p>
+              <td className="border px-4 py-4 whitespace-nowrap cursor-pointer ">
+                <p onClick={() => handleFilterNavigate(row.hostOwnerName)} className='text-blue-500' >View Details</p>
               </td>
             </tr>
           ))}
