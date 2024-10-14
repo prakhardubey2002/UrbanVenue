@@ -6,6 +6,7 @@ const AdminTable = ({ data, setData, occasions }) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [selectedRow, setSelectedRow] = useState({})
+  
 
   const convertTo12HourFormat = (time24) => {
     // Split the input time into hours and minutes

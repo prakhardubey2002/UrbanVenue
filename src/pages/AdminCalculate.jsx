@@ -21,6 +21,7 @@ import { useLocation } from 'react-router-dom'
 const Report = () => {
   const location = useLocation()
   const hostOwnerName = location?.state?.hostOwnerName
+  const [surdefval, SetSurdefval] = useState(0)
   const { usertype } = useContext(AuthContext)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
@@ -55,7 +56,24 @@ const Report = () => {
   //     `guest name : ${selectedGuest} venue : ${selectedProperty}  Owner : ${selectedOwner} Phone : ${selectedphonenumber} status : ${selectedStatus} start: ${startDate} End : ${endDate}  `
   //   )
   // }
+  useEffect(() => {
+    let tempSurdefval = surdefval // Temporary variable to hold the accumulated value
 
+    data.forEach((datax) => {
+      if (datax.fullcloser === 'Pending') {
+        const surplus = datax.surplus ? Number(datax.surplus) : 0
+        const deficit = datax.deficit ? Number(datax.deficit) : 0
+
+        tempSurdefval = tempSurdefval - deficit + surplus
+
+        console.log(datax.guestName)
+        console.log(tempSurdefval)
+      }
+    })
+
+    // Update the state only once after all iterations are complete
+    SetSurdefval(tempSurdefval)
+  }, [data])
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -132,6 +150,16 @@ const Report = () => {
               <h2 className="font-roboto text-[24px] font-semibold leading-[28.8px] text-left my-2">
                 {hostOwnerName}
               </h2>
+            </div>
+            <br />
+            <div className="w-full flex justify-center items-center">
+              {surdefval >= 0 ? (
+                <div className="w-fit border border-green-400 border-4 rounded-lg px-8 py-3 text-green-400 font-bold ">Total Surplus: {surdefval}</div>
+              ) : (
+                <div className="w-fit border border-red-400 border-4 rounded-lg px-8 py-3 text-red-400 font-bold ">
+                  Total Deficit: {Math.abs(surdefval)}
+                </div>
+              )}
             </div>
             <br />
             <div className="bg-white rounded border border-Bordgrey">
