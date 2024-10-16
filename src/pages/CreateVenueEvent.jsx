@@ -19,7 +19,7 @@ const CreateVenueEvent = () => {
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
-
+const [idx,setidx]=useState();
   const [photo, setPhoto] = useState(null)
   const navigate = useNavigate()
   // const history = useHistory();
@@ -42,6 +42,37 @@ const CreateVenueEvent = () => {
     }
 
     fetchOccasions()
+    const idxfetch = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/invoices/count/${data?.details?.name}`
+        )
+    
+        const invoiceCount = response.data.invoiceCount;
+    
+        // Extract the farmId
+        const currentFarmId = data?.details?.farmId;
+    
+        // Find the last number in the farmId (after the last hyphen)
+        const parts = currentFarmId.split('-');
+        const lastNumber = parseInt(parts[parts.length - 1], 10); // Parse the last part as a number
+    
+        // Increment the last number with the invoice count
+        const updatedFarmId = `${parts.slice(0, -1).join('-')}-${lastNumber + invoiceCount}`;
+    
+        console.log(updatedFarmId); // Log the updated farmId
+    
+        // Update the form data with the new bookingId
+        setFormData(prevFormData => ({
+          ...prevFormData,
+          bookingId: updatedFarmId,
+        }));
+      } catch (error) {
+        console.error('Error fetching invoice count:', error);
+      }
+    };
+
+    idxfetch()
   }, [])
   // State to manage form values
    const [calculatedResult, setCalculatedResult] = useState({
@@ -49,7 +80,7 @@ const CreateVenueEvent = () => {
     deficit: 0,
   })
   const [formData, setFormData] = useState({
-    bookingId: generateBookingId(),
+    bookingId:'',
     guestName: '',
     phoneNumber: '',
     checkInDate: date,
@@ -483,7 +514,7 @@ const CreateVenueEvent = () => {
           />
         </div>
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Farm Tref</label>
+          <label className="font-semibold">Farm tariff</label>
           <input
             name="farmTref"
             value={formData.farmTref}

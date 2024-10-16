@@ -45,7 +45,7 @@ const CreateFarm = () => {
   })
 
   // Generate unique farmId based on stateName and placeName
-  const generateFarmId = (stateName, placeName) => {
+  const generateFarmId = (stateName, placeName,name) => {
     const cleanedStateName = stateName
       .toLowerCase()
       .replace(/\s+/g, '')
@@ -54,8 +54,12 @@ const CreateFarm = () => {
       .toLowerCase()
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '')
-    const timestamp = Date.now()
-    return `${cleanedStateName}-${cleanedPlaceName}-${timestamp}`
+      const cleasedfarmname=name
+      .toLowerCase()
+      .replace(/\s+/g, '')
+      .replace(/[^a-z0-9]/g, '')
+    const timestamp =1;
+    return `${cleanedStateName}-${cleanedPlaceName}-${cleasedfarmname}-${timestamp}`
   }
   useEffect(() => {
     setFormData((prevFormData) => {
@@ -78,10 +82,11 @@ const CreateFarm = () => {
       const updatedData = { ...prevData, [name]: value }
 
       // If stateName or placeName is changed, update farmId
-      if (name === 'stateName' || name === 'placeName') {
+      if (name === 'stateName' || name === 'placeName' || name ==='farmname') {
         updatedData.farmId = generateFarmId(
           updatedData.stateName,
-          updatedData.placeName
+          updatedData.placeName,
+          updatedData.name
         )
       }
 
@@ -231,7 +236,8 @@ const CreateFarm = () => {
           <input
             name="farmId"
             value={formData.farmId}
-            readOnly
+            onChange={handleChange}
+            // readOnly
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="text"
             placeholder="Farm ID will be auto-generated"
@@ -413,7 +419,7 @@ const CreateFarm = () => {
         </div>
         {/* Farm Tref */}
         <div className="flex flex-col border-b">
-          <label className="font-semibold">Farm Tref</label>
+          <label className="font-semibold">Farm Tariff</label>
           <input
             name="farmTref"
             value={formData.farmTref}

@@ -642,7 +642,7 @@ const CalculateTable = ({ data, setData, occasions }) => {
             />
             {/* Farm Tref */}
             <TextField
-              label="Farm Tref"
+              label="Farm Tariff"
               fullWidth
               margin="dense"
               value={selectedRow?.farmTref || ''}

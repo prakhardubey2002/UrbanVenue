@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Logo from '../assets/Logo.png'
-import { usePDF } from 'react-to-pdf'
+import generatePDF, { usePDF } from 'react-to-pdf'
 import invoice from '../assets/invoice.png'
 import Qr from '../assets/Invoice-Logo.png'
 import invoLogo from '../assets/Invo-Logo.png'
@@ -340,11 +340,15 @@ const Invoice = () => {
   const location = useLocation()
   const formData = location.state
   const { toPDF, targetRef } = usePDF({ filename: `${formData.guestName}.pdf` })
+  // const { toPDF: generateReferencePDF, targetRefpic } = usePDF({
+  //   filename: `${formData.guestName}refrencedoc.pdf`,
+  // })
+
   const Home = () => {
     navigate(DASHBOARD_ROUTE)
   }
   const [imageExists, setImageExists] = useState(false)
-
+  const targetRefpic = useRef();
   useEffect(() => {
     // Construct the image URL
     const imageUrl = `${import.meta.env.VITE_BACKEND_URL}${formData.photo}`
@@ -377,6 +381,14 @@ const Invoice = () => {
           <CloudDownloadIcon className="mr-1" />
           Download
         </button>
+        <button
+  onClick={() => generatePDF(targetRefpic, { filename: 'page.pdf' })} // Use targetRefpic, not targetRefPic
+  className="mx-1 button text-white flex justify-center items-center"
+>
+  <CloudDownloadIcon className="mr-1" />
+  Download Reference Doc
+</button>
+       
         <button
           onClick={() => Home()}
           className=" mx-1 button text-white flex  "
@@ -693,7 +705,7 @@ const Invoice = () => {
                 />
               </div>
               <div>
-                <label className="block text-gray-700 mb-2 ">Farm Tref</label>
+                <label className="block text-gray-700 mb-2 ">Farm Tariff</label>
                 <input
                   type="text"
                   value={formData.farmTref}
@@ -785,7 +797,6 @@ const Invoice = () => {
                 readOnly
               />
             </div>
-          
           </form>
 
           {/* Footer with Contact Info */}
@@ -840,7 +851,7 @@ const Invoice = () => {
               </div>
             </div>
           </div>
-          {imageExists && (
+          {/* {imageExists && (
               <div className="my-8">
                 Refrence Doc :
                 <img
@@ -849,7 +860,111 @@ const Invoice = () => {
                   alt="Passed Image"
                 />
               </div>
-            )}
+            )} */}
+        </div>
+        <div className="h-[2vh] flex">
+          <div className="flex-1 bg-black"></div>
+          <div className="flex-1 bg-red-500"></div>
+          <div className="flex-1 bg-black"></div>
+        </div>
+      </div>
+
+      {/* photo section */}
+      
+      <div
+        ref={targetRefpic}
+        options={{
+          orientation: 'portrait', // or 'landscape'
+          unit: 'in',
+          format: [8.5, 14], // Adjust the size of the PDF, try 'A4' or use custom sizes
+        }}
+        className="w-full max-w-4xl bg-white border border-x-4 border-red-600 shadow-lg "
+      >
+       
+        
+        <div className="h-[2vh] flex">
+          <div className="flex-1 bg-black"></div>
+          <div className="flex-1 bg-red-500"></div>
+          <div className="flex-1 bg-black"></div>
+        </div>
+        <div className="p-8">
+          <div className="flex flex-col items-center my-2">
+            <img
+              src={invoLogo} // Replace this with your logo
+              alt="Logo"
+              className="mb-4  "
+            />
+            <h1 className=" w-[75%] text-l text-center  text-gray-700 ">
+              Registration successful! We're excited to have you. Details are
+              below. Contact us with any questions. Thank you!
+            </h1>
+          </div>
+
+          {/* Form Sections */}
+          <form className="space-y-6 mt-16"></form>
+
+          {/* Footer with Contact Info */}
+          <div className="w-full flex justify-between items-center mt-24">
+            <div className="flex flex-col justify-between items-center">
+              <p className="font-semibold">Scan to visit our Site</p>
+              <img
+                src={Qr} // Replace this with your logo
+                alt="Logo"
+                // className="border border-emerald-100 "
+              />
+              <a
+                className="font-semibold"
+                target="_blank"
+                href="https://www.urbanvenue.in"
+              >
+                www.urbanvenue.in
+              </a>
+            </div>
+            <div className="flex flex-col justify-end items-end ">
+              <div>
+                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
+                  <p className="text-gray-700">+91-9987656876 </p>
+                  <div className="bg-red-600 rounded-2xl p-1 ml-2 ">
+                    <LocalPhoneIcon className="text-white  " />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
+                  <p className="text-gray-700">urban@gmail.com </p>
+                  <div className="bg-red-600 rounded-2xl p-1 ml-2">
+                    <EmailIcon className="text-white" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
+                  <p className="text-gray-700">@theurbanvenue</p>
+                  <div className="bg-red-600 rounded-2xl p-1 ml-2">
+                    <InstagramIcon className="text-white" />
+                  </div>
+                </div>
+              </div>
+              <div>
+                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
+                  <p className="text-gray-700">@theurbanvenue</p>
+                  <div className="bg-red-600 rounded-2xl p-1 ml-2 ">
+                    <FacebookIcon className="text-white" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {imageExists && (
+            <div className="my-8">
+              Refrence Doc :
+              <img
+                className="w-full h-[50vh] object-contain"
+                src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`}
+                alt="Passed Image"
+              />
+            </div>
+          )}
         </div>
         <div className="h-[2vh] flex">
           <div className="flex-1 bg-black"></div>
