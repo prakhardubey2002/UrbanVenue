@@ -71,6 +71,9 @@ const [idx,setidx]=useState();
         console.error('Error fetching invoice count:', error);
       }
     };
+    console.log("wfedgtb")
+    console.log(data.details.maplink)
+    // console.log(formData.maplink)
 
     idxfetch()
   }, [])
@@ -125,6 +128,7 @@ const [idx,setidx]=useState();
     deficit:'',
     photo: photo,
     fullcloser:'Pending',
+    maplink : data?.details?.maplink
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
@@ -295,8 +299,9 @@ const [idx,setidx]=useState();
       <BreadCrumbBar />
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl ">
-        Create Venue Event Surplus: {calculatedResult.surplus} Deficiet:{' '}
-        {calculatedResult.deficit}{' '}
+        Create Venue Event
+         {/* Surplus: {calculatedResult.surplus} Deficiet:{' '}
+        {calculatedResult.deficit}{' '} */}
       </h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm ">
         <div className="flex flex-col border-b">

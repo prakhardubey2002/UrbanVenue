@@ -33,6 +33,8 @@ const Dashboard = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogMessage, setDialogMessage] = useState('')
   const [occasions, setOccasions] = useState([])
+  const [totalBookingValue, settotalBookingValue] = useState()
+  const [totalBookingOperator, settotaltotalBookingOperator] = useState()
   const { name, number, id } = useContext(AuthContext)
   const handleTotalBookingChange = (e) => {
     setTotalBooking(e.target.value)
@@ -63,7 +65,7 @@ const Dashboard = () => {
     }
     try {
       console.log(
-        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate} od:${id} total booking: ${totalBooking} operator :${operator}  `
+        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} category ${selectedCategory}  `
       )
 
       const queryParams = {
@@ -76,8 +78,8 @@ const Dashboard = () => {
         startDate,
         endDate,
         bookingpartnerid: id,
-        totalBooking, // Add totalBooking value from filter input
-        operator, // Add operator (equal, greaterThan, lessThan, etc.)
+        totalBookingValue,
+        totalBookingOperator,
       }
 
       // Convert the query params to a URL search string
@@ -278,6 +280,27 @@ const Dashboard = () => {
                       ))}
                     </datalist>
                   </div>
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <input
+                      type="number"
+                      className="outline-none border-none px-2 w-full"
+                      placeholder="Total value"
+                      value={totalBookingValue}
+                      onChange={(e) => settotalBookingValue(e.target.value)}
+                      // list="phoneList"
+                    />
+                  </div>
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <select
+                      value={totalBookingOperator}
+                      onChange={(e) => settotaltotalBookingOperator(e.target.value)}
+                      className="outline-none border-none bg-white px-2 mr-2"
+                    >
+                      <option value="gte">≥</option>
+                      <option value="lte">≤</option>
+                      <option value="eq">=</option>
+                    </select>
+                  </div>
 
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
                     <select
@@ -305,13 +328,12 @@ const Dashboard = () => {
                         Select Category
                       </option>
                       {occasions.map((occasion, index) => (
-                        <option key={occasion._id} value={occasion}>
+                        <option key={occasion._id} value={occasion.name}>
                           {occasion.name}
                         </option>
                       ))}
                     </select>
                   </div>
-                
 
                   <div className="mt-2 md:mt-0">
                     <button

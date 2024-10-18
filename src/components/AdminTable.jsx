@@ -96,7 +96,35 @@ const AdminTable = ({ data, setData, occasions }) => {
               Total
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Advance
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Advance Mode
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Pending
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Commisson
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Checkin Date
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Checkin Time
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Checkout Date
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              Checkout Time
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              No. of Adults
+            </th>
+           
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+              No. of Kids
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Action
@@ -151,10 +179,39 @@ const AdminTable = ({ data, setData, occasions }) => {
                 ₹ {row.totalBooking}
               </td>
               <td className="border px-4 py-4 whitespace-nowrap">
-                {parseInt(
+                ₹ {row.advance} ({row.advanceCollectedBy})
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+               {row.advanceMode}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+                ₹ {row.balancePayment}({row.pendingCollectedBy})
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+                {/* {parseInt(
                   (row?.urbanvenuecommission / 100) * row?.totalBooking
-                )}
-                % (₹ {row.urbanvenuecommission})
+                )} */}
+                 ₹ {row.urbanvenuecommission}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+              {new Date(row.checkInDate).toLocaleDateString('en-GB')}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+              {/* {new Date(row.checkInDate).toLocaleDateString('en-GB')} -{' '} */}
+                {convertTo12HourFormat(row.checkInTime)}{' '}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+              {new Date(row.checkOutDate).toLocaleDateString('en-GB')}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+              {/* {new Date(row.checkInDate).toLocaleDateString('en-GB')} -{' '} */}
+                {convertTo12HourFormat(row.checkOutTime)}{' '}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+              {row.numberOfAdults}
+              </td>
+              <td className="border px-4 py-4 whitespace-nowrap">
+              {row.numberOfKids}
               </td>
               <td className="border px-4 py-4 whitespace-nowrap cursor-pointer ">
                 <p onClick={() => handleFilterNavigate(row.hostOwnerName)} className='text-blue-500' >View Details</p>

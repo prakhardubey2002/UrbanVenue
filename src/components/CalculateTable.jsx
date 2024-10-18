@@ -236,6 +236,9 @@ const CalculateTable = ({ data, setData, occasions }) => {
               Advance Mode
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
+             Commisson
+            </th>
+            <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Action
             </th>
           </tr>
@@ -339,6 +342,9 @@ const CalculateTable = ({ data, setData, occasions }) => {
                 </td>
                 <td className="border-b px-4 py-4 whitespace-nowrap">
                   {row.advanceMode}
+                </td>
+                <td className="border-b px-4 py-4 whitespace-nowrap">
+                  {row.urbanvenuecommission}
                 </td>
                 <td
                   className="border-b px-4 py-4 text-blue-500 cursor-pointer whitespace-nowrap"

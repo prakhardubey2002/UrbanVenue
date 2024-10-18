@@ -42,6 +42,7 @@ const CreateFarm = () => {
     eventAddOns: '',
     farmTref: '', // Added field
     status: 'Upcoming',
+    maplink:'',
   })
 
   // Generate unique farmId based on stateName and placeName
@@ -208,6 +209,7 @@ const CreateFarm = () => {
         eventAddOns: formData.eventAddOns,
         status: formData.status,
         farmTref: formData.farmTref, // Added in the API data
+        maplink:formData.maplink
       },
     }
 
@@ -584,6 +586,16 @@ const CreateFarm = () => {
           <textarea
             name="eventAddOns"
             value={formData.eventAddOns}
+            onChange={handleChange}
+            className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+            placeholder="Enter Event Add-Ons"
+          />
+        </div>
+        <div className="flex flex-col border-b">
+          <label className="font-semibold">Map Link</label>
+          <textarea
+            name="maplink"
+            value={formData.maplink}
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             placeholder="Enter Event Add-Ons"

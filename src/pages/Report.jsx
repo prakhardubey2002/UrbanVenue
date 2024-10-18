@@ -17,7 +17,7 @@ import { ADMIN_DASHBOARD, SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
 import AuthContext from '../context/context'
 import AdminTable from '../components/AdminTable'
 const Report = () => {
-  const { usertype} =useContext(AuthContext)
+  const { usertype } = useContext(AuthContext)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -37,6 +37,8 @@ const Report = () => {
   const [dialogOpen, setDialogOpen] = useState(false)
   const [dialogMessage, setDialogMessage] = useState('')
   const [occasions, setOccasions] = useState([])
+  const [totalBookingValue, settotalBookingValue] = useState()
+  const [totalBookingOperator, settotaltotalBookingOperator] = useState()
   const handleOpenDialog = (message) => {
     setDialogMessage(message)
     setDialogOpen(true)
@@ -71,6 +73,8 @@ const Report = () => {
         selectedCategory, // Include selected category in query params
         startDate,
         endDate,
+        totalBookingValue,
+        totalBookingOperator
       }
 
       // Convert the query params to a URL search string
@@ -138,7 +142,10 @@ const Report = () => {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <CustomNavTopbar path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD} text={'Create Property'}  />
+      <CustomNavTopbar
+        path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD}
+        text={'Create Property'}
+      />
       <div className="flex-1 flex justify-center items-center">
         <div className="px-4 w-[90%] min-h-[60%]">
           <div className="w-full">
@@ -261,7 +268,29 @@ const Report = () => {
                       ))}
                     </datalist>
                   </div>
-
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <input
+                      type="number"
+                      className="outline-none border-none px-2 w-full"
+                      placeholder="Total value"
+                      value={totalBookingValue}
+                      onChange={(e) => settotalBookingValue(e.target.value)}
+                      // list="phoneList"
+                    />
+                  </div>
+                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
+                    <select
+                      value={totalBookingOperator}
+                      onChange={(e) =>
+                        settotaltotalBookingOperator(e.target.value)
+                      }
+                      className="outline-none border-none bg-white px-2 mr-2"
+                    >
+                      <option value="gte">≥</option>
+                      <option value="lte">≤</option>
+                      <option value="eq">=</option>
+                    </select>
+                  </div>
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
                     <select
                       className="outline-none border-none px-2 w-full"
@@ -288,7 +317,7 @@ const Report = () => {
                         Select Category
                       </option>
                       {occasions.map((occasion, index) => (
-                        <option key={occasion._id} value={occasion}>
+                        <option key={occasion._id} value={occasion.name}>
                           {occasion.name}
                         </option>
                       ))}
@@ -313,15 +342,17 @@ const Report = () => {
                     </button>
                   </div>
                 </div>
-
-              
               </div>
-              <AdminTable occasions={occasions} data={[...data].reverse()} setData={setData} />
+              <AdminTable
+                occasions={occasions}
+                data={[...data].reverse()}
+                setData={setData}
+              />
             </div>
           </div>
         </div>
       </div>
-      <Dialog open={dialogOpen}  onClose={handleCloseDialog}>
+      <Dialog open={dialogOpen} onClose={handleCloseDialog}>
         <DialogTitle>Date Boundary</DialogTitle>
         <DialogContent>
           <p>{dialogMessage}</p>

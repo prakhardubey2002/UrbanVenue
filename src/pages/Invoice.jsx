@@ -17,324 +17,9 @@ import FacebookIcon from '@mui/icons-material/Facebook'
 import YouTubeIcon from '@mui/icons-material/YouTube'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import PinterestIcon from '@mui/icons-material/Pinterest'
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
-// const Invoice = () => {
-//   const navigate = useNavigate()
-//   const location = useLocation()
-//   const formData = location.state
-//   const { toPDF, targetRef } = usePDF({ filename: `${formData.guestName}.pdf` })
-//   const Home = () => {
-//     navigate(DASHBOARD_ROUTE)
-//   }
-//   return (
-//     <div className="w-[100vw] h-[100vh] overflow-x-hidden flex justify-center items-start">
-//       <div
-//         ref={targetRef}
-//         className="flex flex-col w-[70%] border border-black"
-//       >
-//         <div className="relative h-[14vh] flex">
-//           <div className="w-1/3 bg-black flex items-center justify-center z-0">
-//             <span className="text-white"> </span>
-//           </div>
-//           <div className="w-1/3 bg-[#ce2a33] flex items-center justify-center z-0">
-//             <span className="text-white"> </span>
-//           </div>
-//           <div className="w-1/3 bg-black flex items-center justify-center z-0">
-//             <span className="text-white"> </span>
-//           </div>
-//           <div className="absolute right-[1%] top-[45%] flex justify-between items-center px-4 z-10">
-//             <button onClick={() => toPDF()} className="text-white flex  ">
-//               <CloudDownloadIcon className="mx-2" />
-//               Download
-//             </button>
-//           </div>
-//         </div>
-//         <div className="m-4">
-//           <img src={Logo} className="w-24 my-4 h-auto" alt="Logo" />
-//           <h2 className="font-semibold text-2xl">Invoice</h2>
-//           <div className="flex flex-col items-start">
-//             <div className="w-full flex justify-between">
-//               <p>Invoice to {formData.guestName}</p>
-//               <p>Invoice ID: {formData.bookingId}</p>
-//             </div>
-//             <div className="w-full flex justify-between">
-//               <p>{formData.phoneNumber}</p>
-//               <p>Order Date: {new Date(formData.checkInDate).toLocaleDateString('en-GB')}</p>
-//             </div>
-//             <div className="w-full flex justify-between">
-//               <p> </p>
-//               <p>{formData.venue}</p>
-//             </div>
-//             <div className="w-full flex justify-between">
-//               <p></p>
-//               <p>{formData.addressLine1}</p>
-//             </div>
-//             <div className="w-full flex justify-between">
-//               <p></p>
-//               <p>{formData.addressLine2}</p>
-//             </div>
-//             <div className="w-full flex justify-between">
-//               <p></p>
-//               <p>{formData.state},{formData.country},{formData.zipCode}</p>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="p-4">
-//           <table className="min-w-full bg-white border border-gray-300">
-//             <thead>
-//               <tr className="bg-Bordgrey">
-//                 <th className="py-2 px-4 border-b text-left">Event Details</th>
-//                 <th className="py-2 px-4 border-b text-right">Total</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               <tr>
-//                 <td className="py-2 px-4 border-b text-left">Guest Name</td>
-//                 <td className="py-2 px-4 border-b text-right">
-//                   {formData.guestName}
-//                 </td>
-//               </tr>
-//               <tr>
-//                 <td className="py-2 px-4 border-b text-left">Phone Number</td>
-//                 <td className="py-2 px-4 border-b text-right">
-//                   {formData.phoneNumber}
-//                 </td>
-//               </tr>
-//               <tr>
-//                 <td className="py-2 px-4 border-b text-left">Check-In</td>
-//                 <td className="py-2 px-4 border-b text-right">
-//                   {new Date(formData.checkInDate).toLocaleDateString('en-GB')}, {formData.checkInTime}
-//                 </td>
-//               </tr>
-//               <tr>
-//                 <td className="py-2 px-4 border-b text-left">Check-Out</td>
-//                 <td className="py-2 px-4 border-b text-right">
-//                   {new Date(formData.checkOutDate).toLocaleDateString('en-GB')}, {formData.checkOutTime}
-//                 </td>
-//               </tr>
-//               <tr>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   Maximum Number Of People
-//                 </td>
-//                 <td className="py-2 px-4 border-b text-right">
-//                   {formData.maxPeople}
-//                 </td>
-//               </tr>
-//             </tbody>
-//           </table>
-//         </div>
-//         <div className="p-4">
-//           <table className="min-w-full bg-white border border-gray-300">
-//             <thead>
-//               <tr className="bg-Bordgrey">
-//                 <th className="py-2 px-4 border-b text-left">#</th>
-//                 <th className="py-2 px-4 border-b text-left">
-//                   Pricing Details
-//                 </th>
-//                 <th className="py-2 px-4 border-b text-left">Type</th>
-//                 <th className="py-2 px-4 border-b text-left">Security</th>
-//                 <th className="py-2 px-4 border-b text-left">Advance</th>
-//                 <th className="py-2 px-4 border-b text-left">Pending</th>
-//                 <th className="py-2 px-4 border-b text-left">Total</th>
-//               </tr>
-//             </thead>
-//             <tbody>
-//               <tr>
-//                 <td className="py-2 px-4 border-b text-left">1</td>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   {formData.occasion} Event
-//                 </td>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   {formData.occasion}
-//                 </td>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   ₹ {formData.securityAmount}
-//                 </td>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   ₹ {formData.advance}
-//                 </td>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   ₹ {formData.balancePayment}
-//                 </td>
-//                 <td className="py-2 px-4 border-b text-left">
-//                   ₹{' '}
-//                   {Number(formData.balancePayment) +
-//                     Number(formData.advance) +
-//                     Number(formData.securityAmount)}
-//                 </td>
-//               </tr>
-//             </tbody>
-//           </table>
-//         </div>
-//         <div className="p-4 flex flex-col justify-end items-end">
-//           <h2 className="text-2xl font-semibold">
-//             Invoice Total: ₹{' '}
-//             {Number(formData.balancePayment) +
-//               Number(formData.advance) +
-//               Number(formData.securityAmount)}
-//           </h2>
-//           <p>Paid via {formData.advanceMode}</p>
-//         </div>
-//         {formData.showAdvanceDetails === 'yes' && (
-//           <div className="p-4">
-//             <table className="min-w-full bg-white border border-gray-300">
-//               <thead>
-//                 <tr className="bg-Bordgrey">
-//                   <th className="py-2 px-4 border-b text-left">#</th>
-//                   <th className="py-2 px-4 border-b text-left">Breakup</th>
-//                   <th className="py-2 px-4 border-b text-left">Farm Tref</th>
-//                   <th className="py-2 px-4 border-b text-left">
-//                     Other Service
-//                   </th>
-//                   <th className="py-2 px-4 border-b text-left">Urban Venue</th>
-//                   <th className="py-2 px-4 border-b text-left">Total</th>
-//                 </tr>
-//               </thead>
-//               <tbody>
-//                 <tr>
-//                   <td className="py-2 px-4 border-b text-left">1</td>
-//                   <td className="py-2 px-4 border-b text-left">
-//                     Advance Breakup
-//                   </td>
-//                   <td className="py-2 px-4 border-b text-left">
-//                     ₹ {formData.farmTref}
-//                   </td>
-//                   <td className="py-2 px-4 border-b text-left">
-//                     ₹ {formData.otherServices}
-//                   </td>
-//                   <td className="py-2 px-4 border-b text-left">
-//                     ₹ {formData.urbanvenuecommission}
-//                   </td>
-//                   <td className="py-2 px-4 border-b text-left">
-//                     ₹{' '}
-//                     {Number(formData.farmTref) +
-//                       Number(formData.otherServices) +
-//                       Number(formData.urbanvenuecommission)}
-//                   </td>
-//                 </tr>
-//               </tbody>
-//             </table>
-//           </div>
-//         )}
-
-//         <div>
-//           {/* <div className="  flex items-center justify-between bg-white border-t border-gray-300">
-//             <div className="flex-1 flex items-center p-8">
-//               <img
-//                 src={invoice}
-//                 alt="invoice"
-//                 className="w-[100px] h-[100px] object-cover rounded-lg"
-//               />
-//               <div className="ml-4">
-//                 <h4 className="font-semibold">{formData.occasion}</h4>{' '}
-
-//                 <p className="text-sm text-gray-500">
-//                   {new Date(formData.checkInDate).toLocaleDateString()}{' '}
-//                   {new Date(formData.checkOutDate).toLocaleTimeString()}.
-//                   Duration{' '}
-
-//                 </p>
-//                 <p className="text-sm text-gray-500">{formData.guestName}</p>{' '}
-
-//                 <p className="text-sm text-gray-500">1 x Ticket</p>{' '}
-
-//                 <p className="font-semibold">
-//                   Total : ₹{' '}
-//                   {Number(formData.balancePayment) +
-//                     Number(formData.advance) +
-//                     Number(formData.securityAmount)}
-//                 </p>{' '}
-
-//               </div>
-//             </div>
-//             <div className="flex-1 p-4 bg-Bordgrey flex flex-col items-start">
-//               <p className="text-2xl font-semibold my-2">Visit our site</p>
-//               <img
-//                 src={qr}
-//                 alt="QR Code"
-//                 className="w-[80px] h-[80px] object-cover"
-//               />
-//               <p className="text-xs text-gray-500 mt-4">
-//                 Powered by Urban Venue
-//               </p>
-//             </div>
-//           </div> */}
-//           <div className="relative h-[14vh] my-2 flex">
-//             <div className="w-1/3 relative bg-black flex  items-center justify-center z-0">
-//               <div className="absolute bg-[#ce2a33]  border border-white p-2 top-[-10%] rounded-3xl ">
-//                 <LocalPhoneIcon className=" text-white" />
-//               </div>
-//               <a href="tel:+919871371364" className="text-white ">
-//                 +91 9871371364
-//               </a>
-//             </div>
-//             <div className="w-1/3 bg-[#ce2a33] relative flex items-center justify-center z-0">
-//               <div className="absolute bg-[#ce2a33]  border border-white p-2 top-[-10%] rounded-3xl ">
-//                 <EmailIcon className="text-white" />
-//               </div>
-//               <a href="mailto:TheUrbanVenue@gmail.com" className="text-white ">
-//                 TheUrbanVenue@gmail.com
-//               </a>
-//             </div>
-//             <div className="w-1/3 relative bg-black flex items-center justify-center z-0">
-//               <div className="absolute bg-[#ce2a33]  border border-white p-2 top-[-10%] rounded-3xl ">
-//                 <LanguageIcon className="text-white" />
-//               </div>
-//               <a
-//                 href="https://www.urbanvenue.in"
-//                 target="_blank"
-//                 rel="noopener noreferrer"
-//                 className="text-white underline-none"
-//               >
-//                 www.urbanvenue.in
-//               </a>
-//             </div>
-//           </div>
-//         </div>
-//         <div className="relative h-[7vh] flex flex-wrap">
-//           <div className="w-1/5 bg-black flex items-center justify-center z-0">
-//             <span className="text-white">
-//             <InstagramIcon/>
-//             @theurbanvenue
-//             </span>
-//           </div>
-//           <div className="w-1/5 bg-[#ce2a33] flex items-center justify-center z-0">
-//             <span className="text-white">
-//               <FacebookIcon/>
-//             @theurbanvenue
-//                </span>
-//           </div>
-//           <div className="w-1/5 bg-black flex items-center justify-center z-0">
-//             <span className="text-white">
-//             <YouTubeIcon/>
-//             @theurbanvenue
-//             </span>
-//           </div>
-//           <div className="w-1/5 bg-[#ce2a33] flex items-center justify-center z-0">
-//             <span className="text-white">
-//             <LinkedInIcon />
-//             @theurbanvenue
-//             </span>
-//           </div>
-//           <div className="w-1/5 bg-black flex items-center justify-center z-0">
-//             <span className="text-white">
-//             <PinterestIcon/>
-//             @theurbanvenue
-//             </span>
-//           </div>
-//         </div>
-//       </div>
-//       <div
-//         onClick={() => Home()}
-//         className=" cursor-pointer bg-Primary my-10 ml-2 p-2 flex justify-center items-center rounded "
-//       >
-//         {/* <button  className="button "> */}
-//         <HomeIcon className="text-white" />
-//         {/* </button> */}
-//       </div>
-//     </div>
-//   )
-// }
 const Invoice = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -348,8 +33,40 @@ const Invoice = () => {
     navigate(DASHBOARD_ROUTE)
   }
   const [imageExists, setImageExists] = useState(false)
-  const targetRefpic = useRef();
+  const targetRefpic = useRef()
+  const generatePDFx = () => {
+    const input = document.getElementById('pdf-content');
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size PDF
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 297; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      // Add more pages if content overflows
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      // Add clickable link for www.urbanvenue.in
+      // Modify these coordinates based on the actual location in your PDF
+      pdf.textWithLink('www.urbanvenue.in', 12, 272, { url: 'https://www.urbanvenue.in' });
+      pdf.textWithLink('Click to see location on Google Map', 12, 215, { url: `${formData.maplink}` });
+
+      pdf.save(`${formData.guestName}.pdf`);
+    });
+  };
   useEffect(() => {
+    window.scrollTo(0, 0)
     // Construct the image URL
     const imageUrl = `${import.meta.env.VITE_BACKEND_URL}${formData.photo}`
 
@@ -374,21 +91,21 @@ const Invoice = () => {
     <div className="flex flex-col items-center bg-red-50 py-8">
       {/* Header with Logo */}
       <div className="flex">
-        <button
+        {/* <button
           onClick={() => toPDF()}
           className=" mx-1 button text-white flex justify-center items-center "
         >
           <CloudDownloadIcon className="mr-1" />
           Download
-        </button>
+        </button> */}
         <button
-  onClick={() => generatePDF(targetRefpic, { filename: 'page.pdf' })} // Use targetRefpic, not targetRefPic
-  className="mx-1 button text-white flex justify-center items-center"
->
-  <CloudDownloadIcon className="mr-1" />
-  Download Reference Doc
-</button>
-       
+          onClick={() => generatePDF(targetRefpic, { filename: 'picpage.pdf' })} // Use targetRefpic, not targetRefPic
+          className="mx-1 button text-white flex justify-center items-center"
+        >
+          <CloudDownloadIcon className="mr-1" />
+          Download Reference Doc
+        </button>
+
         <button
           onClick={() => Home()}
           className=" mx-1 button text-white flex  "
@@ -396,10 +113,19 @@ const Invoice = () => {
           <HomeIcon className="mr-1" />
           Home
         </button>
+        {/* <button onClick={generatePDFx}>Generate PDF</button> */}
+        <button
+          onClick={generatePDFx}
+          className=" mx-1 button text-white flex justify-center items-center "
+        >
+          <CloudDownloadIcon className="mr-1" />
+          Download
+        </button>
       </div>
       <br />
 
       <div
+      id="pdf-content"
         ref={targetRef}
         options={{
           orientation: 'portrait', // or 'landscape'
@@ -579,7 +305,7 @@ const Invoice = () => {
             <div className="w-full grid grid-cols-2  gap-6">
               <div>
                 <label className="block text-gray-700 mb-2 ">
-                  CheckIn - Date and Time
+                  CheckIn - Date
                 </label>
                 <input
                   type="date"
@@ -608,7 +334,7 @@ const Invoice = () => {
             <div className="w-full grid grid-cols-2  gap-6">
               <div>
                 <label className="block text-gray-700 mb-2 ">
-                  Checkout - Date and Time
+                  Checkout - Date 
                 </label>
                 <input
                   type="date"
@@ -622,7 +348,7 @@ const Invoice = () => {
               </div>
               <div>
                 <label className="block text-gray-700 mb-2 ">
-                  Checkout - Date and Time
+                  Checkout Time
                 </label>
                 <input
                   type="time"
@@ -664,7 +390,7 @@ const Invoice = () => {
             <div className="w-full grid grid-cols-2  gap-6">
               <div>
                 <label className="block text-gray-700 mb-2 ">
-                  Property Owner Number
+                  Property Owner Name
                 </label>
                 <input
                   type="text"
@@ -694,7 +420,7 @@ const Invoice = () => {
             <div className="w-full grid grid-cols-2  gap-6">
               <div>
                 <label className="block text-gray-700 mb-2 ">
-                  Total Booking
+                Total booking amount
                 </label>
                 <input
                   type="text"
@@ -718,7 +444,7 @@ const Invoice = () => {
 
             <div className="w-full grid grid-cols-2  gap-6">
               <div>
-                <label className="block text-gray-700 mb-2 ">Advance</label>
+                <label className="block text-gray-700 mb-2 ">Advance payment </label>
                 <input
                   type="text"
                   value={formData.advance}
@@ -727,6 +453,17 @@ const Invoice = () => {
                   readOnly
                 />
               </div>
+              <div>
+                <label className="block text-gray-700 mb-2 ">Advance Collected by </label>
+                <input
+                  type="text"
+                  value={formData.advanceCollectedBy}
+                  className="border border-gray-300 w-full p-2 rounded"
+                  // defaultValue="50,000"
+                  readOnly
+                />
+              </div>
+
               {/* <div>
                 <label className="block text-gray-700 mb-2">
                   Advance Collected By
@@ -774,6 +511,28 @@ const Invoice = () => {
                   name="age"
                 />
                 <p>{formData.advanceMode}</p>
+                {formData.advanceMode === 'Cash' && (
+                  <>
+                    <input
+                      className="mx-2"
+                      defaultChecked
+                      type="radio"
+                      name="age"
+                    />
+                    <p>Online</p>
+                  </>
+                )}
+                {formData.advanceMode === 'Online' && (
+                  <>
+                    <input
+                      className="mx-2"
+                      defaultChecked
+                      type="radio"
+                      name="age"
+                    />
+                    <p>Cash</p>
+                  </>
+                )}
               </div>
             </div>
             <div>
@@ -797,7 +556,13 @@ const Invoice = () => {
                 readOnly
               />
             </div>
+            {/* <a href="https://maps.app.goo.gl/piZkuKoz9QPqR1Ma9" target="_blank" rel="noopener noreferrer">
+       
+        
+            <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d234749.63073171166!2d79.6265894!3d23.1715512!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3981af3da20f1115%3A0xeb26adc4b56a3a18!2sDental%20square!5e0!3m2!1sen!2sin!4v1729079628551!5m2!1sen!2sin" width="100%" height="450" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            </a> */}
           </form>
+         
 
           {/* Footer with Contact Info */}
           <div className="w-full flex justify-between items-center mt-24">
@@ -813,7 +578,7 @@ const Invoice = () => {
                 target="_blank"
                 href="https://www.urbanvenue.in"
               >
-                www.urbanvenue.in
+                {/* www.urbanvenue.in */}
               </a>
             </div>
             <div className="flex flex-col justify-end items-end ">
@@ -870,7 +635,7 @@ const Invoice = () => {
       </div>
 
       {/* photo section */}
-      
+
       <div
         ref={targetRefpic}
         options={{
@@ -880,84 +645,22 @@ const Invoice = () => {
         }}
         className="w-full max-w-4xl bg-white border border-x-4 border-red-600 shadow-lg "
       >
-       
-        
         <div className="h-[2vh] flex">
           <div className="flex-1 bg-black"></div>
           <div className="flex-1 bg-red-500"></div>
           <div className="flex-1 bg-black"></div>
         </div>
         <div className="p-8">
-          <div className="flex flex-col items-center my-2">
-            <img
-              src={invoLogo} // Replace this with your logo
-              alt="Logo"
-              className="mb-4  "
-            />
-            <h1 className=" w-[75%] text-l text-center  text-gray-700 ">
-              Registration successful! We're excited to have you. Details are
-              below. Contact us with any questions. Thank you!
-            </h1>
-          </div>
+        
 
           {/* Form Sections */}
           <form className="space-y-6 mt-16"></form>
 
           {/* Footer with Contact Info */}
-          <div className="w-full flex justify-between items-center mt-24">
-            <div className="flex flex-col justify-between items-center">
-              <p className="font-semibold">Scan to visit our Site</p>
-              <img
-                src={Qr} // Replace this with your logo
-                alt="Logo"
-                // className="border border-emerald-100 "
-              />
-              <a
-                className="font-semibold"
-                target="_blank"
-                href="https://www.urbanvenue.in"
-              >
-                www.urbanvenue.in
-              </a>
-            </div>
-            <div className="flex flex-col justify-end items-end ">
-              <div>
-                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
-                  <p className="text-gray-700">+91-9987656876 </p>
-                  <div className="bg-red-600 rounded-2xl p-1 ml-2 ">
-                    <LocalPhoneIcon className="text-white  " />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
-                  <p className="text-gray-700">urban@gmail.com </p>
-                  <div className="bg-red-600 rounded-2xl p-1 ml-2">
-                    <EmailIcon className="text-white" />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
-                  <p className="text-gray-700">@theurbanvenue</p>
-                  <div className="bg-red-600 rounded-2xl p-1 ml-2">
-                    <InstagramIcon className="text-white" />
-                  </div>
-                </div>
-              </div>
-              <div>
-                <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
-                  <p className="text-gray-700">@theurbanvenue</p>
-                  <div className="bg-red-600 rounded-2xl p-1 ml-2 ">
-                    <FacebookIcon className="text-white" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          
           {imageExists && (
             <div className="my-8">
-              Refrence Doc :
+              
               <img
                 className="w-full h-[50vh] object-contain"
                 src={`${import.meta.env.VITE_BACKEND_URL}${formData.photo}`}
