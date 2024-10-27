@@ -42,11 +42,11 @@ const CreateFarm = () => {
     eventAddOns: '',
     farmTref: '', // Added field
     status: 'Upcoming',
-    maplink:'',
+    maplink: '',
   })
 
   // Generate unique farmId based on stateName and placeName
-  const generateFarmId = (stateName, placeName,name) => {
+  const generateFarmId = (stateName, placeName, name) => {
     const cleanedStateName = stateName
       .toLowerCase()
       .replace(/\s+/g, '')
@@ -55,11 +55,11 @@ const CreateFarm = () => {
       .toLowerCase()
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '')
-      const cleasedfarmname=name
+    const cleasedfarmname = name
       .toLowerCase()
       .replace(/\s+/g, '')
       .replace(/[^a-z0-9]/g, '')
-    const timestamp =1;
+    const timestamp = 1
     return `${cleanedStateName}-${cleanedPlaceName}-${cleasedfarmname}-${timestamp}`
   }
   useEffect(() => {
@@ -83,7 +83,7 @@ const CreateFarm = () => {
       const updatedData = { ...prevData, [name]: value }
 
       // If stateName or placeName is changed, update farmId
-      if (name === 'stateName' || name === 'placeName' || name ==='farmname') {
+      if (name === 'stateName' || name === 'placeName' || name === 'farmname') {
         updatedData.farmId = generateFarmId(
           updatedData.stateName,
           updatedData.placeName,
@@ -209,7 +209,7 @@ const CreateFarm = () => {
         eventAddOns: formData.eventAddOns,
         status: formData.status,
         farmTref: formData.farmTref, // Added in the API data
-        maplink:formData.maplink
+        maplink: formData.maplink,
       },
     }
 
@@ -226,6 +226,30 @@ const CreateFarm = () => {
       })
     // }
   }
+  // State to manage commission percentages
+  const [otherServicesPercentage, setOtherServicesPercentage] = useState(20)
+  const [totalBookingPercentage, setTotalBookingPercentage] = useState(10)
+
+  // Calculate urban venue commission
+  useEffect(() => {
+    setFormData((prevData) => ({
+      ...prevData,
+      urbanvenuecommission:
+        (otherServicesPercentage / 100) * Number(prevData.otherServices || 0) +
+        (totalBookingPercentage / 100) * Number(prevData.totalBooking || 0),
+    }))
+  }, [
+    formData.otherServices,
+    formData.totalBooking,
+    otherServicesPercentage,
+    totalBookingPercentage,
+  ])
+
+  // Input handlers for the percentage values
+  const handleOtherServicesPercentageChange = (e) =>
+    setOtherServicesPercentage(Number(e.target.value) || 0)
+  const handleTotalBookingPercentageChange = (e) =>
+    setTotalBookingPercentage(Number(e.target.value) || 0)
 
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
@@ -322,7 +346,7 @@ const CreateFarm = () => {
           />
         </div>
         {/* Check-out Date */}
-        <div className="flex flex-col border-b">
+        {/* <div className="flex flex-col border-b">
           <label className="font-semibold">Check-out Date</label>
           <input
             name="checkOutDate"
@@ -331,7 +355,7 @@ const CreateFarm = () => {
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="date"
           />
-        </div>
+        </div> */}
         {/* Check-out Time */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Check-out Time</label>
@@ -542,6 +566,35 @@ const CreateFarm = () => {
             onWheel={(e) => e.target.blur()}
           />
         </div>
+        {/* Urban Venue Commission Percentage Controls */}
+        <div className="grid grid-cols-2 gap-4 border-b pb-4">
+          {/* Other Services Percentage */}
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Other Services Percentage:
+              <input
+                type="number"
+                value={otherServicesPercentage}
+                onChange={handleOtherServicesPercentageChange}
+                className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              />
+            </label>
+          </div>
+
+          {/* Total Booking Percentage */}
+          <div className="flex flex-col">
+            <label className="font-semibold">
+              Total Booking Percentage:
+              <input
+                type="number"
+                value={totalBookingPercentage}
+                onChange={handleTotalBookingPercentageChange}
+                className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
+              />
+            </label>
+          </div>
+        </div>
+
         {/* Urban Venue Commission */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Urban Venue Commission</label>
