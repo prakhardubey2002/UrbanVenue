@@ -330,18 +330,18 @@ const AllFarms = () => {
                   <th className="py-3 px-6 text-left border border-gray-300">
                     Farm Name
                   </th>
-                  <th className="py-3 px-6 text-left border border-gray-300">
+                  {/* <th className="py-3 px-6 text-left border border-gray-300">
                     Phone Number
-                  </th>
+                  </th> */}
                   {/* <th className="py-3 px-6 text-left border border-gray-300">
                     Check-In Date
                   </th> */}
                   <th className="py-3 px-6 text-left border border-gray-300">
                     Check-In Time
                   </th>
-                  <th className="py-3 px-6 text-left border border-gray-300">
+                  {/* <th className="py-3 px-6 text-left border border-gray-300">
                     Check-Out Date
-                  </th>
+                  </th> */}
                   <th className="py-3 px-6 text-left border border-gray-300">
                     Check-Out Time
                   </th>
@@ -396,18 +396,18 @@ const AllFarms = () => {
                         <td className="py-3 px-6 border border-gray-300 whitespace-nowrap">
                           {farm.name}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap">
+                        {/* <td className="py-3 px-6 border border-gray-300 whitespace-nowrap">
                           {farm.phoneNumber}
-                        </td>
+                        </td> */}
                         {/* <td className="py-3 px-6 border border-gray-300">
                         {new Date(farm.checkInDate).toLocaleDateString()}
                       </td> */}
                         <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {convertTo12HourFormat(farm.checkInTime)}
                         </td>
-                        <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
+                        {/* <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           { new Date(farm.checkOutDate).toLocaleDateString()}
-                        </td>
+                        </td> */}
                         <td className="py-3 px-6 border border-gray-300 whitespace-nowrap ">
                           {convertTo12HourFormat(farm.checkOutTime)}
                         </td>

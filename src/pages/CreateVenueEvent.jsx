@@ -19,7 +19,7 @@ const CreateVenueEvent = () => {
   const { venue, date } = useParams()
   const location = useLocation()
   const data = location.state
-const [idx,setidx]=useState();
+  const [idx, setidx] = useState()
   const [photo, setPhoto] = useState(null)
   const navigate = useNavigate()
   // const history = useHistory();
@@ -47,43 +47,45 @@ const [idx,setidx]=useState();
         const response = await axios.get(
           `http://localhost:3000/api/invoices/count/${data?.details?.name}`
         )
-    
-        const invoiceCount = response.data.invoiceCount;
-    
+
+        const invoiceCount = response.data.invoiceCount
+
         // Extract the farmId
-        const currentFarmId = data?.details?.farmId;
-    
+        const currentFarmId = data?.details?.farmId
+
         // Find the last number in the farmId (after the last hyphen)
-        const parts = currentFarmId.split('-');
-        const lastNumber = parseInt(parts[parts.length - 1], 10); // Parse the last part as a number
-    
+        const parts = currentFarmId.split('-')
+        const lastNumber = parseInt(parts[parts.length - 1], 10) // Parse the last part as a number
+
         // Increment the last number with the invoice count
-        const updatedFarmId = `${parts.slice(0, -1).join('-')}-${lastNumber + invoiceCount}`;
-    
-        console.log(updatedFarmId); // Log the updated farmId
-    
+        const updatedFarmId = `${parts.slice(0, -1).join('-')}-${
+          lastNumber + invoiceCount
+        }`
+
+        console.log(updatedFarmId) // Log the updated farmId
+
         // Update the form data with the new bookingId
-        setFormData(prevFormData => ({
+        setFormData((prevFormData) => ({
           ...prevFormData,
           bookingId: updatedFarmId,
-        }));
+        }))
       } catch (error) {
-        console.error('Error fetching invoice count:', error);
+        console.error('Error fetching invoice count:', error)
       }
-    };
-    console.log("wfedgtb")
+    }
+    console.log('wfedgtb')
     console.log(data.details.maplink)
     // console.log(formData.maplink)
 
     idxfetch()
   }, [])
   // State to manage form values
-   const [calculatedResult, setCalculatedResult] = useState({
+  const [calculatedResult, setCalculatedResult] = useState({
     surplus: 0,
     deficit: 0,
   })
   const [formData, setFormData] = useState({
-    bookingId:'',
+    bookingId: '',
     guestName: '',
     phoneNumber: '',
     checkInDate: date,
@@ -124,18 +126,19 @@ const [idx,setidx]=useState();
     citySuburb: data.address.suburb,
     zipCode: data.address.zipCode,
     urbanvenuecommission: data.details.urbanvenuecommission, //total amount 10%
-    surplus:'',
-    deficit:'',
+    surplus: '',
+    deficit: '',
     photo: photo,
-    fullcloser:'Pending',
-    maplink : data?.details?.maplink
+    fullcloser: 'Pending',
+    maplink: data?.details?.maplink,
+    cancellledby:'',
+    cancelreason:'',
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
     let a = `BOOK-${venue}-${date}-${timestamp}`
     return a.replace(/\s+/g, '-')
   }
- 
 
   useEffect(() => {
     const {
@@ -150,8 +153,8 @@ const [idx,setidx]=useState();
     const commission = Number(urbanvenuecommission)
     const pendingAmount = Number(balancePayment)
 
-    let surplus = 0;
-    let deficit = 0;
+    let surplus = 0
+    let deficit = 0
 
     if (advanceCollectedBy === 'Urban venue') {
       if (pendingCollectedBy === 'Urban venue') {
@@ -300,7 +303,7 @@ const [idx,setidx]=useState();
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl ">
         Create Venue Event
-         {/* Surplus: {calculatedResult.surplus} Deficiet:{' '}
+        {/* Surplus: {calculatedResult.surplus} Deficiet:{' '}
         {calculatedResult.deficit}{' '} */}
       </h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm ">
@@ -620,7 +623,7 @@ const [idx,setidx]=useState();
             <option value="Upcoming">Upcoming</option>
             <option value="Completed">Completed</option>
             <option value="Paid">Paid</option>
-            <option value="Canceled">Canceled</option>
+            {/* <option value="Canceled">Canceled</option> */}
           </select>
         </div>
 

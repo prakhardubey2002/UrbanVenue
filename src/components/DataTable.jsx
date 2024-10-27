@@ -525,7 +525,7 @@ const Table = ({ data, setData, occasions }) => {
                 <MenuItem value="Upcoming">Upcoming</MenuItem>
                 <MenuItem value="Completed">Completed</MenuItem>
                 <MenuItem value="Paid">Paid</MenuItem>
-                <MenuItem value="Canceled">Canceled</MenuItem>
+                <MenuItem value="Cancelled">Cancelled</MenuItem>
               </Select>
             </FormControl>
             {/* Total Booking */}
@@ -695,6 +695,43 @@ const Table = ({ data, setData, occasions }) => {
                 <MenuItem value="Online">Online</MenuItem>
               </Select>
             </FormControl>
+            {selectedRow?.status === 'Cancelled' && (
+        <>
+          {/* Cancelled By */}
+          <FormControl fullWidth margin="dense">
+            <InputLabel>Cancelled By</InputLabel>
+            <Select
+              value={selectedRow?.cancellledby || ''}
+              onChange={(e) =>
+                setSelectedRow({
+                  ...selectedRow,
+                  cancellledby: e.target.value,
+                })
+              }
+              label="Cancelled By"
+            >
+              <MenuItem value="Urban venue">Urban venue</MenuItem>
+              <MenuItem value="Client">Client</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Cancel Reason */}
+          <TextField
+            label="Cancel Reason"
+            fullWidth
+            margin="dense"
+            multiline
+            rows={3}
+            value={selectedRow?.cancelreason || ''}
+            onChange={(e) =>
+              setSelectedRow({
+                ...selectedRow,
+                cancelreason: e.target.value,
+              })
+            }
+          />
+        </>
+      )}
           </div>
         </DialogContent>
         <DialogActions>

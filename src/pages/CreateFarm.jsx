@@ -566,7 +566,7 @@ const CreateFarm = () => {
             <option value="Upcoming">Upcoming</option>
             <option value="Completed">Completed</option>
             <option value="Paid">Paid</option>
-            <option value="Canceled">Canceled</option>
+            {/* <option value="Canceled">Canceled</option> */}
           </select>
         </div>
         {/* Terms and Conditions */}
