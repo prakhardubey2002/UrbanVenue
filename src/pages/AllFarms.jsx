@@ -314,8 +314,8 @@ const AllFarms = () => {
           </div>
 
           {/* Farms Table */}
-          <div className="overflow-auto">
-            <table className="min-w-full bg-white border border-gray-300">
+          <div className="overflow-x-auto max-h-[50vh]">
+            <table className="overflow-auto max-h-40 bg-white border border-gray-300">
               <thead>
                 <tr className="bg-gray-200 text-gray-600 uppercase text-sm leading-normal">
                   <th className="py-3 px-6 text-left border border-gray-300">
@@ -375,7 +375,7 @@ const AllFarms = () => {
                   </th>
                 </tr>
               </thead>
-              <tbody className="text-gray-600 text-sm font-light">
+              <tbody className=" text-gray-600 text-sm font-light">
                 {filteredFarms
                   .slice()
                   .reverse()

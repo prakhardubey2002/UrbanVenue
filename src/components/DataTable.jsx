@@ -712,6 +712,7 @@ const Table = ({ data, setData, occasions }) => {
             >
               <MenuItem value="Urban venue">Urban venue</MenuItem>
               <MenuItem value="Client">Client</MenuItem>
+              <MenuItem value="Property Owner">Property Owner</MenuItem>
             </Select>
           </FormControl>
 
