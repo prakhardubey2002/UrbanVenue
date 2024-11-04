@@ -33,7 +33,7 @@ const CreateVenueEvent = () => {
     const fetchOccasions = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/occasion/occasions'
+          'https://backend.urbanvenue.in/occasion/occasions'
         )
         setOccasions(response.data) // Assuming response.data is an array of occasion objects
       } catch (error) {
@@ -45,7 +45,7 @@ const CreateVenueEvent = () => {
     const idxfetch = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/invoices/count/${data?.details?.name}`
+          `https://backend.urbanvenue.in/api/invoices/count/${data?.details?.name}`
         )
 
         const invoiceCount = response.data.invoiceCount
@@ -58,9 +58,8 @@ const CreateVenueEvent = () => {
         const lastNumber = parseInt(parts[parts.length - 1], 10) // Parse the last part as a number
 
         // Increment the last number with the invoice count
-        const updatedFarmId = `${parts.slice(0, -1).join('-')}-${
-          lastNumber + invoiceCount
-        }`
+        const updatedFarmId = `${parts.slice(0, -1).join('-')}-${lastNumber + invoiceCount
+          }`
 
         console.log(updatedFarmId) // Log the updated farmId
 
@@ -131,8 +130,8 @@ const CreateVenueEvent = () => {
     photo: photo,
     fullcloser: 'Pending',
     maplink: data?.details?.maplink,
-    cancellledby:'',
-    cancelreason:'',
+    cancellledby: '',
+    cancelreason: '',
   })
   function generateBookingId() {
     const timestamp = new Date().getTime()
@@ -280,7 +279,7 @@ const CreateVenueEvent = () => {
     }
 
     axios
-      .post('http://localhost:3000/api/invoices/invoices', formDataToSend, {
+      .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data', // Required for file uploads
         },

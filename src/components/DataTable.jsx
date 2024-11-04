@@ -44,7 +44,7 @@ const Table = ({ data, setData, occasions }) => {
     setSelectedRow(null)
   }
 
- 
+
 
   useEffect(() => {
     if (selectedRow?.totalBooking && selectedRow?.advance) {
@@ -70,7 +70,7 @@ const Table = ({ data, setData, occasions }) => {
     try {
       console.log(selectedRow)
       // Update API URL (use dynamic ID from selectedRow if needed)
-      const apiUrl = `http://localhost:3000/api/invoices/invoices/${selectedRow._id}`
+      const apiUrl = `https://backend.urbanvenue.in/api/invoices/invoices/${selectedRow._id}`
 
       // Send PUT request to update the invoice
       const response = await fetch(apiUrl, {
@@ -121,14 +121,14 @@ const Table = ({ data, setData, occasions }) => {
       pendingCollectedBy,
       balancePayment,
     } = selectedRow || {};
-  
+
     const advanceAmount = Number(advance) || 0;
     const commission = Number(urbanvenuecommission) || 0;
     const pendingAmount = Number(balancePayment) || 0;
-  
+
     let surplus = 0;
     let deficit = 0;
-  
+
     if (advanceCollectedBy === 'Urban venue') {
       if (pendingCollectedBy === 'Urban venue') {
         surplus = advanceAmount + pendingAmount - commission;
@@ -142,10 +142,10 @@ const Table = ({ data, setData, occasions }) => {
         deficit = commission;
       }
     }
-  
+
     if (surplus < 0) surplus = 0;
     if (deficit < 0) deficit = 0;
-  
+
     setSelectedRow((prev) => ({
       ...prev,
       surplus,
@@ -158,7 +158,7 @@ const Table = ({ data, setData, occasions }) => {
     selectedRow?.pendingCollectedBy,
     selectedRow?.balancePayment,
   ]);
-  
+
 
   return (
     <div className="overflow-x-auto max-h-[44vh] my-4 text-sm">
@@ -267,26 +267,24 @@ const Table = ({ data, setData, occasions }) => {
               </td>
               <td className="border-b px-4 py-4 whitespace-nowrap">
                 <div
-                  className={`flex items-center ${
-                    row.status === 'Canceled'
-                      ? 'text-red-500'
-                      : row.status === 'Paid' || row.status === 'Completed'
+                  className={`flex items-center ${row.status === 'Canceled'
+                    ? 'text-red-500'
+                    : row.status === 'Paid' || row.status === 'Completed'
                       ? 'text-green-500'
                       : row.status === 'Upcoming'
-                      ? 'text-purple-500'
-                      : 'text-gray-500'
-                  }`}
+                        ? 'text-purple-500'
+                        : 'text-gray-500'
+                    }`}
                 >
                   <span
-                    className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                      row.status === 'Canceled'
-                        ? 'bg-red-500'
-                        : row.status === 'Paid' || row.status === 'Completed'
+                    className={`inline-block w-2 h-2 rounded-full mr-2 ${row.status === 'Canceled'
+                      ? 'bg-red-500'
+                      : row.status === 'Paid' || row.status === 'Completed'
                         ? 'bg-green-500'
                         : row.status === 'Upcoming'
-                        ? 'bg-purple-500'
-                        : 'bg-gray-500'
-                    }`}
+                          ? 'bg-purple-500'
+                          : 'bg-gray-500'
+                      }`}
                   />
                   {row.status}
                 </div>
@@ -399,8 +397,8 @@ const Table = ({ data, setData, occasions }) => {
               value={
                 selectedRow?.checkInDate
                   ? new Date(selectedRow.checkInDate)
-                      .toISOString()
-                      .substring(0, 10)
+                    .toISOString()
+                    .substring(0, 10)
                   : ''
               }
               onChange={(e) =>
@@ -435,8 +433,8 @@ const Table = ({ data, setData, occasions }) => {
               value={
                 selectedRow?.checkOutDate
                   ? new Date(selectedRow.checkOutDate)
-                      .toISOString()
-                      .split('T')[0]
+                    .toISOString()
+                    .split('T')[0]
                   : ''
               }
               onChange={(e) =>
@@ -696,43 +694,43 @@ const Table = ({ data, setData, occasions }) => {
               </Select>
             </FormControl>
             {selectedRow?.status === 'Cancelled' && (
-        <>
-          {/* Cancelled By */}
-          <FormControl fullWidth margin="dense">
-            <InputLabel>Cancelled By</InputLabel>
-            <Select
-              value={selectedRow?.cancellledby || ''}
-              onChange={(e) =>
-                setSelectedRow({
-                  ...selectedRow,
-                  cancellledby: e.target.value,
-                })
-              }
-              label="Cancelled By"
-            >
-              <MenuItem value="Urban venue">Urban venue</MenuItem>
-              <MenuItem value="Client">Client</MenuItem>
-              <MenuItem value="Property Owner">Property Owner</MenuItem>
-            </Select>
-          </FormControl>
+              <>
+                {/* Cancelled By */}
+                <FormControl fullWidth margin="dense">
+                  <InputLabel>Cancelled By</InputLabel>
+                  <Select
+                    value={selectedRow?.cancellledby || ''}
+                    onChange={(e) =>
+                      setSelectedRow({
+                        ...selectedRow,
+                        cancellledby: e.target.value,
+                      })
+                    }
+                    label="Cancelled By"
+                  >
+                    <MenuItem value="Urban venue">Urban venue</MenuItem>
+                    <MenuItem value="Client">Client</MenuItem>
+                    <MenuItem value="Property Owner">Property Owner</MenuItem>
+                  </Select>
+                </FormControl>
 
-          {/* Cancel Reason */}
-          <TextField
-            label="Cancel Reason"
-            fullWidth
-            margin="dense"
-            multiline
-            rows={3}
-            value={selectedRow?.cancelreason || ''}
-            onChange={(e) =>
-              setSelectedRow({
-                ...selectedRow,
-                cancelreason: e.target.value,
-              })
-            }
-          />
-        </>
-      )}
+                {/* Cancel Reason */}
+                <TextField
+                  label="Cancel Reason"
+                  fullWidth
+                  margin="dense"
+                  multiline
+                  rows={3}
+                  value={selectedRow?.cancelreason || ''}
+                  onChange={(e) =>
+                    setSelectedRow({
+                      ...selectedRow,
+                      cancelreason: e.target.value,
+                    })
+                  }
+                />
+              </>
+            )}
           </div>
         </DialogContent>
         <DialogActions>

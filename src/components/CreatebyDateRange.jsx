@@ -16,7 +16,7 @@ const CreatebyDateRange = () => {
   const [data, SetData] = useState({
     venue: '',
     date: '',
-    city:'',
+    city: '',
   });
 
   useEffect(() => {
@@ -31,7 +31,7 @@ const CreatebyDateRange = () => {
       try {
         console.log(`Fetching farms from: ${startDate} to ${endDate}`);
         const response = await axios.get(
-          `http://localhost:3000/api/calender/farms-free-by-date-range`,
+          `https://backend.urbanvenue.in/api/calender/farms-free-by-date-range`,
           { params: { startDate, endDate } }
         );
         const farms = response.data;
@@ -81,30 +81,30 @@ const CreatebyDateRange = () => {
       alert('Please select both end dates and a property');
       return;
     }
-  
+
     try {
       const formattedStartDate = data.date ? new Date(data.date).toLocaleDateString('en-CA') : '';
       const formattedEndDate = new Date(endDate).toISOString().split('T')[0];
-  
+
       alert(
         `Property: ${selectedProperty} Start Date: ${formattedStartDate} End Date: ${new Date(formattedEndDate).toLocaleDateString('en-CA')}`
       );
-      
-  
+
+
       // Fetch the address
-      // console.log(`http://localhost:3000/api/calender/${data.city}/${selectedProperty}/details`)
+      // console.log(`https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`)
       const addressResponse = await axios.get(
-        `http://localhost:3000/api/calender/${data.city}/${selectedProperty}/details`
+        `https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`
       );
-  
+
       const address = addressResponse.data;
       setAddress(address);
       console.log('Address:', address);
-  
+
       const path = CREATE_FORM.replace(':venue', selectedProperty)
         .replace(':date', formattedStartDate)
-        // .replace(':endDate', formattedEndDate);
-  
+      // .replace(':endDate', formattedEndDate);
+
       if (address) {
         navigate(path, { state: address });
       }
@@ -113,7 +113,7 @@ const CreatebyDateRange = () => {
       alert('Failed to create form.');
     }
   }, [endDate, selectedProperty, navigate]);
-  
+
 
   // Validate form
   const isFormValid = useCallback(() => selectedProperty && startDate && endDate, [
@@ -212,7 +212,7 @@ const CreatebyDateRange = () => {
                 {/* {console.log(calenderEvents[city])} */}
                 {Object.entries(placeData).map(([farm, farmData], farmIndex) => (
                   <div key={`${city}-${place}-${farm}-${renderKey}-${farmIndex}`}>
-                    
+
                     {farmData && farmData.length > 0 ? (
                       <CalenderD
                         events={farmData}

@@ -15,7 +15,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { ADMIN_DASHBOARD, SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
 import AuthContext from '../context/context'
 const OccasionList = () => {
-  const {usertype} =useContext(AuthContext)
+  const { usertype } = useContext(AuthContext)
   const [occasions, setOccasions] = useState([])
   const [filters, setFilters] = useState({
     id: '',
@@ -27,7 +27,7 @@ const OccasionList = () => {
   const fetchOccasions = async () => {
     try {
       const response = await axios.get(
-        'http://localhost:3000/occasion/occasions'
+        'https://backend.urbanvenue.in/occasion/occasions'
       )
       setOccasions(response.data)
     } catch (error) {
@@ -49,11 +49,11 @@ const OccasionList = () => {
   const handleUpdate = async () => {
     try {
       console.log(
-        `http://localhost:3000/occasion/occasion/${selectedOccasion._id}`
+        `https://backend.urbanvenue.in/occasion/occasion/${selectedOccasion._id}`
       )
       console.log(selectedOccasion)
       await axios.patch(
-        `http://localhost:3000/occasion/occasion/${selectedOccasion._id}`,
+        `https://backend.urbanvenue.in/occasion/occasion/${selectedOccasion._id}`,
         selectedOccasion
       )
       toast.success('Occasion updated successfully!')
@@ -72,7 +72,7 @@ const OccasionList = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `http://localhost:3000/occasion/occasions/${occasionId}`
+          `https://backend.urbanvenue.in/occasion/occasions/${occasionId}`
         )
         toast.success('Occasion deleted successfully!')
         fetchOccasions()
@@ -95,7 +95,7 @@ const OccasionList = () => {
   return (
     <div className="bg-[#f6f7f9] w-full h-full flex flex-col justify-center items-center">
       <Toaster position="top-right" reverseOrder={true} />
-      <CustomNavTopbar  path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD}   text={'Create Occasion'} route={'/create-occasion'} />
+      <CustomNavTopbar path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD} text={'Create Occasion'} route={'/create-occasion'} />
       <h2 className="my-8 font-bold text-3xl">All Occasions</h2>
 
       {/* Filter Section */}
@@ -146,10 +146,10 @@ const OccasionList = () => {
               )
               .slice()
               .reverse()
-              .map((occasion,index) => (
+              .map((occasion, index) => (
                 <tr key={occasion.id} className="hover:bg-gray-50">
                   <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
-                    {index+1}
+                    {index + 1}
                   </td>
                   <td className="border-b px-4 py-4 whitespace-nowrap text-sm text-gray-600">
                     {occasion.name}

@@ -27,18 +27,18 @@ const CreateOccasion = () => {
     return `OCC-${now.getFullYear()}${(now.getMonth() + 1)
       .toString()
       .padStart(2, '0')}${now
-      .getDate()
-      .toString()
-      .padStart(2, '0')}${now
-      .getHours()
-      .toString()
-      .padStart(2, '0')}${now
-      .getMinutes()
-      .toString()
-      .padStart(2, '0')}${now
-      .getSeconds()
-      .toString()
-      .padStart(2, '0')}`;
+        .getDate()
+        .toString()
+        .padStart(2, '0')}${now
+          .getHours()
+          .toString()
+          .padStart(2, '0')}${now
+            .getMinutes()
+            .toString()
+            .padStart(2, '0')}${now
+              .getSeconds()
+              .toString()
+              .padStart(2, '0')}`;
   };
 
   // Handle form submission
@@ -47,7 +47,7 @@ const CreateOccasion = () => {
 
     // Generate unique ID for the occasion
     const occasionId = generateUniqueId();
-    
+
     // Ensure name is provided
     if (!formData.name) {
       toast.error('Please enter the occasion name');
@@ -61,7 +61,7 @@ const CreateOccasion = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/occasion/occasions', dataToSend);
+      const response = await axios.post('https://backend.urbanvenue.in/occasion/occasions', dataToSend);
       toast.success('Occasion created successfully!');
       navigate(ALL_OCCASION); // Redirect to the occasions list page
     } catch (error) {
