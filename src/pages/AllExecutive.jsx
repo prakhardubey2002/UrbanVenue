@@ -19,7 +19,7 @@ import CreateIcon from '@mui/icons-material/Create'
 import DeleteIcon from '@mui/icons-material/Delete'
 import AuthContext from '../context/context'
 const ExecutiveList = () => {
-  const { usertype} = useContext(AuthContext)
+  const { usertype } = useContext(AuthContext)
   const [executives, setExecutives] = useState([])
   const [filters, setFilters] = useState({
     name: '',
@@ -31,7 +31,7 @@ const ExecutiveList = () => {
 
   const fetchExecutives = async () => {
     try {
-      const response = await axios.get('http://localhost:3000/executives')
+      const response = await axios.get('https://backend.urbanvenue.in/executives')
       setExecutives(response.data)
     } catch (error) {
       console.error('Error fetching executives:', error)
@@ -58,7 +58,7 @@ const ExecutiveList = () => {
   const handleUpdate = async () => {
     try {
       await axios.patch(
-        `http://localhost:3000/executives/${selectedExecutive._id}`,
+        `https://backend.urbanvenue.in/executives/${selectedExecutive._id}`,
         selectedExecutive
       )
       toast.success('Executive updated successfully!')
@@ -76,8 +76,8 @@ const ExecutiveList = () => {
     )
     if (confirmDelete) {
       try {
-        console.log(`http://localhost:3000/executives/${executiveId}`)
-        await axios.delete(`http://localhost:3000/executives/${executiveId}`)
+        console.log(`https://backend.urbanvenue.in/executives/${executiveId}`)
+        await axios.delete(`https://backend.urbanvenue.in/executives/${executiveId}`)
         toast.success('Executive deleted successfully!')
         fetchExecutives() // Refresh the list after deletion
       } catch (error) {
@@ -156,10 +156,10 @@ const ExecutiveList = () => {
             </Select>
           </FormControl>
           <div variant="outlined" onClick={handleRefresh} className=" m-2 button cursor-pointer ">
-          Refresh Filters
+            Refresh Filters
+          </div>
         </div>
-        </div>
-       
+
       </div>
 
       {/* Executives Table */}
@@ -226,7 +226,7 @@ const ExecutiveList = () => {
                       )}
                     </td>
                     <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
-                      { executive.endDate != null &&  new Date(executive.endDate).toLocaleDateString('en-US')}
+                      {executive.endDate != null && new Date(executive.endDate).toLocaleDateString('en-US')}
                     </td>
                     <td className="border border-gray-300 px-4 py-4 whitespace-nowrap">
                       <div
@@ -341,7 +341,7 @@ const ExecutiveList = () => {
                     ...selectedExecutive,
                     endDate: e.target.value,
                   })
-                  
+
                 }
                 InputLabelProps={{
                   shrink: true, // Force the label to always stay above the field

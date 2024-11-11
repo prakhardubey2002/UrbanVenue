@@ -119,7 +119,7 @@ const CreateFarm = () => {
     const fetchOccasions = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/occasion/occasions'
+          'https://backend.urbanvenue.in/occasion/occasions'
         )
         setOccasions(response.data) // Assuming response.data is an array of occasion objects
       } catch (error) {
@@ -215,7 +215,7 @@ const CreateFarm = () => {
 
     console.log(apiData)
     axios
-      .post('http://localhost:3000/api/calender/add-farm', apiData)
+      .post('https://backend.urbanvenue.in/api/calender/add-farm', apiData)
       .then((response) => {
         toast.success('Farm created successfully!')
         navigate('/farms')

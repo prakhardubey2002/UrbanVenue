@@ -111,7 +111,7 @@ const CalculateTable = ({ data, setData, occasions }) => {
     try {
       console.log(selectedRow)
       // Update API URL (use dynamic ID from selectedRow if needed)
-      const apiUrl = `http://localhost:3000/api/invoices/invoices/${selectedRow._id}`
+      const apiUrl = `https://backend.urbanvenue.in/api/invoices/invoices/${selectedRow._id}`
 
       // Send PUT request to update the invoice
       const response = await fetch(apiUrl, {
@@ -236,7 +236,7 @@ const CalculateTable = ({ data, setData, occasions }) => {
               Advance Mode
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
-             Commisson
+              Commisson
             </th>
             <th className="py-4 border-b bg-Bordgrey px-4 whitespace-nowrap">
               Action
@@ -303,26 +303,24 @@ const CalculateTable = ({ data, setData, occasions }) => {
                 </td>
                 <td className="border-b px-4 py-4 whitespace-nowrap">
                   <div
-                    className={`flex items-center ${
-                      row.status === 'Canceled'
-                        ? 'text-red-500'
-                        : row.status === 'Paid' || row.status === 'Completed'
+                    className={`flex items-center ${row.status === 'Canceled'
+                      ? 'text-red-500'
+                      : row.status === 'Paid' || row.status === 'Completed'
                         ? 'text-green-500'
                         : row.status === 'Upcoming'
-                        ? 'text-purple-500'
-                        : 'text-gray-500'
-                    }`}
+                          ? 'text-purple-500'
+                          : 'text-gray-500'
+                      }`}
                   >
                     <span
-                      className={`inline-block w-2 h-2 rounded-full mr-2 ${
-                        row.status === 'Canceled'
-                          ? 'bg-red-500'
-                          : row.status === 'Paid' || row.status === 'Completed'
+                      className={`inline-block w-2 h-2 rounded-full mr-2 ${row.status === 'Canceled'
+                        ? 'bg-red-500'
+                        : row.status === 'Paid' || row.status === 'Completed'
                           ? 'bg-green-500'
                           : row.status === 'Upcoming'
-                          ? 'bg-purple-500'
-                          : 'bg-gray-500'
-                      }`}
+                            ? 'bg-purple-500'
+                            : 'bg-gray-500'
+                        }`}
                     />
                     {row.status}
                   </div>
@@ -425,8 +423,8 @@ const CalculateTable = ({ data, setData, occasions }) => {
               value={
                 selectedRow?.checkInDate
                   ? new Date(selectedRow.checkInDate)
-                      .toISOString()
-                      .substring(0, 10)
+                    .toISOString()
+                    .substring(0, 10)
                   : ''
               }
               onChange={(e) =>
@@ -461,8 +459,8 @@ const CalculateTable = ({ data, setData, occasions }) => {
               value={
                 selectedRow?.checkOutDate
                   ? new Date(selectedRow.checkOutDate)
-                      .toISOString()
-                      .split('T')[0]
+                    .toISOString()
+                    .split('T')[0]
                   : ''
               }
               onChange={(e) =>
@@ -724,7 +722,7 @@ const CalculateTable = ({ data, setData, occasions }) => {
             <FormControl className='col-span-2' fullWidth margin="dense">
               <InputLabel>Full Closer</InputLabel>
               <Select
-              
+
                 value={selectedRow?.fullcloser || ''}
                 onChange={(e) =>
                   setSelectedRow({
@@ -738,7 +736,7 @@ const CalculateTable = ({ data, setData, occasions }) => {
                 <MenuItem value="Paid">Paid</MenuItem>
               </Select>
             </FormControl>
-            {selectedRow?.fullcloser !=="Paid" && (
+            {selectedRow?.fullcloser !== "Paid" && (
               <>
                 <TextField
                   label="Surplus"

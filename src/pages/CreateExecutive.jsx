@@ -64,7 +64,7 @@ const CreateExecutive = () => {
     };
 
     try {
-      const response = await axios.post('http://localhost:3000/register-executive', dataToSend);
+      const response = await axios.post('https://backend.urbanvenue.in/register-executive', dataToSend);
       toast.success('Executive created successfully!');
       navigate('/executives'); // Change this to your desired redirect route
     } catch (error) {
@@ -78,7 +78,7 @@ const CreateExecutive = () => {
       <Toaster position="top-right" reverseOrder={true} />
       <h2 className="my-8 font-bold text-3xl">Create Executive</h2>
       <div className="my-8 bg-white p-4 w-9/12 h-fit rounded-md shadow-sm">
-        
+
         {/* Name */}
         <div className="flex flex-col border-b">
           <label className="font-semibold">Name</label>

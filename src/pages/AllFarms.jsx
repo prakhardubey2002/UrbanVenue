@@ -20,7 +20,7 @@ import AuthContext from '../context/context'
 import { SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
 
 const AllFarms = () => {
-  const {usertype}= useContext(AuthContext);
+  const { usertype } = useContext(AuthContext);
   const [farms, setFarms] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -75,7 +75,7 @@ const AllFarms = () => {
     const fetchFarms = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:3000/api/calender/all-farms'
+          'https://backend.urbanvenue.in/api/calender/all-farms'
         )
         const farmData = response.data
 
@@ -149,8 +149,8 @@ const AllFarms = () => {
       status: farm.status,
       numberOfAdults: farm.numberOfAdults, // Include this if required
       numberOfKids: farm.numberOfKids,
-      email:farm.email,
-      
+      email: farm.email,
+
       advanceCollectedBy: farm.advanceCollectedBy || '', // New field
       pendingCollectedBy: farm.pendingCollectedBy || '', // New field
       advanceMode: farm.advanceMode || 'cash', // Default to 'cash'
@@ -179,12 +179,12 @@ const AllFarms = () => {
   const handleSubmitUpdate = async () => {
     try {
       console.log(
-        `Submitting update to: http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`
+        `Submitting update to: https://backend.urbanvenue.in/api/calender/update-farm/${currentFarm.farmId}`
       )
       console.log('Updated Fields:', updatedFields) // Log the updated fields
 
       const response = await axios.patch(
-        `http://localhost:3000/api/calender/update-farm/${currentFarm.farmId}`,
+        `https://backend.urbanvenue.in/api/calender/update-farm/${currentFarm.farmId}`,
         updatedFields
       )
 
@@ -206,7 +206,7 @@ const AllFarms = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `http://localhost:3000/api/calender/farms/${state}/${place}/${farmId}`
+          `https://backend.urbanvenue.in/api/calender/farms/${state}/${place}/${farmId}`
         )
         setFarms(farms.filter((farm) => farm.farmId !== farmId))
         setFilteredFarms(filteredFarms.filter((farm) => farm.farmId !== farmId))
@@ -224,7 +224,7 @@ const AllFarms = () => {
     const formattedHours = hours % 12 || 12; // Convert 0 hours to 12
     const formattedTime = `${formattedHours}:${String(minutes).padStart(2, '0')} ${isPM ? 'PM' : 'AM'}`;
     return formattedTime;
-}
+  }
   return (
     <div className="w-full h-screen flex flex-col">
       <CustomNavTopbar path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD} text={'Create Property'} route={CREATE_FARMS} />

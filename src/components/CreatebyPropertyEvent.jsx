@@ -25,7 +25,7 @@ const CreatebyPropertyEvent = () => {
     const fetchStates = async () => {
       try {
         const stateResponse = await axios.get(
-          'http://localhost:3000/api/calender/states'
+          'https://backend.urbanvenue.in/api/calender/states'
         )
         setStates(stateResponse.data)
       } catch (error) {
@@ -42,7 +42,7 @@ const CreatebyPropertyEvent = () => {
       const fetchPlaces = async () => {
         try {
           const placeResponse = await axios.get(
-            `http://localhost:3000/api/calender/${selectedState}/places`
+            `https://backend.urbanvenue.in/api/calender/${selectedState}/places`
           )
           setPlaces(placeResponse.data)
         } catch (error) {
@@ -60,7 +60,7 @@ const CreatebyPropertyEvent = () => {
       const fetchProperties = async () => {
         try {
           const propertiesResponse = await axios.get(
-            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms`
+            `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/farms`
           )
           setProperties(propertiesResponse.data)
           console.log(propertiesResponse.data)
@@ -138,9 +138,9 @@ const CreatebyPropertyEvent = () => {
       ':date',
       formattedDate
     )
-    if(address != null){
+    if (address != null) {
 
-      navigate(path,{state: address})
+      navigate(path, { state: address })
     }
 
   }
@@ -149,7 +149,7 @@ const CreatebyPropertyEvent = () => {
       const fetchEvents = async () => {
         try {
           const eventsResponse = await axios.get(
-            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/events`
+            `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/events`
           )
           setEvents(eventsResponse.data)
           // setAddress(eventsResponse.data.address)
@@ -169,7 +169,7 @@ const CreatebyPropertyEvent = () => {
       const fetchAddress = async () => {
         try {
           const addressResponse = await axios.get(
-            `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
+            `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
           )
           setAddress(addressResponse.data)
         } catch (error) {
@@ -253,9 +253,8 @@ const CreatebyPropertyEvent = () => {
         </div>
         <button
           onClick={formcreate}
-          className={`button md:m-5 ${
-            !isFormValid ? 'opacity-50 cursor-not-allowed' : ''
-          }`}
+          className={`button md:m-5 ${!isFormValid ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
           disabled={!isFormValid}
         >
           Done
@@ -270,8 +269,8 @@ const CreatebyPropertyEvent = () => {
             venue={selectedProperty}
             intializer={new Date()}
             setven={setven}
-            // defaultDate={defaultDate}
-            // setDefaultDate={setDefaultDate}
+          // defaultDate={defaultDate}
+          // setDefaultDate={setDefaultDate}
           />
         )}
       </div>

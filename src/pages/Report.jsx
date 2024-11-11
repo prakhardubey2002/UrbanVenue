@@ -82,7 +82,7 @@ const Report = () => {
 
       // Make API request
       const response = await axios.get(
-        `http://localhost:3000/api/invoices/search?${queryString}`
+        `https://backend.urbanvenue.in/api/invoices/search?${queryString}`
       )
 
       // Set the data received from the API
@@ -98,12 +98,12 @@ const Report = () => {
     const fetchData = async () => {
       try {
         const response = await Promise.all([
-          axios.get('http://localhost:3000/api/invoices/invoices'),
-          axios.get('http://localhost:3000/api/invoices/guests'),
-          axios.get('http://localhost:3000/api/invoices/owners'),
-          axios.get('http://localhost:3000/api/invoices/venues'),
-          axios.get('http://localhost:3000/api/invoices/unique-phone-numbers'),
-          axios.get('http://localhost:3000/occasion/occasions'),
+          axios.get('https://backend.urbanvenue.in/api/invoices/invoices'),
+          axios.get('https://backend.urbanvenue.in/api/invoices/guests'),
+          axios.get('https://backend.urbanvenue.in/api/invoices/owners'),
+          axios.get('https://backend.urbanvenue.in/api/invoices/venues'),
+          axios.get('https://backend.urbanvenue.in/api/invoices/unique-phone-numbers'),
+          axios.get('https://backend.urbanvenue.in/occasion/occasions'),
         ])
 
         setData(response[0].data)
@@ -277,7 +277,7 @@ const Report = () => {
                       placeholder="Total value"
                       value={totalBookingValue}
                       onChange={(e) => settotalBookingValue(e.target.value)}
-                      // list="phoneList"
+                    // list="phoneList"
                     />
                   </div>
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">

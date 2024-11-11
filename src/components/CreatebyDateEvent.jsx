@@ -22,7 +22,7 @@ const CreatebyDateEvent = () => {
     const fetchStates = async () => {
       try {
         const stateResponse = await axios.get(
-          'http://localhost:3000/api/calender/states'
+          'https://backend.urbanvenue.in/api/calender/states'
         )
         setStates(stateResponse.data)
       } catch (error) {
@@ -37,7 +37,7 @@ const CreatebyDateEvent = () => {
       const fetchPlaces = async () => {
         try {
           const placeResponse = await axios.get(
-            `http://localhost:3000/api/calender/${selectedState}/places`
+            `https://backend.urbanvenue.in/api/calender/${selectedState}/places`
           )
           setPlaces(placeResponse.data)
         } catch (error) {
@@ -58,7 +58,7 @@ const CreatebyDateEvent = () => {
     if (selectedState && selectedPlace && selectedDate) {
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`
+          `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`
         )
         const farms = response.data
 
@@ -104,7 +104,7 @@ const CreatebyDateEvent = () => {
     try {
       // Fetch the address
       const addressResponse = await axios.get(
-        `http://localhost:3000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
+        `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
       )
 
       // Set the address state
@@ -217,9 +217,8 @@ const CreatebyDateEvent = () => {
 
         <button
           onClick={formcreate}
-          className={`button md:m-5  ${
-            isFormValid() ? '' : 'opacity-50 cursor-not-allowed'
-          }`}
+          className={`button md:m-5  ${isFormValid() ? '' : 'opacity-50 cursor-not-allowed'
+            }`}
           disabled={!isFormValid()}
         >
           Done
