@@ -259,6 +259,8 @@ const Report = () => {
                       value={selectedphonenumber}
                       onChange={(e) => setSelectedPhonenumber(e.target.value)}
                       list="phoneList"
+                      pattern="[0-9]{10}"
+                      maxLength={10}
                     />
                     <datalist id="phoneList">
                       {phonenumber.map((phone, index) => (

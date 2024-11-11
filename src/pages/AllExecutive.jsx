@@ -305,12 +305,15 @@ const ExecutiveList = () => {
                 fullWidth
                 variant="outlined"
                 value={selectedExecutive.phoneNumber}
-                onChange={(e) =>
-                  setSelectedExecutive({
-                    ...selectedExecutive,
-                    phoneNumber: e.target.value,
-                  })
-                }
+                onChange={(e) => {
+                  const newValue = e.target.value.replace(/\D/g, '');
+                  if (newValue.length <= 10) {  
+                    setSelectedExecutive({
+                      ...selectedExecutive,
+                      phoneNumber: newValue,
+                    });
+                  }
+                }}
               />
               <TextField
                 margin="dense"

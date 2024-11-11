@@ -452,7 +452,7 @@ const CreateFarm = () => {
             onChange={handleChange}
             className="outline-none bg-Bordgrey my-4 p-4 border border-Bordgrey rounded-sm"
             type="number"
-            placeholder="Enter Farm Tref"
+            placeholder="Enter Farm Tariff"
             onWheel={(e) => e.target.blur()}
           />
         </div>

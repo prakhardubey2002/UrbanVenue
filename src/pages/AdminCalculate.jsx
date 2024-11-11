@@ -57,45 +57,23 @@ const Report = () => {
   //   )
   // }
   useEffect(() => {
-    let tempSurdefval = surdefval; // Temporary variable to hold the accumulated value
-  
+    let tempSurdefval = surdefval // Temporary variable to hold the accumulated value
+
     data.forEach((datax) => {
       if (datax.fullcloser === 'Pending') {
-        const surplus = datax.surplus ? Number(datax.surplus) : 0;
-        const deficit = datax.deficit ? Number(datax.deficit) : 0;
-  
-        tempSurdefval = tempSurdefval - deficit + surplus;
-  
-        console.log(datax.guestName);
-        console.log(tempSurdefval);
+        const surplus = datax.surplus ? Number(datax.surplus) : 0
+        const deficit = datax.deficit ? Number(datax.deficit) : 0
+
+        tempSurdefval = tempSurdefval - deficit + surplus
+
+        console.log(datax.guestName)
+        console.log(tempSurdefval)
       }
-  
-      // Handle cancellation logic
-      if (datax.status === "Canceled") {
-        switch (datax.cancellledby) {
-          case "Client":
-            // No advance refund, surplus on urban venue
-            tempSurdefval += surplus;
-            console.log("Canceled by Client: No advance refund, Surplus on urban venue");
-            break;
-          
-          case "Urban venue":
-          case "Property Owner":
-            // Advance refund, deficit from urban venue
-            tempSurdefval -= deficit;
-            console.log("Canceled by Urban venue/Property Owner: Advance refund, Deficit from UV");
-            break;
-          
-          default:
-            console.log("Unknown cancellation type");
-            break;
-        }
-      }
-    });
-  
+    })
+
     // Update the state only once after all iterations are complete
-    SetSurdefval(tempSurdefval);
-  }, [data]);
+    SetSurdefval(tempSurdefval)
+  }, [data])
   
   useEffect(() => {
     const fetchData = async () => {
