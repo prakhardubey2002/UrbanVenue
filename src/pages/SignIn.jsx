@@ -66,7 +66,7 @@ const SignIn = () => {
         <img
           src={Logo}
           alt="Logo"
-          className="absolute top-[50px] left-[50px] lg:top-[15%] lg:left-[5%]"
+          className="absolute max-w-60 top-[-50px] left-[-30px] lg:top-[15%] lg:left-[5%]"
         />
         <h2 className="w-[80%] font-roboto text-[30px] font-semibold leading-[38px] text-left text-white lg:hidden">
           The Easiest Way to Create Events
