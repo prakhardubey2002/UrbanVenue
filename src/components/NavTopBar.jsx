@@ -8,7 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CREATE_ROUTE, DASHBOARD_ROUTE, SIGNIN_ROUTE } from '../routes/Routes';
 import AuthContext from '../context/context';
 import { toast } from 'react-hot-toast';
-
+import PersonIcon from '@mui/icons-material/Person';
 const NavTopBar = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const navigate = useNavigate();
@@ -39,7 +39,7 @@ const NavTopBar = () => {
     <div className="w-full h-fit flex justify-between items-center border py-2 px-4 md:px-6 lg:px-8 xl:px-12 relative">
       <div>
         <Link to={DASHBOARD_ROUTE}>
-          <img src={Logo} alt="Logo" className="h-[30px] sm:h-[25px] md:h-[30px] lg:h-[35px]" />
+          <img src={Logo} alt="Logo" className="h-[30px] sm:h-[25px] md:h-[30px] lg:h-[35px] scale-[6] " />
         </Link>
       </div>
       
@@ -55,11 +55,12 @@ const NavTopBar = () => {
           </Link>
         </button>
         <div className="relative flex items-center">
-          <img
+          {/* <img
             src={Profile}
             className="rounded-full w-[30px] h-[30px] sm:w-[35px] sm:h-[35px] md:w-[40px] md:h-[40px]"
             alt="Profile"
-          />
+          /> */}
+          <PersonIcon className="h-[30px] sm:h-[25px] md:h-[30px] lg:h-[35px]" />
           {isDropdownOpen ? (
             <ArrowDropUpIcon onClick={toggleDropdown} className="ml-2 cursor-pointer" />
           ) : (
