@@ -1,7 +1,8 @@
-import { Routes, Route } from 'react-router-dom'
-import SignIn from './pages/SignIn'
-import Dashboard from './pages/Dashboard'
-import CreateEvent from './pages/CreateEvent'
+import React, { useContext, useEffect } from 'react';
+import { Routes, Route, useNavigate } from 'react-router-dom';
+import SignIn from './pages/SignIn';
+import Dashboard from './pages/Dashboard';
+import CreateEvent from './pages/CreateEvent';
 import {
   ADMIN_CALCULATE,
   ADMIN_DASHBOARD,
@@ -17,33 +18,49 @@ import {
   CREATE_ROUTE,
   DASHBOARD_ROUTE,
   INVOICE_ROUTE,
+  PREBOOK,
   REPORT,
   SIGNIN_ROUTE,
   SUPER_ADMIN_DASHBOARD,
-} from './routes/Routes'
-import CreateVenueEvent from './pages/CreateVenueEvent'
-import Invoice from './pages/Invoice'
-import { AuthProvider } from './context/context'
-import { Toaster } from 'react-hot-toast'
-import Admin from './pages/Admin'
-import AllFarms from './pages/AllFarms'
-import CreateFarm from './pages/CreateFarm'
-import AllExecutive from './pages/AllExecutive'
-import CreateExecutive from './pages/CreateExecutive'
-import OccasionList from './pages/OccasionList'
-import CreateOccasion from './pages/CreateOccasion'
-import SuperAdmin from './pages/SuperAdmin'
-import AllAdmin from './pages/AllAdmin'
-import CreateAdmin from './pages/CreateAdmin'
-import Report from './pages/Report'
-import AdminCalculate from './pages/AdminCalculate'
+} from './routes/Routes';
+import CreateVenueEvent from './pages/CreateVenueEvent';
+import Invoice from './pages/Invoice';
+import AuthContext, { AuthProvider } from './context/context';
+import { Toaster } from 'react-hot-toast';
+import Admin from './pages/Admin';
+import AllFarms from './pages/AllFarms';
+import CreateFarm from './pages/CreateFarm';
+import AllExecutive from './pages/AllExecutive';
+import CreateExecutive from './pages/CreateExecutive';
+import OccasionList from './pages/OccasionList';
+import CreateOccasion from './pages/CreateOccasion';
+import SuperAdmin from './pages/SuperAdmin';
+import AllAdmin from './pages/AllAdmin';
+import CreateAdmin from './pages/CreateAdmin';
+import Report from './pages/Report';
+import AdminCalculate from './pages/AdminCalculate';
+import PreBook from './pages/PreBook';
+import { toast } from 'react-hot-toast';
+
 const App = () => {
+  const { token } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    // Skip the redirect if the current route is the SIGNIN_ROUTE
+    if (!token && location.pathname !== SIGNIN_ROUTE) {
+      toast.error('Please login first');
+      navigate(SIGNIN_ROUTE);
+    }
+  }, [token, navigate, location.pathname]);
+
   return (
     <div>
-      <AuthProvider>
+    
         <Routes>
           <Route path={SIGNIN_ROUTE} element={<SignIn />} />
           <Route path={ADMIN_DASHBOARD} element={<Admin />} />
+          <Route path={PREBOOK} element={<PreBook />} />
           <Route path={ALL_FARMS} element={<AllFarms />} />
           <Route path={ALL_EXECUTIVE} element={<AllExecutive />} />
           <Route path={SUPER_ADMIN_DASHBOARD} element={<SuperAdmin />} />
@@ -61,9 +78,9 @@ const App = () => {
           <Route path={INVOICE_ROUTE} element={<Invoice />} />
         </Routes>
         <Toaster position="top-right" reverseOrder={false} />
-      </AuthProvider>
+      
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;

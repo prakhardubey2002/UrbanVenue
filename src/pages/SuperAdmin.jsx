@@ -33,7 +33,7 @@ const SuperAdmin = () => {
           <span className="text-black">
             <PieChartIcon fontSize="large" className="mx-2" />
           </span>
-          Admin Dashboard
+          Superadmin Dashboard
         </h2>
         <div className=" my-4 w-full h-fit grid grid-cols-2 md:grid-cols-1 ">
           <div
