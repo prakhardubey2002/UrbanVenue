@@ -3,10 +3,13 @@ import PieChartIcon from '@mui/icons-material/PieChart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useNavigate } from 'react-router-dom'
 import {
+  ADMIN_INVOICE,
   ALL_EXECUTIVE,
   ALL_FARMS,
   ALL_OCCASION,
   PREBOOK,
+  PREBOOK_BY_DATERANGE,
+  PREBOOK_PROPERTY,
 } from '../routes/Routes'
 const Admin = () => {
   const navigate = useNavigate()
@@ -20,6 +23,12 @@ const Admin = () => {
         return navigate(ALL_OCCASION)
       case 'PreBook':
         return navigate(PREBOOK)
+      case 'PreBookbyproperty':
+        return navigate(PREBOOK_PROPERTY)
+      case 'PreBookbyDateRange':
+        return navigate(PREBOOK_BY_DATERANGE)
+      case 'ADMIN_INVOICE':
+        return navigate(ADMIN_INVOICE)
     }
   }
   return (
@@ -57,7 +66,28 @@ const Admin = () => {
             onClick={() => redirect('PreBook')}
             className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
           >
-            <p>PreBook</p>
+            <p>Block Date</p>
+            <ArrowForwardIosIcon />
+          </div>
+          <div
+            onClick={() => redirect('PreBookbyproperty')}
+            className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
+          >
+            <p>Block Date by property </p>
+            <ArrowForwardIosIcon />
+          </div>
+          <div
+            onClick={() => redirect('PreBookbyDateRange')}
+            className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
+          >
+            <p>Block Date by date range </p>
+            <ArrowForwardIosIcon />
+          </div>
+          <div
+            onClick={() => redirect('ADMIN_INVOICE')}
+            className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
+          >
+            <p>Invoices</p>
             <ArrowForwardIosIcon />
           </div>
         </div>

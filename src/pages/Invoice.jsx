@@ -518,6 +518,7 @@ const Invoice = () => {
                       defaultChecked
                       type="radio"
                       name="age"
+                      disabled
                     />
                     <p>Online</p>
                   </>
@@ -529,6 +530,7 @@ const Invoice = () => {
                       defaultChecked
                       type="radio"
                       name="age"
+                      disabled
                     />
                     <p>Cash</p>
                   </>
