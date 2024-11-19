@@ -1,13 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Calender from '../components/Calender'
 import { CREATE_FORM } from '../routes/Routes'
 import { useFetcher, useNavigate } from 'react-router-dom'
 import { Box, Button, Modal, TextField, Typography } from '@mui/material'
 import axios from 'axios' // Add axios or use any method to fetch data
 import { toast } from 'react-hot-toast'
+import AuthContext from '../context/context'
 // import { events } from '../data/CalenderDateDemoData'
 
 const PrebookProperty = () => {
+  const { name, number, id } = useContext(AuthContext);
   const [states, setStates] = useState([])
   const [places, setPlaces] = useState([])
   const [properties, setProperties] = useState([])
@@ -36,7 +38,7 @@ const PrebookProperty = () => {
     hostOwnerName: 'prebook',
     hostNumber: 'prebook',
     totalBooking: '0',
-    bookingpartnerid: 'prebook',
+    bookingpartnerid: id,
     bookingPartnerName: 'admin',
     bookingPartnerPhoneNumber: 'prebook',
     farmTref: '0',

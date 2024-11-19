@@ -1,11 +1,13 @@
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useCallback, useContext } from 'react'
 import Calender from '../components/Calender'
 import { Link, useNavigate } from 'react-router-dom'
 import { CREATE_FORM } from '../routes/Routes'
 import axios from 'axios'
 import { Box, Button, Modal, TextField, Typography } from '@mui/material'
 import { toast } from 'react-hot-toast'
+import AuthContext from '../context/context'
 const PreBook = () => {
+  const { name, number, id } = useContext(AuthContext);
   const [states, setStates] = useState([])
   const [places, setPlaces] = useState([])
   const [selectedState, setSelectedState] = useState('')
@@ -35,7 +37,7 @@ const PreBook = () => {
     hostOwnerName: 'prebook',
     hostNumber: 'prebook',
     totalBooking: '0',
-    bookingpartnerid: 'prebook',
+    bookingpartnerid: id,
     bookingPartnerName: 'admin',
     bookingPartnerPhoneNumber: 'prebook',
     farmTref: '0',
@@ -112,7 +114,7 @@ const PreBook = () => {
       .then((response) => {
         console.log('Form submitted successfully:', response.data);
         toast.success('Successfully Saved data!');
-        window.location.reload();
+        // window.location.reload();
         setIsModalOpen(false); // Close modal
         // navigate(INVOICE_ROUTE, { state: selectedFields }); // Pass selectedFields, not formData
       })

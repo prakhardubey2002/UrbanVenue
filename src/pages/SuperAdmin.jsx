@@ -8,6 +8,7 @@ import {
   ALL_OCCASION,
   All_ADMIN,
   REPORT,
+  SUPER_ADMIN_INVOICE,
 } from '../routes/Routes'
 import SupervisorAccountIcon from '@mui/icons-material/SupervisorAccount'
 const SuperAdmin = () => {
@@ -24,6 +25,7 @@ const SuperAdmin = () => {
         return navigate(All_ADMIN)
       case 'Report':
         return navigate(REPORT)
+      
     }
   }
   return (
@@ -71,6 +73,7 @@ const SuperAdmin = () => {
             <p>Report</p>
             <ArrowForwardIosIcon />
           </div>
+          
         </div>
       </div>
     </div>

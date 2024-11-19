@@ -10,6 +10,7 @@ import {
   PREBOOK,
   PREBOOK_BY_DATERANGE,
   PREBOOK_PROPERTY,
+  SUPER_ADMIN_INVOICE,
 } from '../routes/Routes'
 const Admin = () => {
   const navigate = useNavigate()
@@ -29,6 +30,8 @@ const Admin = () => {
         return navigate(PREBOOK_BY_DATERANGE)
       case 'ADMIN_INVOICE':
         return navigate(ADMIN_INVOICE)
+        case 'SUPER_ADMIN_INVOICE':
+        return navigate(SUPER_ADMIN_INVOICE)
     }
   }
   return (
@@ -90,6 +93,14 @@ const Admin = () => {
             <p>Invoices</p>
             <ArrowForwardIosIcon />
           </div>
+          <div
+            onClick={() => redirect('SUPER_ADMIN_INVOICE')}
+            className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
+          >
+            <p>Invoices Update</p>
+            <ArrowForwardIosIcon />
+          </div>
+          
         </div>
       </div>
     </div>

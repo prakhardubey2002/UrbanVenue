@@ -1,11 +1,14 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useContext } from 'react';
 import CalenderD from '../components/CalenderD';
 import { useNavigate } from 'react-router-dom';
 import { CREATE_FORM } from '../routes/Routes';
 import axios from 'axios';
 import { Box, Button, Modal, TextField, Typography } from '@mui/material'
+import AuthContext from '../context/context';
+import toast from 'react-hot-toast';
 
 const PrebookbyDateRange = () => {
+  const { name, number, id } = useContext(AuthContext);
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [calenderEvents, setCalenderEvents] = useState({});
@@ -21,9 +24,11 @@ const PrebookbyDateRange = () => {
   });
 
   useEffect(() => {
+    console.log("wnsdjnds")
     console.log(data.venue);
     console.log(data.date);
     console.log(data.city);
+    console.log("wnsdjnds")
   }, [data]);
   const generateId = () => {
     const now = new Date();
@@ -60,7 +65,7 @@ const PrebookbyDateRange = () => {
     hostOwnerName: 'prebook',
     hostNumber: 'prebook',
     totalBooking: '0',
-    bookingpartnerid: 'prebook',
+    bookingpartnerid: id,
     bookingPartnerName: 'admin',
     bookingPartnerPhoneNumber: 'prebook',
     farmTref: '0',
@@ -93,7 +98,7 @@ const PrebookbyDateRange = () => {
     cancelreason: 'prebook',
   })
   const handleDoneClick = () => {
- 
+ console.log(data)
     const date = new Date(startDate)
     if (isNaN(date.getTime())) {
       throw new Error('Invalid date')
@@ -104,9 +109,9 @@ const PrebookbyDateRange = () => {
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
       checkInDate: formattedDate, // Set the current date in YYYY-MM-DD format
-    //   state:selectedState,
+      state:data.city,
       venue:selectedProperty,
-    //   citySuburb:selectedPlace,
+      citySuburb:data.city,
       
 
     }));
