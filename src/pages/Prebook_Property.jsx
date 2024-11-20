@@ -26,7 +26,7 @@ const PrebookProperty = () => {
     bookingId: 'admin-prebook',
     guestName: 'prebook',
     phoneNumber: 'prebook',
-    checkInDate:'',
+    checkInDate: '',
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
@@ -71,7 +71,7 @@ const PrebookProperty = () => {
     cancelreason: 'prebook',
   })
   const handleDoneClick = () => {
- 
+
     const date = new Date(selectedDate)
     if (isNaN(date.getTime())) {
       throw new Error('Invalid date')
@@ -82,10 +82,10 @@ const PrebookProperty = () => {
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
       checkInDate: formattedDate, // Set the current date in YYYY-MM-DD format
-      state:selectedState,
-      venue:selectedProperty,
-      citySuburb:selectedPlace,
-      
+      state: selectedState,
+      venue: selectedProperty,
+      citySuburb: selectedPlace,
+
 
     }));
     setIsModalOpen(true) // Open modal
@@ -93,17 +93,17 @@ const PrebookProperty = () => {
 
   const handleCloseModal = () => {
     const formDataToSend = new FormData();
-  
+
     // Append all the fields from selectedFields to the FormData object
     for (let key in selectedFields) {
       formDataToSend.append(key, selectedFields[key]);
     }
-  console.log(formDataToSend)
+    console.log(formDataToSend)
     // Append the photo file, if exists
     if (selectedFields.photo) {
       formDataToSend.append('photo', selectedFields.photo);
     }
-  
+
     // Send data via axios POST request
     axios
       .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
@@ -122,7 +122,7 @@ const PrebookProperty = () => {
         console.error('Error submitting form:', error);
         toast.error(`Failed to save data! ${error}`);
       });
-  
+
     setIsModalOpen(false); // Close modal
   };
   // const [defaultDate, setDefaultDate] = useState(new Date())

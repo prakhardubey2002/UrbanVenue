@@ -48,7 +48,7 @@ const CreateFarm = () => {
     if (!str) return ''; // Return empty string if input is empty
     return str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
   };
-  
+
   // Generate unique farmId based on stateName and placeName
   const generateFarmId = (stateName, placeName, name) => {
     const cleanedStateName = stateName
@@ -83,15 +83,15 @@ const CreateFarm = () => {
   // Handle input change
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
+
     // Format stateName and placeName before updating
     const formattedValue = (name === 'stateName' || name === 'placeName')
       ? capitalizeFirstLetter(value)
       : value;
-  
+
     setFormData((prevData) => {
       const updatedData = { ...prevData, [name]: formattedValue };
-  
+
       // If stateName or placeName is changed, update farmId
       if (name === 'stateName' || name === 'placeName' || name === 'name') {
         updatedData.farmId = generateFarmId(
@@ -100,32 +100,32 @@ const CreateFarm = () => {
           updatedData.name
         );
       }
-  
+
       // If stateName is changed, update state to the same value
       if (name === 'stateName') {
         updatedData.state = formattedValue;
       }
-  
+
       // If placeName is changed, update suburb to the same value
       if (name === 'placeName') {
         updatedData.suburb = formattedValue;
       }
-  
+
       // If suburb is changed, update placeName to the same value
       if (name === 'suburb') {
         updatedData.placeName = formattedValue;
       }
-  
+
       // Update balancePayment if totalBooking and advance are changed
       if (name === 'totalBooking' || name === 'advance') {
         updatedData.balancePayment =
           parseInt(updatedData.totalBooking) - parseInt(updatedData.advance) || 0;
       }
-  
+
       return updatedData;
     });
   };
-  
+
   useEffect(() => {
     // Fetch occasions from the API
     const fetchOccasions = async () => {

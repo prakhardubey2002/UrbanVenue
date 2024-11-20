@@ -25,7 +25,7 @@ const PreBook = () => {
     bookingId: 'admin-prebook',
     guestName: 'prebook',
     phoneNumber: 'prebook',
-    checkInDate:'',
+    checkInDate: '',
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
@@ -71,7 +71,7 @@ const PreBook = () => {
   })
 
   const handleDoneClick = () => {
- 
+
     const date = new Date(selectedDate)
     if (isNaN(date.getTime())) {
       throw new Error('Invalid date')
@@ -82,10 +82,10 @@ const PreBook = () => {
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
       checkInDate: formattedDate, // Set the current date in YYYY-MM-DD format
-      state:selectedState,
-      venue:selectedProperty,
-      citySuburb:selectedPlace,
-      
+      state: selectedState,
+      venue: selectedProperty,
+      citySuburb: selectedPlace,
+
 
     }));
     setIsModalOpen(true) // Open modal
@@ -93,17 +93,17 @@ const PreBook = () => {
 
   const handleCloseModal = () => {
     const formDataToSend = new FormData();
-  
+
     // Append all the fields from selectedFields to the FormData object
     for (let key in selectedFields) {
       formDataToSend.append(key, selectedFields[key]);
     }
-  console.log(formDataToSend)
+    console.log(formDataToSend)
     // Append the photo file, if exists
     if (selectedFields.photo) {
       formDataToSend.append('photo', selectedFields.photo);
     }
-  
+
     // Send data via axios POST request
     axios
       .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
@@ -122,10 +122,10 @@ const PreBook = () => {
         console.error('Error submitting form:', error);
         toast.error(`Failed to save data! ${error}`);
       });
-  
+
     setIsModalOpen(false); // Close modal
   };
-  
+
   useEffect(() => {
     const fetchStates = async () => {
       try {
@@ -335,9 +335,8 @@ const PreBook = () => {
 
         <button
           onClick={handleDoneClick}
-          className={`button md:m-5  ${
-            isFormValid() ? '' : 'opacity-50 cursor-not-allowed'
-          }`}
+          className={`button md:m-5  ${isFormValid() ? '' : 'opacity-50 cursor-not-allowed'
+            }`}
           disabled={!isFormValid()}
         >
           Done

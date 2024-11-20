@@ -270,14 +270,14 @@ const AdminInvoice = () => {
                       placeholder="Phone Number"
                       value={selectedphonenumber}
                       onChange={(e) => {
-                        const newValue = e.target.value; 
+                        const newValue = e.target.value;
                         if (newValue.length <= 10) {
                           setSelectedPhonenumber(newValue); // Update state only if the length is 10 or less
                         }
                       }}
                       list="phoneList"
                       pattern="[0-9]{10}"
-                      // maxLength={10}
+                    // maxLength={10}
                     />
                     <datalist id="phoneList">
                       {phonenumber.map((phone, index) => (
@@ -294,7 +294,7 @@ const AdminInvoice = () => {
                       placeholder="Total value"
                       value={totalBookingValue}
                       onChange={(e) => settotalBookingValue(e.target.value)}
-                      // list="phoneList"
+                    // list="phoneList"
                     />
                   </div>
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
@@ -361,7 +361,7 @@ const AdminInvoice = () => {
                   </div>
                 </div>
 
-               
+
               </div>
               <DataTable
                 occasions={occasions}

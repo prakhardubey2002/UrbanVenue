@@ -32,7 +32,7 @@ const PrebookbyDateRange = () => {
   }, [data]);
   const generateId = () => {
     const now = new Date();
-  
+
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
     const date = String(now.getDate()).padStart(2, '0');
@@ -40,20 +40,20 @@ const PrebookbyDateRange = () => {
     const minutes = String(now.getMinutes()).padStart(2, '0');
     const seconds = String(now.getSeconds()).padStart(2, '0');
     const milliseconds = String(now.getMilliseconds()).padStart(3, '0');
-  
+
     return `ID-${year}${month}${date}-${hours}${minutes}${seconds}${milliseconds}`;
   };
-  
+
   // Example usage
   const uniqueId = generateId();
   console.log(uniqueId); // Output: "ID-20241117-123456789"
-  
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [selectedFields, setSelectedFields] = useState({
     bookingId: `admin-prebook-${generateId()} `,
     guestName: 'prebook',
     phoneNumber: 'prebook',
-    checkInDate:'',
+    checkInDate: '',
     checkInTime: '',
     checkOutDate: '',
     checkOutTime: '',
@@ -98,7 +98,7 @@ const PrebookbyDateRange = () => {
     cancelreason: 'prebook',
   })
   const handleDoneClick = () => {
- console.log(data)
+    console.log(data)
     const date = new Date(startDate)
     if (isNaN(date.getTime())) {
       throw new Error('Invalid date')
@@ -109,10 +109,10 @@ const PrebookbyDateRange = () => {
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
       checkInDate: formattedDate, // Set the current date in YYYY-MM-DD format
-      state:data.city,
-      venue:selectedProperty,
-      citySuburb:data.city,
-      
+      state: data.city,
+      venue: selectedProperty,
+      citySuburb: data.city,
+
 
     }));
     setIsModalOpen(true) // Open modal
@@ -120,17 +120,17 @@ const PrebookbyDateRange = () => {
 
   const handleCloseModal = () => {
     const formDataToSend = new FormData();
-  
+
     // Append all the fields from selectedFields to the FormData object
     for (let key in selectedFields) {
       formDataToSend.append(key, selectedFields[key]);
     }
-  console.log(formDataToSend)
+    console.log(formDataToSend)
     // Append the photo file, if exists
     if (selectedFields.photo) {
       formDataToSend.append('photo', selectedFields.photo);
     }
-  
+
     // Send data via axios POST request
     axios
       .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
@@ -149,7 +149,7 @@ const PrebookbyDateRange = () => {
         console.error('Error submitting form:', error);
         toast.error(`Failed to save data! ${error}`);
       });
-  
+
     setIsModalOpen(false); // Close modal
   };
   // Fetch farms based on date range
@@ -426,7 +426,7 @@ const PrebookbyDateRange = () => {
           </div>
         ))}
       </div>
-      
+
     </div>
   );
 };

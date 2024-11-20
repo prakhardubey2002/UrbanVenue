@@ -178,26 +178,22 @@ const AllFarms = () => {
 
   const handleSubmitUpdate = async () => {
     try {
-      console.log(
-        `Submitting update to: https://backend.urbanvenue.in/api/calender/update-farm/${currentFarm.farmId}`
-      )
-      console.log('Updated Fields:', updatedFields) // Log the updated fields
+      const { farmId } = currentFarm; // Assuming `state` and `place` are part of `currentFarm`
+      // console.log(`Submitting update to: https://backend.urbanvenue.in/api/calender/update-farm/${state}/${place}/${farmId}`);
+      console.log('Updated Fields:', updatedFields);
+      console.log('==>>ID:', farmId);
 
-      const response = await axios.patch(
-        `https://backend.urbanvenue.in/api/calender/update-farm/${currentFarm.farmId}`,
+      await axios.patch(
+        `https://backend.urbanvenue.in/api/calender/update-farm/${farmId}`,
         updatedFields
-      )
+      );
 
-      console.log('Update response:', response.data) // Log the response data
-      setDialogOpen(false)
-      // window.location.reload() // Reload the page or you may call fetchFarms()
+      setDialogOpen(false);
+      // window.location.reload(); // Reload or fetch farms
     } catch (error) {
-      console.error(
-        'Error updating farm:',
-        error.response?.data || error.message
-      ) // Improved error logging
+      console.error('Error updating farm:', error.response?.data || error.message);
     }
-  }
+  };
 
   const handleDeleteFarm = async (state, place, farmId) => {
     const confirmDelete = window.confirm(

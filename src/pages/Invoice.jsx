@@ -515,7 +515,6 @@ const Invoice = () => {
                   <>
                     <input
                       className="mx-2"
-                      defaultChecked
                       type="radio"
                       name="age"
                       disabled
@@ -527,7 +526,6 @@ const Invoice = () => {
                   <>
                     <input
                       className="mx-2"
-                      defaultChecked
                       type="radio"
                       name="age"
                       disabled
@@ -573,6 +571,7 @@ const Invoice = () => {
               <img
                 src={Qr} // Replace this with your logo
                 alt="Logo"
+                style={{ width: '200px', height: '200px' }}
                 // className="border border-emerald-100 "
               />
               <a
@@ -586,7 +585,7 @@ const Invoice = () => {
             <div className="flex flex-col justify-end items-end ">
               <div>
                 <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
-                  <p className="text-gray-700">+91-9987656876 </p>
+                  <p className="text-gray-700">+91-9871371364 </p>
                   <div className="bg-red-600 rounded-2xl p-1 ml-2 ">
                     <LocalPhoneIcon className="text-white  " />
                   </div>
@@ -594,7 +593,7 @@ const Invoice = () => {
               </div>
               <div>
                 <div className=" flex items-center justify-center border border-white p-1 top-[-10%] rounded-3xl ">
-                  <p className="text-gray-700">urban@gmail.com </p>
+                  <p className="text-gray-700">info@urbanvenue.in </p>
                   <div className="bg-red-600 rounded-2xl p-1 ml-2">
                     <EmailIcon className="text-white" />
                   </div>

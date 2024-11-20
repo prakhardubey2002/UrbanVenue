@@ -307,7 +307,7 @@ const ExecutiveList = () => {
                 value={selectedExecutive.phoneNumber}
                 onChange={(e) => {
                   const newValue = e.target.value.replace(/\D/g, '');
-                  if (newValue.length <= 10) {  
+                  if (newValue.length <= 10) {
                     setSelectedExecutive({
                       ...selectedExecutive,
                       phoneNumber: newValue,
