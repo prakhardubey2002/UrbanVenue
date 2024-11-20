@@ -97,8 +97,23 @@ const PrebookbyDateRange = () => {
     cancellledby: 'prebook',
     cancelreason: 'prebook',
   })
-  const handleDoneClick = () => {
-    console.log(data)
+  const handleDoneClick = async () => {
+    const addressResponse = await axios.get(
+      `https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`
+    );
+
+    const address = addressResponse.data;
+    setAddress(address);
+    setSelectedFields(prevState => ({
+      ...prevState, // Keep the previous state values intact
+      state:address.address.state,
+      venue:selectedProperty,
+      citySuburb:address.address.suburb,
+      
+
+    }));
+    console.log('Address:', address.address);
+ console.log(data)
     const date = new Date(startDate)
     if (isNaN(date.getTime())) {
       throw new Error('Invalid date')
@@ -109,10 +124,7 @@ const PrebookbyDateRange = () => {
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
       checkInDate: formattedDate, // Set the current date in YYYY-MM-DD format
-      state: data.city,
-      venue: selectedProperty,
-      citySuburb: data.city,
-
+     
 
     }));
     setIsModalOpen(true) // Open modal
