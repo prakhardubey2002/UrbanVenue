@@ -106,14 +106,14 @@ const PrebookbyDateRange = () => {
     setAddress(address);
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
-      state:address.address.state,
-      venue:selectedProperty,
-      citySuburb:address.address.suburb,
-      
+      state: address.address.state,
+      venue: selectedProperty,
+      citySuburb: address.address.suburb,
+
 
     }));
     console.log('Address:', address.address);
- console.log(data)
+    console.log(data)
     const date = new Date(startDate)
     if (isNaN(date.getTime())) {
       throw new Error('Invalid date')
@@ -124,7 +124,7 @@ const PrebookbyDateRange = () => {
     setSelectedFields(prevState => ({
       ...prevState, // Keep the previous state values intact
       checkInDate: formattedDate, // Set the current date in YYYY-MM-DD format
-     
+
 
     }));
     setIsModalOpen(true) // Open modal

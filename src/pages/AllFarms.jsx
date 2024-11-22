@@ -128,6 +128,7 @@ const AllFarms = () => {
       address: {
         addressLine1: farm.address.addressLine1,
         addressLine2: farm.address.addressLine2,
+        state: farm.address.state,
         suburb: farm.address.suburb,
         zipCode: farm.address.zipCode,
         country: farm.address.country,
@@ -189,7 +190,7 @@ const AllFarms = () => {
       );
 
       setDialogOpen(false);
-      // window.location.reload(); // Reload or fetch farms
+      window.location.reload(); // Reload or fetch farms
     } catch (error) {
       console.error('Error updating farm:', error.response?.data || error.message);
     }
