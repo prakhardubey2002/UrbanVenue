@@ -181,7 +181,7 @@ const CreateVenueEvent = () => {
   }, [
     formData.totalBooking,
     formData.advance,
-    formData.urbanvenuecommission,
+    formData.urbanvenuecommission = 0,
     formData.advanceCollectedBy,
     formData.pendingCollectedBy,
     formData.balancePayment,
