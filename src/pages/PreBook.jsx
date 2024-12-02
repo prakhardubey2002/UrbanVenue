@@ -106,7 +106,7 @@ const PreBook = () => {
 
     // Send data via axios POST request
     axios
-      .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
+      .post('http://localhost:9000/api/invoices/invoices', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data', // Required for file uploads
         },
@@ -130,7 +130,7 @@ const PreBook = () => {
     const fetchStates = async () => {
       try {
         const stateResponse = await axios.get(
-          'https://backend.urbanvenue.in/api/calender/states'
+          'http://localhost:9000/api/calender/states'
         )
         setStates(stateResponse.data)
       } catch (error) {
@@ -145,7 +145,7 @@ const PreBook = () => {
       const fetchPlaces = async () => {
         try {
           const placeResponse = await axios.get(
-            `https://backend.urbanvenue.in/api/calender/${selectedState}/places`
+            `http://localhost:9000/api/calender/${selectedState}/places`
           )
           setPlaces(placeResponse.data)
         } catch (error) {
@@ -166,7 +166,7 @@ const PreBook = () => {
     if (selectedState && selectedPlace && selectedDate) {
       try {
         const response = await axios.get(
-          `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`
+          `http://localhost:9000/api/calender/${selectedState}/${selectedPlace}/farms/${selectedDate}`
         )
         const farms = response.data
 
@@ -222,7 +222,7 @@ const PreBook = () => {
     try {
       // Fetch the address
       const addressResponse = await axios.get(
-        `https://backend.urbanvenue.in/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
+        `http://localhost:9000/api/calender/${selectedState}/${selectedPlace}/${selectedProperty}/details`
       )
 
       // Set the address state

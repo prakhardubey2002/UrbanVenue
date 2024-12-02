@@ -89,7 +89,7 @@ const Dashboard = () => {
 
       // Make API request
       const response = await axios.get(
-        `https://backend.urbanvenue.in/api/invoices/search?${queryString}`
+        `http://localhost:9000/api/invoices/search?${queryString}`
       )
 
       // Set the data received from the API
@@ -106,21 +106,21 @@ const Dashboard = () => {
       try {
         const response = await Promise.all([
           axios.get(
-            `https://backend.urbanvenue.in/api/invoices/invoicesbybookingid/${id}`
+            `http://localhost:9000/api/invoices/invoicesbybookingid/${id}`
           ),
           axios.get(
-            `https://backend.urbanvenue.in/api/invoices/guestsbybookingid/${id}`
+            `http://localhost:9000/api/invoices/guestsbybookingid/${id}`
           ),
           axios.get(
-            `https://backend.urbanvenue.in/api/invoices/ownersbybookingid/${id}`
+            `http://localhost:9000/api/invoices/ownersbybookingid/${id}`
           ),
           axios.get(
-            `https://backend.urbanvenue.in/api/invoices/venuesbybookingid/${id}`
+            `http://localhost:9000/api/invoices/venuesbybookingid/${id}`
           ),
           axios.get(
-            `https://backend.urbanvenue.in/api/invoices/unique-phone-numbersbybookingid/${id}`
+            `http://localhost:9000/api/invoices/unique-phone-numbersbybookingid/${id}`
           ),
-          axios.get('https://backend.urbanvenue.in/occasion/occasions'),
+          axios.get('http://localhost:9000/occasion/occasions'),
         ])
 
         setData(response[0].data)

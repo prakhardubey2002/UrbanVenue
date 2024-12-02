@@ -31,7 +31,7 @@ const CreatebyDateRange = () => {
       try {
         console.log(`Fetching farms from: ${startDate} to ${endDate}`);
         const response = await axios.get(
-          `https://backend.urbanvenue.in/api/calender/farms-free-by-date-range`,
+          `http://localhost:9000/api/calender/farms-free-by-date-range`,
           { params: { startDate, endDate } }
         );
         const farms = response.data;
@@ -92,9 +92,9 @@ const CreatebyDateRange = () => {
 
 
       // Fetch the address
-      // console.log(`https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`)
+      // console.log(`http://localhost:9000/api/calender/${data.city}/${selectedProperty}/details`)
       const addressResponse = await axios.get(
-        `https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`
+        `http://localhost:9000/api/calender/${data.city}/${selectedProperty}/details`
       );
 
       const address = addressResponse.data;

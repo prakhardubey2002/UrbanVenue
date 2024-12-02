@@ -111,7 +111,7 @@ const CalculateTable = ({ data, setData, occasions }) => {
     try {
       console.log(selectedRow)
       // Update API URL (use dynamic ID from selectedRow if needed)
-      const apiUrl = `https://backend.urbanvenue.in/api/invoices/invoices/${selectedRow._id}`
+      const apiUrl = `http://localhost:9000/api/invoices/invoices/${selectedRow._id}`
 
       // Send PUT request to update the invoice
       const response = await fetch(apiUrl, {

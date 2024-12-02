@@ -99,7 +99,7 @@ const PrebookbyDateRange = () => {
   })
   const handleDoneClick = async () => {
     const addressResponse = await axios.get(
-      `https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`
+      `http://localhost:9000/api/calender/${data.city}/${selectedProperty}/details`
     );
 
     const address = addressResponse.data;
@@ -145,7 +145,7 @@ const PrebookbyDateRange = () => {
 
     // Send data via axios POST request
     axios
-      .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
+      .post('http://localhost:9000/api/invoices/invoices', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data', // Required for file uploads
         },
@@ -170,7 +170,7 @@ const PrebookbyDateRange = () => {
       try {
         console.log(`Fetching farms from: ${startDate} to ${endDate}`);
         const response = await axios.get(
-          `https://backend.urbanvenue.in/api/calender/farms-free-by-date-range`,
+          `http://localhost:9000/api/calender/farms-free-by-date-range`,
           { params: { startDate, endDate } }
         );
         const farms = response.data;
@@ -231,9 +231,9 @@ const PrebookbyDateRange = () => {
 
 
       // Fetch the address
-      // console.log(`https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`)
+      // console.log(`http://localhost:9000/api/calender/${data.city}/${selectedProperty}/details`)
       const addressResponse = await axios.get(
-        `https://backend.urbanvenue.in/api/calender/${data.city}/${selectedProperty}/details`
+        `http://localhost:9000/api/calender/${data.city}/${selectedProperty}/details`
       );
 
       const address = addressResponse.data;

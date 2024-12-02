@@ -33,7 +33,7 @@ const CreateVenueEvent = () => {
     const fetchOccasions = async () => {
       try {
         const response = await axios.get(
-          'https://backend.urbanvenue.in/occasion/occasions'
+          'http://localhost:9000/occasion/occasions'
         )
         setOccasions(response.data) // Assuming response.data is an array of occasion objects
       } catch (error) {
@@ -45,7 +45,7 @@ const CreateVenueEvent = () => {
     const idxfetch = async () => {
       try {
         const response = await axios.get(
-          `https://backend.urbanvenue.in/api/invoices/count/${data?.details?.name}`
+          `http://localhost:9000/api/invoices/count/${data?.details?.name}`
         )
 
         const invoiceCount = response.data.invoiceCount
@@ -279,7 +279,7 @@ const CreateVenueEvent = () => {
     }
 
     axios
-      .post('https://backend.urbanvenue.in/api/invoices/invoices', formDataToSend, {
+      .post('http://localhost:9000/api/invoices/invoices', formDataToSend, {
         headers: {
           'Content-Type': 'multipart/form-data', // Required for file uploads
         },

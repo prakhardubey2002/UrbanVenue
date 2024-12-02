@@ -61,7 +61,7 @@ const CreateOccasion = () => {
     };
 
     try {
-      const response = await axios.post('https://backend.urbanvenue.in/occasion/occasions', dataToSend);
+      const response = await axios.post('http://localhost:9000/occasion/occasions', dataToSend);
       toast.success('Occasion created successfully!');
       navigate(ALL_OCCASION); // Redirect to the occasions list page
     } catch (error) {

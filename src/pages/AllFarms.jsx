@@ -75,7 +75,7 @@ const AllFarms = () => {
     const fetchFarms = async () => {
       try {
         const response = await axios.get(
-          'https://backend.urbanvenue.in/api/calender/all-farms'
+          'http://localhost:9000/api/calender/all-farms'
         )
         const farmData = response.data
 
@@ -180,12 +180,12 @@ const AllFarms = () => {
   const handleSubmitUpdate = async () => {
     try {
       const { farmId } = currentFarm; // Assuming `state` and `place` are part of `currentFarm`
-      // console.log(`Submitting update to: https://backend.urbanvenue.in/api/calender/update-farm/${state}/${place}/${farmId}`);
+      // console.log(`Submitting update to: http://localhost:9000/api/calender/update-farm/${state}/${place}/${farmId}`);
       console.log('Updated Fields:', updatedFields);
       console.log('==>>ID:', farmId);
 
       await axios.patch(
-        `https://backend.urbanvenue.in/api/calender/update-farm/${farmId}`,
+        `http://localhost:9000/api/calender/update-farm/${farmId}`,
         updatedFields
       );
 
@@ -203,7 +203,7 @@ const AllFarms = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `https://backend.urbanvenue.in/api/calender/farms/${state}/${place}/${farmId}`
+          `http://localhost:9000/api/calender/farms/${state}/${place}/${farmId}`
         )
         setFarms(farms.filter((farm) => farm.farmId !== farmId))
         setFilteredFarms(filteredFarms.filter((farm) => farm.farmId !== farmId))

@@ -65,7 +65,7 @@ const CreateAdmin = () => {
     };
 
     try {
-      const response = await axios.post('https://backend.urbanvenue.in/register-admin', dataToSend);
+      const response = await axios.post('http://localhost:9000/register-admin', dataToSend);
       toast.success('admin created successfully!');
       navigate(All_ADMIN); // Change this to your desired redirect route
     } catch (error) {

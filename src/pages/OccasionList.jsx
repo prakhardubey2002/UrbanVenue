@@ -27,7 +27,7 @@ const OccasionList = () => {
   const fetchOccasions = async () => {
     try {
       const response = await axios.get(
-        'https://backend.urbanvenue.in/occasion/occasions'
+        'http://localhost:9000/occasion/occasions'
       )
       setOccasions(response.data)
     } catch (error) {
@@ -49,11 +49,11 @@ const OccasionList = () => {
   const handleUpdate = async () => {
     try {
       console.log(
-        `https://backend.urbanvenue.in/occasion/occasion/${selectedOccasion._id}`
+        `http://localhost:9000/occasion/occasion/${selectedOccasion._id}`
       )
       console.log(selectedOccasion)
       await axios.patch(
-        `https://backend.urbanvenue.in/occasion/occasion/${selectedOccasion._id}`,
+        `http://localhost:9000/occasion/occasion/${selectedOccasion._id}`,
         selectedOccasion
       )
       toast.success('Occasion updated successfully!')
@@ -72,7 +72,7 @@ const OccasionList = () => {
     if (confirmDelete) {
       try {
         await axios.delete(
-          `https://backend.urbanvenue.in/occasion/occasions/${occasionId}`
+          `http://localhost:9000/occasion/occasions/${occasionId}`
         )
         toast.success('Occasion deleted successfully!')
         fetchOccasions()

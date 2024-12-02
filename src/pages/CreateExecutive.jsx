@@ -64,7 +64,7 @@ const CreateExecutive = () => {
     };
 
     try {
-      const response = await axios.post('https://backend.urbanvenue.in/register-executive', dataToSend);
+      const response = await axios.post('http://localhost:9000/register-executive', dataToSend);
       toast.success('Executive created successfully!');
       navigate('/executives'); // Change this to your desired redirect route
     } catch (error) {

@@ -31,7 +31,7 @@ const ExecutiveList = () => {
 
   const fetchExecutives = async () => {
     try {
-      const response = await axios.get('https://backend.urbanvenue.in/executives')
+      const response = await axios.get('http://localhost:9000/executives')
       setExecutives(response.data)
     } catch (error) {
       console.error('Error fetching executives:', error)
@@ -58,7 +58,7 @@ const ExecutiveList = () => {
   const handleUpdate = async () => {
     try {
       await axios.patch(
-        `https://backend.urbanvenue.in/executives/${selectedExecutive._id}`,
+        `http://localhost:9000/executives/${selectedExecutive._id}`,
         selectedExecutive
       )
       toast.success('Executive updated successfully!')
@@ -76,8 +76,8 @@ const ExecutiveList = () => {
     )
     if (confirmDelete) {
       try {
-        console.log(`https://backend.urbanvenue.in/executives/${executiveId}`)
-        await axios.delete(`https://backend.urbanvenue.in/executives/${executiveId}`)
+        console.log(`http://localhost:9000/executives/${executiveId}`)
+        await axios.delete(`http://localhost:9000/executives/${executiveId}`)
         toast.success('Executive deleted successfully!')
         fetchExecutives() // Refresh the list after deletion
       } catch (error) {
