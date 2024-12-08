@@ -10,7 +10,7 @@ import { toast } from 'react-hot-toast'
 import { INVOICE_ROUTE } from '../routes/Routes'
 import { useNavigate } from 'react-router-dom'
 import DownloadIcon from '@mui/icons-material/Download'
-const Table = ({ data, setData, occasions }) => {
+const Table = ({ data, setData, occasions,setTotal }) => {
   const navigate = useNavigate()
   const [open, setOpen] = useState(false)
   const [selectedRow, setSelectedRow] = useState({})
@@ -66,6 +66,18 @@ const Table = ({ data, setData, occasions }) => {
       }
     })
   }, [selectedRow?.farmTref, selectedRow?.otherServices])
+  useEffect(() => {
+    if (typeof setTotal !== "function") {
+      console.warn("setTotal is not defined or not a function. Skipping effect.");
+      return;
+    }
+  
+    const total = data.reduce((sum, tx) => sum + tx.totalBooking, 0); // Use reduce to calculate the total
+    console.log("Total:", total);
+    setTotal(total); // Update state with the calculated total
+  }, [data, setTotal]);
+  
+  
   const handleFormSubmit = async () => {
     try {
       console.log(selectedRow)

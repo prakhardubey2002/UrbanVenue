@@ -2,8 +2,10 @@ import React from 'react'
 import PieChartIcon from '@mui/icons-material/PieChart'
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos'
 import { useNavigate } from 'react-router-dom'
+
 import {
   ADMIN_INVOICE,
+  ADMIN_INVOICE_CENTER,
   ALL_EXECUTIVE,
   ALL_FARMS,
   ALL_OCCASION,
@@ -32,6 +34,8 @@ const Admin = () => {
         return navigate(ADMIN_INVOICE)
         case 'SUPER_ADMIN_INVOICE':
         return navigate(SUPER_ADMIN_INVOICE)
+      case 'ADMIN_INVOICE_CENTER':
+        return navigate(ADMIN_INVOICE_CENTER)
     }
   }
   return (
@@ -90,15 +94,20 @@ const Admin = () => {
             onClick={() => redirect('ADMIN_INVOICE')}
             className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
           >
-            <p>Invoices</p>
+            <p>Admin Invoices</p>
             <ArrowForwardIosIcon />
           </div>
           <div
             onClick={() => redirect('SUPER_ADMIN_INVOICE')}
             className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]"
           >
-            <p>Invoices Update</p>
+            <p>Admin Invoices Update</p>
             <ArrowForwardIosIcon />
+          </div>
+          <div onClick={()=> redirect('ADMIN_INVOICE_CENTER')} className=" hover:drop-shadow-md cursor-pointer m-4 rounded-xl flex justify-between items-center font-medium p-4 leading-[37.5px] bg-[#efefef]" >
+            <p>All Invoices Center</p>
+            <ArrowForwardIosIcon />
+
           </div>
           
         </div>

@@ -12,9 +12,13 @@ import DialogTitle from '@mui/material/DialogTitle'
 import DialogContent from '@mui/material/DialogContent'
 import DialogActions from '@mui/material/DialogActions'
 import Button from '@mui/material/Button'
-import SummarizeIcon from '@mui/icons-material/Summarize'
+import CustomNavTopbar from '../components/CustomNavTopbar'
+import { ADMIN_DASHBOARD, SUPER_ADMIN_DASHBOARD } from '../routes/Routes'
 import AuthContext from '../context/context'
-const Dashboard = () => {
+import AdminTable from '../components/AdminTable'
+import AdminInvoiceTable from '../components/AdminInvoicetable'
+const Invoicecenter = () => {
+  const { usertype } = useContext(AuthContext)
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -24,9 +28,7 @@ const Dashboard = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedGuest, setSelectedGuest] = useState('')
   const [selectedOwner, setSelectedOwner] = useState('')
-  const [numberOfKids, setNumberOfKids] = useState('')
-  const [numberOfAdults, setNumberOfAdults] = useState('')
-  const [bookingId, setbookingId] = useState('')
+  const [bookingPartnerName,setBookingPartnerName] =useState('')
   const [phonenumber, setPhonenumber] = useState([])
   const [selectedphonenumber, setSelectedPhonenumber] = useState([])
   const [selectedProperty, setSelectedProperty] = useState('')
@@ -39,15 +41,6 @@ const Dashboard = () => {
   const [occasions, setOccasions] = useState([])
   const [totalBookingValue, settotalBookingValue] = useState()
   const [totalBookingOperator, settotaltotalBookingOperator] = useState()
-  const { name, number, id } = useContext(AuthContext)
-  const [total, setTotal] = useState(0)
-  const handleTotalBookingChange = (e) => {
-    setTotalBooking(e.target.value)
-  }
-
-  const handleOperatorChange = (e) => {
-    setOperator(e.target.value)
-  }
   const handleOpenDialog = (message) => {
     setDialogMessage(message)
     setDialogOpen(true)
@@ -70,7 +63,7 @@ const Dashboard = () => {
     }
     try {
       console.log(
-        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} category ${selectedCategory}  `
+        `guest name: ${selectedGuest} venue: ${selectedProperty} owner: ${selectedOwner} phone: ${selectedphonenumber} status: ${selectedStatus} category: ${selectedCategory} start: ${startDate} end: ${endDate}`
       )
 
       const queryParams = {
@@ -82,12 +75,9 @@ const Dashboard = () => {
         selectedCategory, // Include selected category in query params
         startDate,
         endDate,
-        bookingpartnerid: id,
         totalBookingValue,
         totalBookingOperator,
-        numberOfAdults,
-        numberOfKids,
-        bookingId,
+        bookingPartnerName
       }
 
       // Convert the query params to a URL search string
@@ -111,21 +101,11 @@ const Dashboard = () => {
     const fetchData = async () => {
       try {
         const response = await Promise.all([
-          axios.get(
-            `http://localhost:9000/api/invoices/invoicesbybookingid/${id}`
-          ),
-          axios.get(
-            `http://localhost:9000/api/invoices/guestsbybookingid/${id}`
-          ),
-          axios.get(
-            `http://localhost:9000/api/invoices/ownersbybookingid/${id}`
-          ),
-          axios.get(
-            `http://localhost:9000/api/invoices/venuesbybookingid/${id}`
-          ),
-          axios.get(
-            `http://localhost:9000/api/invoices/unique-phone-numbersbybookingid/${id}`
-          ),
+          axios.get('http://localhost:9000/api/invoices/invoices'),
+          axios.get('http://localhost:9000/api/invoices/guests'),
+          axios.get('http://localhost:9000/api/invoices/owners'),
+          axios.get('http://localhost:9000/api/invoices/venues'),
+          axios.get('http://localhost:9000/api/invoices/unique-phone-numbers'),
           axios.get('http://localhost:9000/occasion/occasions'),
         ])
 
@@ -165,7 +145,10 @@ const Dashboard = () => {
 
   return (
     <div className="w-full h-screen flex flex-col">
-      <NavTopBar />
+      <CustomNavTopbar
+        path={usertype === 'Admin' ? ADMIN_DASHBOARD : SUPER_ADMIN_DASHBOARD}
+        text={'Create Property'}
+      />
       <div className="flex-1 flex justify-center items-center">
         <div className="px-4 w-[90%] min-h-[60%]">
           <div className="w-full">
@@ -198,37 +181,17 @@ const Dashboard = () => {
                       ))}
                     </datalist>
                   </div>
-
-                  {/* Filters and Search Inputs */}
-                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
-                    <SearchIcon className="text-Bordgrey" />
-                    <input
-                      type="number"
-                      value={numberOfAdults}
-                      onChange={(e) => setNumberOfAdults(e.target.value)}
-                      className="outline-none border-none px-2  w-full"
-                      placeholder="numberOfAdults"
-                    />
-                  </div>
-                  <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
-                    <SearchIcon className="text-Bordgrey" />
-                    <input
-                      type="number"
-                      value={numberOfKids}
-                      onChange={(e) => setNumberOfKids(e.target.value)}
-                      className="outline-none border-none px-2  w-full"
-                      placeholder="numberOfKids"
-                    />
-                  </div>
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
                     <SearchIcon className="text-Bordgrey" />
                     <input
                       type="text"
-                      value={bookingId}
-                      onChange={(e) => setbookingId(e.target.value)}
+                      value={bookingPartnerName}
+                      onChange={(e) => setBookingPartnerName(e.target.value)}
                       className="outline-none border-none px-2  w-full"
-                      placeholder="bookingId"
+                      placeholder="Executive/BookingPartner Name"
+                      
                     />
+                 
                   </div>
 
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
@@ -309,15 +272,10 @@ const Dashboard = () => {
                       className="outline-none border-none px-2 w-full"
                       placeholder="Phone Number"
                       value={selectedphonenumber}
-                      onChange={(e) => {
-                        const newValue = e.target.value
-                        if (newValue.length <= 10) {
-                          setSelectedPhonenumber(newValue) // Update state only if the length is 10 or less
-                        }
-                      }}
+                      onChange={(e) => setSelectedPhonenumber(e.target.value)}
                       list="phoneList"
                       pattern="[0-9]{10}"
-                      // maxLength={10}
+                      maxLength={10}
                     />
                     <datalist id="phoneList">
                       {phonenumber.map((phone, index) => (
@@ -334,7 +292,7 @@ const Dashboard = () => {
                       placeholder="Total value"
                       value={totalBookingValue}
                       onChange={(e) => settotalBookingValue(e.target.value)}
-                      // list="phoneList"
+                    // list="phoneList"
                     />
                   </div>
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
@@ -350,7 +308,6 @@ const Dashboard = () => {
                       <option value="eq">=</option>
                     </select>
                   </div>
-
                   <div className="relative flex items-center bg-white py-[8px] px-[10px] border border-Bordgrey rounded-md">
                     <select
                       className="outline-none border-none px-2 w-full"
@@ -401,86 +358,12 @@ const Dashboard = () => {
                       <p className="font-normal text-[14px]">Refresh</p>
                     </button>
                   </div>
-                  <div className="mt-2 md:mt-0">
-                    <button className="flex items-center justify-center py-[8px] px-[14px] border border-Bordgrey rounded-md">
-                      <SummarizeIcon className="text-black mr-2" />
-                      <p className="font-normal text-[14px]">Total : {total}</p>
-                    </button>
-                  </div>
                 </div>
-
-                {/* <div className="flex flex-wrap justify-between">
-                  <div className="flex flex-wrap md:flex-col md:space-y-2">
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <input
-                        type="text"
-                        className="outline-none border-none px-2"
-                        placeholder="Search Term"
-                      />
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <select
-                        className="outline-none border-none px-2"
-                        value={selectedStatus} // Bind the state value to the select input
-                        onChange={(e) => setSelectedStatus(e.target.value)} // Update the state when the value changes
-                      >
-                        <option value="" disabled>
-                          Select Status
-                        </option>
-                        <option value="Upcoming">Upcoming</option>
-                        <option value="Paid">Paid</option>
-                        <option value="Canceled">Canceled</option>
-                      </select>
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <input
-                        type="number"
-                        className="outline-none border-none px-2"
-                        placeholder="Phone Number"
-                        value={selectedphonenumber}
-                        onChange={(e) => setSelectedPhonenumber(e.target.value)}
-                        list="phoneList"
-                      />
-                      <datalist id="phoneList">
-                        {phonenumber.map((phone, index) => (
-                          <option key={index} value={phone}>
-                            {phone}
-                          </option>
-                        ))}
-                      </datalist>
-                    </div>
-                    <div className="flex items-center bg-white w-fit py-[8px] px-[4px] border border-Bordgrey rounded-md mr-2">
-                      <select
-                        className="outline-none border-none px-2"
-                        value={selectedCategory}
-                        onChange={(e) => setSelectedCategory(e.target.value)}
-                      >
-                        <option value="" disabled>
-                          Select Category
-                        </option>
-                        <option value="Wedding">Wedding</option>
-                        <option value="Engagement">Engagement</option>
-                        <option value="Office Party">Office Party</option>
-                        <option value="Haldi Ceremony">Haldi Ceremony</option>
-                        <option value="Mehndi Ceremony">Mehndi Ceremony</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="mt-2 md:mt-0">
-                    <button
-                      onClick={() => find()}
-                      className="w-full bg-Primary text-white h-[40px] flex items-center justify-center rounded-tl-[3px] border-t border-transparent px-4 py-[10px]"
-                    >
-                      <p>Find</p>
-                    </button>
-                  </div>
-                </div> */}
               </div>
-              <DataTable
+              <AdminInvoiceTable
                 occasions={occasions}
                 data={[...data].reverse()}
                 setData={setData}
-                setTotal={setTotal}
               />
             </div>
           </div>
@@ -501,4 +384,4 @@ const Dashboard = () => {
   )
 }
 
-export default Dashboard
+export default Invoicecenter

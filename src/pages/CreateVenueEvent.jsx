@@ -89,9 +89,7 @@ const CreateVenueEvent = () => {
     phoneNumber: '',
     checkInDate: date,
     checkInTime: data?.details?.checkInTime,
-    checkOutDate: new Date(data?.details?.checkOutDate)
-      .toISOString()
-      .split('T')[0],
+    checkOutDate:  new Date().toISOString().split("T")[0],
     checkOutTime: data.details.checkOutTime,
     email: '',
     // maxPeople: '',
@@ -404,7 +402,7 @@ const CreateVenueEvent = () => {
                 onChange={handleChange}
                 className="outline-none bg-Bordgrey my-4 mr-2 p-4 border border-Bordgrey rounded-sm"
                 type="date"
-                disabled
+                // disabled
               />
             </div>
             <div className="flex-1 flex flex-col">
@@ -427,6 +425,7 @@ const CreateVenueEvent = () => {
                 onChange={handleChange}
                 className="outline-none bg-Bordgrey my-4 mr-2 p-4 border border-Bordgrey rounded-sm"
                 type="date"
+                min={new Date().toISOString().split("T")[0]}
               />
             </div>
             <div className="flex-1 flex flex-col">

@@ -36,19 +36,19 @@ const Invoice = () => {
   const targetRefpic = useRef()
   const generatePDFx = () => {
     const input = document.getElementById('pdf-content');
-
+  
     html2canvas(input).then((canvas) => {
       const imgData = canvas.toDataURL('image/png');
       const pdf = new jsPDF('p', 'mm', 'a4'); // A4 size PDF
       const imgWidth = 210; // A4 width in mm
-      const pageHeight = 297; // A4 height in mm
+      const pageHeight = 400; // A4 height in mm
       const imgHeight = (canvas.height * imgWidth) / canvas.width;
       let heightLeft = imgHeight;
       let position = 0;
-
+  
       pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
       heightLeft -= pageHeight;
-
+  
       // Add more pages if content overflows
       while (heightLeft > 0) {
         position = heightLeft - imgHeight;
@@ -56,15 +56,23 @@ const Invoice = () => {
         pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
       }
-
+  
       // Add clickable link for www.urbanvenue.in
-      // Modify these coordinates based on the actual location in your PDF
-      pdf.textWithLink('www.urbanvenue.in', 12, 272, { url: 'https://www.urbanvenue.in' });
-      pdf.textWithLink('Click to see location on Google Map', 12, 215, { url: `${formData.maplink}` });
-
+      pdf.textWithLink('www.urbanvenue.in', 12, 178, { url: 'https://www.urbanvenue.in' });
+      pdf.textWithLink('Click to see location on Google Map', 12, 110, { url: `${formData.maplink}` });
+  
+      // Add an image below the link
+      const imageData = `${import.meta.env.VITE_BACKEND_URL}${formData.photo}`; // Replace with your base64 image string or use canvas.toDataURL() to get it dynamically.
+      const imageX =  60; // X-coordinate for the image
+      const imageY = 192; // Y-coordinate for the image, slightly below the link
+      const imageWidth = 80; // Desired width of the image
+      const imageHeight = 80; // Desired height of the image
+      pdf.addImage(imageData, 'PNG', imageX, imageY, imageWidth, imageHeight);
+  
       pdf.save(`${formData.guestName}.pdf`);
     });
   };
+  
   useEffect(() => {
     window.scrollTo(0, 0)
     // Construct the image URL
@@ -617,7 +625,7 @@ const Invoice = () => {
               </div>
             </div>
           </div>
-          {/* {imageExists && (
+          {imageExists && (
               <div className="my-8">
                 Refrence Doc :
                 <img
@@ -626,7 +634,7 @@ const Invoice = () => {
                   alt="Passed Image"
                 />
               </div>
-            )} */}
+            )}
         </div>
         <div className="h-[2vh] flex">
           <div className="flex-1 bg-black"></div>

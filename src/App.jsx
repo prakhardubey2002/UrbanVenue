@@ -7,6 +7,7 @@ import {
   ADMIN_CALCULATE,
   ADMIN_DASHBOARD,
   ADMIN_INVOICE,
+  ADMIN_INVOICE_CENTER,
   ALL_EXECUTIVE,
   ALL_FARMS,
   ALL_OCCASION,
@@ -49,6 +50,7 @@ import Prebook_Property from './pages/Prebook_Property'
 import PrebookbyDateRange from './pages/Prebook_Daterange'
 import AdminInvoice from './pages/Admin_Invoice'
 import Superadmininvoice from './pages/Superadmininvoice'
+import Invoicecenter from './pages/adminInvoiceList'
 
 const App = () => {
   const { token } = useContext(AuthContext)
@@ -75,6 +77,7 @@ const App = () => {
         <Route path={CREATE_ADMIN} element={<CreateAdmin />} />
         <Route path={ADMIN_CALCULATE} element={<AdminCalculate />} />
         <Route path={REPORT} element={<Report />} />
+        <Route path={ADMIN_INVOICE_CENTER} element={<Invoicecenter/>}/>
         <Route path={CREATE_FARMS} element={<CreateFarm />} />
         <Route path={ALL_OCCASION} element={<OccasionList />} />
         <Route path={CREATE_OCCASION} element={<CreateOccasion />} />
